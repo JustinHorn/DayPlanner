@@ -1,0 +1,68 @@
+<RV_Templates>:
+    viewclass: 'Button'
+    RecycleBoxLayout:
+        default_size: None, dp(56)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        background_color: [1.0,0,0,1]
+
+<RV_Structure>:
+    viewclass: 'Button'
+    RecycleBoxLayout:
+        default_size: None, dp(56)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        background_color: [1.0,0,0,1]
+
+
+<GUIGame>:
+
+    b_newFile:b_newFile
+    template_List:template_List
+    structure_List:structure_List
+    plan_t:plan_t
+
+    FloatLayout:
+        orientation:"vertical"
+        size: root.width, root.height
+
+        BoxLayout:
+            orientation:"horizontal"
+            size_hint: 1,0.05
+            pos_hint:{"x":0,"top":1}
+            Button:
+                id:b_newFile
+                text:"new File"
+                margin_x:[10,10]
+
+        FloatLayout:
+            orientation:"horizontal"
+            size_hint: 1,0.9
+            pos_hint:{"x":0,"top":0.95,"y":0.05}
+
+            RV_Templates:
+                id:template_List
+                pos_hint:{"x":0,"top":1}
+                size_hint: 0.2,1
+
+            PlanWidget:
+                id: plan_t
+                size_hint: 0.6,1
+                pos_hint:{"x":0.2,"top":1}
+                text:"Content"
+
+            RV_Structure:                
+                id: structure_List
+                pos_hint:{"x":0.8,"top":1}
+                size_hint: 0.2,1
+
+        BoxLayout:
+            orientation:"horizontal"
+            size_hint:1,0.05
+            ps:0,0
+            Label:
+                text:"space"
