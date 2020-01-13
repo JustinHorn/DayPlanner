@@ -4,8 +4,7 @@
 
     b_newFile:b_newFile
     template_List:template_List
-    structure_List:structure_List
-    plan_t:plan_t
+    plan_structure:plan_structure
 
     FloatLayout:
         orientation:"vertical"
@@ -30,16 +29,10 @@
                 pos_hint:{"x":0,"top":1}
                 size_hint: 0.2,1
 
-            PlanWidget:
-                id: plan_t
-                size_hint: 0.6,1
+            PlanStructureWidget:
+                id:plan_structure
                 pos_hint:{"x":0.2,"top":1}
-                text:"Content"
-
-            RV_Structure:                
-                id: structure_List
-                pos_hint:{"x":0.8,"top":1}
-                size_hint: 0.2,1
+                size_hint: 0.8,1
 
         BoxLayout:
             orientation:"horizontal"

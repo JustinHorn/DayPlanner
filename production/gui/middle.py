@@ -5,6 +5,9 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.textinput import TextInput
+from kivy.uix.floatlayout import FloatLayout
+from kivy.properties import ObjectProperty
+
 
 import sys
 sys.path.append(".\\production")
@@ -24,45 +27,40 @@ class RV_Templates(RecycleView):
         self.templates.append(template)
 
 
-class PlanWidget(TextInput):
+class PlanStructureWidget(FloatLayout):
+    plan_t = ObjectProperty()
+    structure = ObjectProperty()
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.plan = Plan("Heute")
 
     def addTemplate(self,template:Template):
         temp = self.plan.add(template)
-        self.text = self.plan.getText()
-        if not self.structure_List == None:
-            self.structure_List.addEntry(temp,self)
+        self.plan_t.text = self.plan.getText()
+        index = len(self.structure.data)
+        self.structure.data.append({"text":str(index)+" "+template.toString(),
+        "on_press": self.getRemoveEntry(index)
+        })
         return temp
+
+    def getRemoveEntry(self,index):
+        def removeEntry():
+            self.structure.data.pop(index)
+            self.removeElement(index)
+            self.updateStructureLabels(index)
+        return removeEntry
+
+    def updateStructureLabels(self,index):
+        i = index
+        for e in self.structure.data[index:]:
+            e['text'] = str(i) + " " +self.plan.the_list[i].toString()
+            e["on_press"] = self.getRemoveEntry(i)
+            i+=1
 
     def removeElement(self,index):
         self.plan.remove(index)
-        self.text = self.plan.getText()
-
-class RV_Structure(RecycleView):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-    def addEntry(self,eOT:Entry,planW:PlanWidget):
-        index = len(self.data)
-        self.data.append({"text":str(index)+" "+eOT.toString(),
-        "on_press": self.getRemoveEntry(index,planW)
-        })
-    
-    def getRemoveEntry(self,index,planW:PlanWidget):
-        def removeEntry():
-            self.data.pop(index)
-            planW.removeElement(index)
-            self.updateStructureLabels(index,planW)
-        return removeEntry
-
-    def updateStructureLabels(self,index,planW:PlanWidget):
-        i = index
-        for e in self.data[index:]:
-            e['text'] = str(i) + " " +planW.plan.the_list[i].toString()
-            e["on_press"] = self.getRemoveEntry(i,planW)
-            i+=1
+        self.plan_t.text = self.plan.getText()
 
 
 

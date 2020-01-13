@@ -24,19 +24,17 @@ templates = loadTemplateDir("material\\test")
 class GUIGame(Widget):
 
     template_List = ObjectProperty()
-    structure_List= ObjectProperty()
-    plan_t = ObjectProperty()
+    plan_structure = ObjectProperty()
     def __init__(self):
         super().__init__()
         data = self.template_List.data
-        self.plan_t.structure_List = self.structure_List
         for index,temp in enumerate(templates):
             data.append({'text': str(index) + " " +temp.info(),
             "on_press": self.getAddTemp(temp)})
 
     def getAddTemp(self,temp):
         def addTemp():
-            temp_2 = self.plan_t.addTemplate(temp)
+            temp_2 = self.plan_structure.addTemplate(temp)
         return addTemp
 
 
