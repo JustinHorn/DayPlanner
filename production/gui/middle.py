@@ -3,50 +3,25 @@ kivy.require('1.11.0') # replace with your current kivy version !
 
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.properties import ObjectProperty
-from kivy.uix.dropdown import DropDown
 from kivy.uix.recycleview import RecycleView
-from kivy.lang import Builder
-from kivy.graphics import Color, Rectangle
-from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 
 import sys
-sys.path.append(".")
-from production.plan import Plan
-from production.template import Template
-from production.load import *
+sys.path.append(".\\production")
+from plan import Plan
+from template import Template
+from entry import Entry
 
-templates = loadTemplateDir("material\\test")
-
-
-class GUIGame(Widget):
-
-    template_List = ObjectProperty()
-    structure_List= ObjectProperty()
-    plan_t = ObjectProperty()
-    def __init__(self):
-        super().__init__()
-        data = self.template_List.data
-        for index,button in enumerate(data):
-            button["on_press"] = self.getAddTemp(index)
-
-    def getAddTemp(self,index:int):
-        def addTemp():
-            tem = templates[index]
-            temp_2 = self.plan_t.addTemplate(tem)
-            self.structure_List.addEntry(temp_2,self.plan_t)
-        return addTemp
 
 class RV_Templates(RecycleView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.template = []
-        [self.addTemplate(temp) for temp in templates]
+        self.templates = []
 
     def addTemplate(self,template:Template):
         index = str(len(self.data))
         self.data.append({"text":index+" "+ template.theme+" "+template.duration})
+        self.templates.append(template)
 
 
 class PlanWidget(TextInput):
@@ -57,6 +32,8 @@ class PlanWidget(TextInput):
     def addTemplate(self,template:Template):
         temp = self.plan.add(template)
         self.text = self.plan.getText()
+        if not self.structure_List == None:
+            self.structure_List.addEntry(temp,self)
         return temp
 
     def removeElement(self,index):
@@ -83,18 +60,14 @@ class RV_Structure(RecycleView):
     def updateStructureLabels(self,index,planW:PlanWidget):
         i = index
         for e in self.data[index:]:
-            text = e['text']
             e['text'] = str(i) + " " +planW.plan.the_list[i].toString()
             e["on_press"] = self.getRemoveEntry(i,planW)
             i+=1
 
 
 
-class GUIApp(App):
+class MiddleApp(App):
 
     def build(self):
-        return GUIGame()
+        pass
 
-
-if __name__ == '__main__':
-    GUIApp().run()
