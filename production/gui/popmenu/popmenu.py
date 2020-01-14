@@ -28,16 +28,16 @@ class PopMenu(FloatLayout):
 
     def addToStucture(self,entry,on_press=None):
         index = len(self.recycle.data)
-        if on_press == None:
-            self.recycle.data.append({"text":str(index)+" "+entry.toString()
-            })
-        else:
-            self.recycle.data.append({"text":str(index)+" "+entry.toString(),
-            "on_press":on_press})
+        self.recycle.data.append({"text":str(index)+" "+entry.toString()
+        })
+        if not on_press == None:
+            self.recycle.data[index]["on_press"]=on_press
 
-class MiniMenuApp(App):
+class PopMenuApp(App):
     def build(self):
-        return PopMenu(Template("l"))
+        t = Template("Template_Theme")
+        t.add(Entry("00:00","test_entry_theme")) 
+        return PopMenu(t)
 
 if __name__ == "__main__":
-    MiniMenuApp().run()
+    PopMenuApp().run()

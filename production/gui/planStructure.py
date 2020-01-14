@@ -9,20 +9,12 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 
-
 import sys
 sys.path.append(".\\production")
 from plan import Plan
 from template import Template
 from entry import Entry
-from miniWidget.minimenu import *
-
-class P(RecycleView):
-    def __init__(self,**args):
-        super().__init__(**args)
-        for i in range(10):
-            self.data.append({"text":"hi"})
-            print(self.data[i])
+from popmenu.popmenu import *
 
 class PlanStructureWidget(FloatLayout):
     plan_t = ObjectProperty()
@@ -77,7 +69,14 @@ class PlanStructureWidget(FloatLayout):
 
 class PlanStructureApp(App):
     def build(self):
-        return P()
+        p = PlanStructureWidget()
+        p.size = (500,500)
+        t = Template("Template_Theme")
+        t.add(Entry("00:05","test_entry_theme"))
+        t.add(Entry("00:05","test_entry_theme2")) 
+
+        p.addTemplate(t)
+        return p
 
 if __name__ == "__main__":
     PlanStructureApp().run()

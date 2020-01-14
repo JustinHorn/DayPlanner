@@ -63,9 +63,9 @@ class Plan(Template):
         for tOE in self.step_list:
             if isinstance(tOE,Template):
                 for e in tOE.step_list:
-                    string = string + e.toString()
+                    string = string + e.start +"|"+e.theme+" "+e.duration+"\n"
             else:
                 e = tOE
-                string = string + e.toString()
+                string = string + e.start +"|"+e.theme+" "+e.duration+"\n"
         return string
                 

@@ -40,11 +40,13 @@ class GUIGame(Widget):
         return addTemp
 
 
-class GUIApp(App):
+class MainGUIApp(App):
 
     def build(self):
         return GUIGame()
 
+    
+
 
 if __name__ == '__main__':
-    GUIApp().run()
+    MainGUIApp().run()

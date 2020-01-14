@@ -1,4 +1,3 @@
-#refactor
 #add somehow GUI Tests
 #add split buttons in popup
 #let them buttons split the template
