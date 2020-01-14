@@ -7,6 +7,7 @@ from kivy.uix.recycleview import RecycleView
 from kivy.uix.textinput import TextInput
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
+from kivy.uix.popup import Popup
 
 
 import sys
@@ -14,7 +15,14 @@ sys.path.append(".\\production")
 from plan import Plan
 from template import Template
 from entry import Entry
+from miniWidget.minimenu import *
 
+class P(RecycleView):
+    def __init__(self,**args):
+        super().__init__(**args)
+        for i in range(10):
+            self.data.append({"text":"hi"})
+            print(self.data[i])
 
 class PlanStructureWidget(FloatLayout):
     plan_t = ObjectProperty()
@@ -38,8 +46,16 @@ class PlanStructureWidget(FloatLayout):
     def addToStucture(self,template):
         index = len(self.structure.data)
         self.structure.data.append({"text":str(index)+" "+template.toString(),
-        "on_press": self.getRemoveEntry(index)
+        "on_press": self.getShow_popMenu(index)
         })
+
+    def getShow_popMenu(self,index):
+        def showPopMenu():
+            temp = self.plan.step_list[index]
+            p = PopMenu(temp,on_press=self.getRemoveEntry(index))
+            popupWindow = Popup(title=temp.theme,content=p,size_hint=(0.8,0.8))
+            popupWindow.open()
+        return showPopMenu
 
     def getRemoveEntry(self,index):
         def removeEntry():
@@ -51,8 +67,8 @@ class PlanStructureWidget(FloatLayout):
     def updateStructureLabels(self,index):
         i = index
         for e in self.structure.data[index:]:
-            e['text'] = str(i) + " " +self.plan.the_list[i].toString()
-            e["on_press"] = self.getRemoveEntry(i)
+            e['text'] = str(i) + " " +self.plan.step_list[i].toString()
+            e["on_press"] = self.getShow_popMenu(i)
             i+=1
 
     def removeElement(self,index):
@@ -61,5 +77,7 @@ class PlanStructureWidget(FloatLayout):
 
 class PlanStructureApp(App):
     def build(self):
-        pass
+        return P()
 
+if __name__ == "__main__":
+    PlanStructureApp().run()

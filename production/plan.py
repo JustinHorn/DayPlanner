@@ -6,43 +6,43 @@ class Plan(Template):
 
     STANDARD_START = "07:00"
 
-    def __init__(self,date:str, start=None,the_list=[]):
+    def __init__(self,date:str, start=None,step_list=[]):
         super().__init__(date)
         if start == None:
             self.start = Plan.STANDARD_START
         else:
             self.start = start
         self.end = self.start
-        if len(the_list) > 0:
-            for e in the_list:
+        if len(step_list) > 0:
+            for e in step_list:
                 self.add(e)
 
     def add(self,tempOrEntry):
         eOT = tempOrEntry.clone()
         self.setStart(eOT)
-        self.the_list.append(eOT)
+        self.step_list.append(eOT)
         return eOT
     
     def remove(self,index):
-        element = self.the_list.pop(index)
+        element = self.step_list.pop(index)
         self.end = element.start
         self.updateStarts(index=index)
         return element
     
     def removeAppointment(self,startTime:str):
-        for index,eOT in enumerate(the_list):
+        for index,eOT in enumerate(step_list):
             if eOT.start == startTime:
-                return self.the_list.pop(index)
+                return self.step_list.pop(index)
         return None
 
     def updateStarts(self,index=0):
-        for e in self.the_list[index:]:
+        for e in self.step_list[index:]:
             self.setStart(e)
 
     def setStart(self,eOT):
         if isinstance(eOT,Template):
             eOT.start = self.end
-            t_list = eOT.the_list
+            t_list = eOT.step_list
             for e in t_list:
                 self.setElementStart(e)
         else:
@@ -55,14 +55,14 @@ class Plan(Template):
     def setPlanStart(self,start):
         self.start = start
         self.end = start
-        for e in self.the_list:
+        for e in self.step_list:
             self.setStart(e)
 
     def getText(self):
         string:str =""
-        for tOE in self.the_list:
+        for tOE in self.step_list:
             if isinstance(tOE,Template):
-                for e in tOE.the_list:
+                for e in tOE.step_list:
                     string = string + e.toString()
             else:
                 e = tOE

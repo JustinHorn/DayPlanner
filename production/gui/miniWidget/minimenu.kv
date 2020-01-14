@@ -1,0 +1,25 @@
+
+<PopMenu>:
+    recycle:recycle
+    button:delete_t
+
+    RecycleView:
+        id:recycle
+        size_hint: 1,0.8
+        pos_hint:{"x":0,"top":1}
+        viewclass: 'Button'
+        RecycleBoxLayout:
+            default_size: None, dp(56)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+            background_color: [1.0,0,0,1]
+
+
+    Button:
+        id:delete_t
+        size_hint: 1,0.2
+        pos_hint:{"x":0,"top":0.2}
+        text:"DELETE"
+  
