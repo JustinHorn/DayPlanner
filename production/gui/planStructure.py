@@ -36,8 +36,8 @@ class PlanStructureWidget(FloatLayout):
             return temp
 
     def addToEntryList(self,template):
-        index = len(self.entry_list.data)
-        self.entry_list.data.append({"text":str(index)+" "+template.toString(),
+        index = len(self.plan.step_list)-1
+        self.entry_list.data.append({"text":template.toString(),
         "on_press": self.getShow_popMenu(index)
         })
 
@@ -63,26 +63,31 @@ class PlanStructureWidget(FloatLayout):
     def updateEntryListLabels(self,index):
         i = index
         for e in self.plan.step_list[index:]:
-            if not (i >= len(self.entry_list.data)):
-                self.entry_list.data[i]={'text': str(i) + " " +e.toString(),
-                "on_press": self.getShow_popMenu(i)}
-                i+=1
-            else :
-                self.entry_list.data.append({'text': str(i) + " " +e.toString(),
-                "on_press": self.getShow_popMenu(i)})
-                i+=1
-
+            if isinstance(e,Template):
+                if not (i >= len(self.entry_list.data)):
+                    self.entry_list.data[i]={'text': e.toString(),
+                    "on_press": self.getShow_popMenu(i)}
+                else :
+                    self.entry_list.data.append({'text': e.toString(),
+                    "on_press": self.getShow_popMenu(i)})
+            else:
+                if not (i >= len(self.entry_list.data)):
+                    self.entry_list.data[i]={'text': e.getText(),'on_press':self.getRemoveEntry(i)}
+                else :
+                    self.entry_list.data.append({'text': e.getText(),'on_press':self.getRemoveEntry(i)})
+            i+=1
+            
+    
     
     def get_get_splitFunc(self,template_index):
         def get_splitFunc(entry_index):
             def splitFunc():
                 self.plan.splitTemplate(template_index,entry_index)
                 self.updateEntryListLabels(template_index)
+                pass
             return splitFunc
         return get_splitFunc
-
-                
-
+            
 
     def removeElement(self,index):
         self.plan.remove(index)

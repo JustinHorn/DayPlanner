@@ -34,8 +34,7 @@ class PopMenu(FloatLayout):
         if not get_splitFunc == None:
             self.addSplitButtonToEntryList(index,get_splitFunc)
 
-        self.entry_list.data.append({"text":str(index)+" "+entry.toString()
-        })
+        self.entry_list.data.append({"text":entry.toString()})
    
 
     def addSplitButtonToEntryList(self,split_point,get_splitFunc):

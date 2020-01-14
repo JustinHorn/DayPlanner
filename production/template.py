@@ -24,6 +24,13 @@ class Template(Entry):
 
             for e in self.step_list[splitpoint:]:
                 t2.add(e.clone())
+
+            if len(t1.step_list) == 1:
+                t1 = t1.step_list[0]
+
+            if len(t2.step_list) == 1:
+                t2 = t2.step_list[0]
+            
             return t1,t2
 
     def clone(self):
