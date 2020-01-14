@@ -16,17 +16,6 @@ from template import Template
 from entry import Entry
 
 
-class RV_Templates(RecycleView):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.templates = []
-
-    def addTemplate(self,template:Template):
-        index = str(len(self.data))
-        self.data.append({"text":index+" "+ template.theme+" "+template.duration})
-        self.templates.append(template)
-
-
 class PlanStructureWidget(FloatLayout):
     plan_t = ObjectProperty()
     structure = ObjectProperty()
@@ -36,13 +25,21 @@ class PlanStructureWidget(FloatLayout):
         self.plan = Plan("Heute")
 
     def addTemplate(self,template:Template):
-        temp = self.plan.add(template)
-        self.plan_t.text = self.plan.getText()
+        temp = self.addToPlan(template)
+        self.addToStucture(temp)
+     
+        return temp
+
+    def addToPlan(self,template):
+            temp = self.plan.add(template)
+            self.plan_t.text = self.plan.getText()
+            return temp
+
+    def addToStucture(self,template):
         index = len(self.structure.data)
         self.structure.data.append({"text":str(index)+" "+template.toString(),
         "on_press": self.getRemoveEntry(index)
         })
-        return temp
 
     def getRemoveEntry(self,index):
         def removeEntry():
@@ -62,10 +59,7 @@ class PlanStructureWidget(FloatLayout):
         self.plan.remove(index)
         self.plan_t.text = self.plan.getText()
 
-
-
-class MiddleApp(App):
-
+class PlanStructureApp(App):
     def build(self):
         pass
 

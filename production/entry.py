@@ -9,8 +9,8 @@ class Entry():
         return Entry(self.duration,self.theme,self.start)
     
     def toString(self):
-        return str(str(self.start)+"|"+self.theme+"|"+self.duration+"\n")
+        return str("Start: "+str(self.start)+". "+self.info())
 
     def info(self):
-        return str(self.theme+"|"+self.duration+"\n")
+        return str("Theme: "+self.theme+". Duration: "+self.duration+"\n")
 

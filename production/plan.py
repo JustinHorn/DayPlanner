@@ -24,10 +24,10 @@ class Plan(Template):
         return eOT
     
     def remove(self,index):
-        ele = self.the_list.pop(index)
-        self.end = ele.start
+        element = self.the_list.pop(index)
+        self.end = element.start
         self.updateStarts(index=index)
-        return ele
+        return element
     
     def removeAppointment(self,startTime:str):
         for index,eOT in enumerate(the_list):

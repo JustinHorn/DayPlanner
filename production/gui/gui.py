@@ -15,7 +15,9 @@ import sys
 sys.path.append(".\\production")
 from plan import Plan
 from template import Template
-from middle import *
+from planStructure import *
+from rvTemplates import *
+
 from load import *
 
 templates = loadTemplateDir("material\\test")
