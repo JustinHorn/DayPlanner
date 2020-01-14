@@ -17,21 +17,30 @@ from entry import Entry
 
 class PopMenu(FloatLayout):
 
-    recycle = ObjectProperty() 
-    button = ObjectProperty()
+    entry_list = ObjectProperty() 
+    b_delete = ObjectProperty()
 
-    def __init__(self,template:Template,on_press=None):
+    def __init__(self,template:Template,delete_press=None,get_splitFunc=None):
         super().__init__()
-        for e in template.step_list:
-            self.addToStucture(e)
-        self.button.on_press = on_press
+        for i,e in enumerate(template.step_list):
+            if i == 0:
+                self.addToEntryList(i,e)
+            else:
+                self.addToEntryList(i,e,get_splitFunc=get_splitFunc)
 
-    def addToStucture(self,entry,on_press=None):
-        index = len(self.recycle.data)
-        self.recycle.data.append({"text":str(index)+" "+entry.toString()
+        self.b_delete.on_press = delete_press
+
+    def addToEntryList(self,index, entry,get_splitFunc=None):
+        if not get_splitFunc == None:
+            self.addSplitButtonToEntryList(index,get_splitFunc)
+
+        self.entry_list.data.append({"text":str(index)+" "+entry.toString()
         })
-        if not on_press == None:
-            self.recycle.data[index]["on_press"]=on_press
+   
+
+    def addSplitButtonToEntryList(self,split_point,get_splitFunc):
+        self.entry_list.data.append({"text":"split",
+        "on_press":get_splitFunc(split_point)})
 
 class PopMenuApp(App):
     def build(self):

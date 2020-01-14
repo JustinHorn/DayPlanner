@@ -45,8 +45,6 @@ class MainGUIApp(App):
     def build(self):
         return GUIGame()
 
-    
-
 
 if __name__ == '__main__':
     MainGUIApp().run()

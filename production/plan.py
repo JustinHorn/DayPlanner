@@ -69,3 +69,11 @@ class Plan(Template):
                 string = string + e.start +"|"+e.theme+" "+e.duration+"\n"
         return string
                 
+    def splitTemplate(self,template_index,split_point):
+        t = self.step_list.pop(template_index)
+        t1,t2 = t.split(split_point)
+        self.step_list.insert(template_index,t2)
+        self.step_list.insert(template_index,t1)
+        t1.start = t.start
+        t2.start = addTime(t.start,t1.duration)
+        return t

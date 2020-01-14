@@ -68,5 +68,27 @@ class Test_PlansAndTemplates(unittest.TestCase):
         self.assertEqual(2,len(plan.step_list))
         self.assertNotEqual(end,plan.end)
 
+    def test_removeElement(self):
+        t1 = self.template.clone()
+        t2 = self.template.clone()
+ 
+        plan = Plan("Today")
+        plan.add(t1)
+        plan.add(self.template)
+        plan.add(t2)
+        
+        endBefore = plan.end
+        plan.splitTemplate(1,2)
+
+        self.assertEqual(endBefore,plan.end)
+        self.assertEqual(len(plan.step_list),4)
+        self.assertEqual(plan.step_list[0].theme,t1.theme)
+        self.assertEqual(plan.step_list[3].theme,t2.theme)
+
+
+
+        
+
+
 if __name__ == '__main__': 
     unittest.main()

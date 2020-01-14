@@ -1,9 +1,8 @@
-#add somehow GUI Tests
-#add split buttons in popup
-#let them buttons split the template
+# on splitting: template with one Entry --> Entry
+# 100 % synchronize Plan and Structure in 
+# refactor
+# fix popup window does not close on delete or split
 
 
-
-#split templates
-#spawn Pop when structure is pressed
-#split templates automaticly when 
+#split templates automaticly when typed
+#addhotkeys for everything
