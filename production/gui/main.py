@@ -13,12 +13,12 @@ from kivy.uix.textinput import TextInput
 
 import sys
 sys.path.append(".\\production")
-from plan import Plan
-from template import Template
+from logic.plan import Plan
+from logic.template import Template
 from planStructure import *
 from rvTemplates import *
 
-from load import *
+from logic.load import *
 
 templates = loadTemplateDir("material\\test")
 
@@ -36,7 +36,7 @@ class GUIGame(Widget):
 
     def getAddTemp(self,temp):
         def addTemp():
-            temp_2 = self.plan_structure.addTemplate(temp)
+            temp_2 = self.plan_structure.add(temp)
         return addTemp
 
 

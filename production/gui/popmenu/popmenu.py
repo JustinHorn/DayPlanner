@@ -8,38 +8,34 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
 
-
 import sys
 sys.path.append(".\\production")
-from plan import Plan
-from template import Template
-from entry import Entry
+from logic.template import Template
+from logic.entry import Entry
 
 class PopMenu(FloatLayout):
 
     entry_list = ObjectProperty() 
     b_delete = ObjectProperty()
 
-    def __init__(self,template:Template,delete_press=None,get_splitFunc=None):
+    def __init__(self,template=None,delete_press=None,get_splitFunc=None):
         super().__init__()
-        for i,e in enumerate(template.step_list):
-            if i == 0:
-                self.addToEntryList(i,e)
-            else:
-                self.addToEntryList(i,e,get_splitFunc=get_splitFunc)
 
-        self.b_delete.on_press = delete_press
+    def addEntries(self,template):
+        for e in template.step_list:
+            self.appendEntry(e)
 
-    def addToEntryList(self,index, entry,get_splitFunc=None):
-        if not get_splitFunc == None:
-            self.addSplitButtonToEntryList(index,get_splitFunc)
-
+    def appendEntry(self, entry):
         self.entry_list.data.append({"text":entry.toString()})
    
-
-    def addSplitButtonToEntryList(self,split_point,get_splitFunc):
-        self.entry_list.data.append({"text":"split",
-        "on_press":get_splitFunc(split_point)})
+    def addSplitFunction(self,get_splitFunc):
+        l = len(self.entry_list.data)
+        for i in range(l-1,0,-1):
+            self.entry_list.data.insert(i,{"text":"split",
+            "on_press":get_splitFunc(i)})
+    
+    def addDeleteFunction(self, delete_press):
+        self.b_delete.on_press = delete_press
 
 class PopMenuApp(App):
     def build(self):

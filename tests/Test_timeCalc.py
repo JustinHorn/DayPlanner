@@ -1,7 +1,7 @@
 import unittest
 import sys
 sys.path.append('.\\production\\')
-import calcTime 
+from logic import calcTime 
 
 class Test_Time(unittest.TestCase):
 
@@ -20,3 +20,4 @@ class Test_Time(unittest.TestCase):
 
 if __name__ == '__main__': 
     unittest.main()
+

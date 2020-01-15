@@ -11,7 +11,7 @@ from kivy.properties import ObjectProperty
 
 import sys
 sys.path.append(".\\production")
-from template import Template
+from logic.template import Template
 
 
 class RV_Templates(RecycleView):

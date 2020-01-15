@@ -11,9 +11,9 @@ from kivy.uix.popup import Popup
 
 import sys
 sys.path.append(".\\production")
-from plan import Plan
-from template import Template
-from entry import Entry
+from logic.plan import Plan
+from logic.template import Template
+from logic.entry import Entry
 from popmenu.popmenu import *
 
 class PlanStructureWidget(FloatLayout):
@@ -24,72 +24,69 @@ class PlanStructureWidget(FloatLayout):
         super().__init__(**kwargs)
         self.plan = Plan("Heute")
 
-    def addTemplate(self,template:Template):
-        temp = self.addToPlan(template)
-        self.addToEntryList(temp)
-     
-        return temp
+    def add(self,eOT:Entry):
+        eOT = self._addToPlan(eOT)
+        self._addToEntryList(eOT)
+        return eOT
 
-    def addToPlan(self,template):
-            temp = self.plan.add(template)
-            self.plan_t.text = self.plan.getText()
-            return temp
+    def _addToPlan(self,eOT):
+        eOT = self.plan.add(eOT)
+        self.plan_t.text = self.plan.getText()
+        return eOT
 
-    def addToEntryList(self,template):
-        index = len(self.plan.step_list)-1
-        self.entry_list.data.append({"text":template.toString(),
-        "on_press": self.getShow_popMenu(index)
-        })
+    def _addToEntryList(self,eOT):
+        self._appendEOT(eOT)
 
-    def getShow_popMenu(self,index):
+    def _getShow_popMenu(self,index):
         def showPopMenu():
-            temp = self.plan.step_list[index]
-            p = PopMenu(temp
-            ,delete_press=self.getRemoveEntry(index)
-            ,get_splitFunc=self.get_get_splitFunc(index))
+            temp= self.plan.step_list[index]
+            pM = PopMenu()
+            pW = Popup(title=temp.theme,content=pM,size_hint=(0.8,0.8))
+            
+            pM.addEntries(temp)
+            pM.addDeleteFunction(self._getRemoveEntry(index,dismiss_func=pW.dismiss))
+            pM.addSplitFunction(self._get_get_splitFunc(index,dismiss_func=pW.dismiss))
 
-            popupWindow = Popup(title=temp.theme,content=p,size_hint=(0.8,0.8))
-            popupWindow.open()
+            pW.open()
         return showPopMenu
 
-
-    def getRemoveEntry(self,index):
+    def _getRemoveEntry(self,index,dismiss_func=None):
         def removeEntry():
-            self.entry_list.data.pop(index)
             self.removeElement(index)
-            self.updateEntryListLabels(index)
+            if not dismiss_func==None:
+                dismiss_func()
         return removeEntry
 
     def updateEntryListLabels(self,index):
-        i = index
-        for e in self.plan.step_list[index:]:
-            if isinstance(e,Template):
-                if not (i >= len(self.entry_list.data)):
-                    self.entry_list.data[i]={'text': e.toString(),
-                    "on_press": self.getShow_popMenu(i)}
-                else :
-                    self.entry_list.data.append({'text': e.toString(),
-                    "on_press": self.getShow_popMenu(i)})
-            else:
-                if not (i >= len(self.entry_list.data)):
-                    self.entry_list.data[i]={'text': e.getText(),'on_press':self.getRemoveEntry(i)}
-                else :
-                    self.entry_list.data.append({'text': e.getText(),'on_press':self.getRemoveEntry(i)})
-            i+=1
-            
+        self.entry_list.data = self.entry_list.data[:index]
+        for i,e in enumerate(self.plan.step_list[index:],index):
+            self._appendEOT(e)
+   
+    def _appendEOT(self,eOT:Entry):
+        index = len(self.entry_list.data)
+        func = self._getShow_popMenu if isinstance(eOT,Template) else self._getRemoveEntry
+        dic = {'text': eOT.toString(),"on_press": func(index)}
+        self.entry_list.data.append(dic)
     
-    
-    def get_get_splitFunc(self,template_index):
+    def _get_get_splitFunc(self,template_index,dismiss_func=None):
         def get_splitFunc(entry_index):
             def splitFunc():
-                self.plan.splitTemplate(template_index,entry_index)
-                self.updateEntryListLabels(template_index)
-                pass
+                self.splitTemplate(template_index,entry_index)
+                if not dismiss_func== None:
+                    dismiss_func()
             return splitFunc
         return get_splitFunc
             
-
     def removeElement(self,index):
+        self.entry_list.data.pop(index)
+        self._removeFromPlan(index)
+        self.updateEntryListLabels(index)
+    
+    def splitTemplate(self,template_index,split_index):
+        self.plan.splitTemplate(template_index,split_index)
+        self.updateEntryListLabels(template_index)
+
+    def _removeFromPlan(self,index):
         self.plan.remove(index)
         self.plan_t.text = self.plan.getText()
 
@@ -101,7 +98,7 @@ class PlanStructureApp(App):
         t.add(Entry("00:05","test_entry_theme"))
         t.add(Entry("00:05","test_entry_theme2")) 
 
-        p.addTemplate(t)
+        p.add(t)
         return p
 
 if __name__ == "__main__":
