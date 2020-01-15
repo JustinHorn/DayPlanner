@@ -1,7 +1,7 @@
 import unittest
 import sys
-sys.path.append('.\\production\\')
-from logic import calcTime 
+sys.path.append('.\\production\\logic')
+import calcTime 
 
 class Test_Time(unittest.TestCase):
 

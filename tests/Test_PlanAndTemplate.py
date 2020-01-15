@@ -1,10 +1,10 @@
 import unittest
 import sys
-sys.path.append('.\\production\\')
-from logic import calcTime 
-from logic import load 
-from logic.entry import Entry 
-from logic.plan import Plan 
+sys.path.append('.\\production\\logic')
+import calcTime 
+import load 
+from entry import Entry 
+from plan import Plan 
 
 class Test_PlansAndTemplates(unittest.TestCase):
 

@@ -1,6 +1,6 @@
-from logic.entry import Entry
-from logic.template import Template
-from logic.calcTime import *
+from entry import Entry
+from template import Template
+from calcTime import *
 
 class Plan(Template):
 

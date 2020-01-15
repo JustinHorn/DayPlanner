@@ -1,7 +1,7 @@
 import unittest
 import sys
-sys.path.append('.\\production\\')
-import logic.load
+sys.path.append('.\\production\\logic')
+import load
 
 
 class Test_Load(unittest.TestCase):

@@ -1,5 +1,5 @@
-from logic.entry import Entry
-from logic import calcTime
+from entry import Entry
+import calcTime
 class Template(Entry):
 
 

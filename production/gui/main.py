@@ -12,13 +12,14 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 
 import sys
-sys.path.append(".\\production")
-from logic.plan import Plan
-from logic.template import Template
-from planStructure import *
-from rvTemplates import *
+sys.path.append(".\\production\\logic")
+sys.path.append("production\\gui\\middle")
 
-from logic.load import *
+from plan import Plan
+from template import Template
+from middle.rvTemplates import RV_Templates
+from middle.planStructure import PlanStructureWidget
+from load import *
 
 templates = loadTemplateDir("material\\test")
 

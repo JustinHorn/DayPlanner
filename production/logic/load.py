@@ -1,5 +1,5 @@
-from logic.entry import Entry
-from logic.template import Template
+from entry import Entry
+from template import Template
 from os import listdir
 from os.path import isfile, join
 
