@@ -85,7 +85,17 @@ class Test_PlansAndTemplates(unittest.TestCase):
         self.assertEqual(plan.step_list[0].theme,t1.theme)
         self.assertEqual(plan.step_list[3].theme,t2.theme)
 
+    def test_planEqual(self):
+        plan1 = Plan("1")
+        plan2 = Plan("2")
 
+        plan1.add(self.template)
+        plan2.add(self.template)
+
+        self.assertEqual(plan1,plan2)
+        self.assertNotEqual(id(plan1),id(plan2))
+        
+ 
 
         
 

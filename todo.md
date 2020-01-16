@@ -1,5 +1,4 @@
 What I want to make ready until 18.01.2020: 
-#clean up main.py - is there a better way then enclosure?
 #line insertion
 #template splitting
 #updating
@@ -24,6 +23,8 @@ Is it enough to write root.dismiss in popmenu.kv
 
 
 #DONE:
+#add equals method to plan & co
+#change main.py - do not use pop ups!
 # 100 % synchronize Plan and Structure in 
 # popup window close on delete and split
 #refactor

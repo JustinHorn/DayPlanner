@@ -3,51 +3,6 @@
 #:include middle\rvt.kv
 
 
-<PopButtons>:
-
-    location_grid:location_grid
-    location_text:location_text
-    name_grid:name_grid
-    name_text:name_text
-    b_submit:b_submit
-
-    GridLayout:
-        size_hint: 1, 0.8
-        pos_hint:{"x":0,"top":1}
-        rows:2
-
-        GridLayout
-            cols:2
-            size_hint: 0.5, 0.5
-            id:location_grid
-            pos_hint:{"x":0,"top":1}
-
-            Label:
-                text:"Location:"
-
-            TextInput:
-                multiline:False
-                id:location_text
-
-        GridLayout
-            cols:2
-            size_hint: 0.5, 0.5
-            pos_hint:{"x":0,"top":0.5}
-            id:name_grid
-            Label:
-                text:"Filename:"
-
-            TextInput:
-                multiline:False
-                id:name_text
-
-
-    Button:
-        id:b_submit    
-        size_hint: 1, 0.2
-        pos_hint:{"x":0,"top":0.2}
-        text:"submit"
-
 
 
 <GUIGame>:
@@ -59,6 +14,9 @@
     template_List:template_List
     plan_structure:plan_structure
 
+    t_name:t_name
+    t_location:t_location
+
     FloatLayout:
         orientation:"vertical"
         size: root.width, root.height
@@ -66,7 +24,7 @@
         BoxLayout:
             orientation:"horizontal"
             cols:3
-            size_hint: None,0.05
+            size_hint: 1,0.05
             pos_hint:{"x":0.01,"top":0.99}
 
             Button:
@@ -74,21 +32,44 @@
                 id:b_savePlan
                 text:"save as Plan"
                 margin_x:[10,10]
-                on_press:root.createPopup("Save Plan",0)
+                on_press:root.savePlan()
 
             Button:
                 size_hint: None,1
                 id:b_saveTemplate
                 text:"save as Template"
                 margin_x:[10,10]
-                on_press:root.createPopup("Save Template",1)
+                on_press:root.saveTemplate()
 
             Button:
                 size_hint: None,1
                 id:b_loadPlan
                 text:"load Plan"
                 margin_x:[10,10]
-                on_press:root.createPopup("load Plan",2)
+                on_press:root.loadPlan()
+
+            Label
+                size_hint: None,1
+                text:"Location:"
+                margin_x:[10,10]
+
+            TextInput:
+                size_hint: 1,1
+                id:t_location
+                text:"E:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\1031"
+                multiline:False
+
+            Label
+                size_hint: None,1
+                text:"Filename:"
+                margin_x:[10,10]
+
+            TextInput:
+                id:t_name
+                text:"Leaving application in progress" 
+                size_hint: 1,1
+                multiline:False
+
 
 
         FloatLayout:

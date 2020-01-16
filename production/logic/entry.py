@@ -19,5 +19,10 @@ class Entry():
             return self.theme
         else:
             return str(self.start+" "+ self.theme)
+    
+    def __eq__(self, other):
+        if isinstance(other,Entry):
+            return (self.theme == other.theme) and (self.start == other.start) and (self.duration == other.duration)
+        return False
 
 

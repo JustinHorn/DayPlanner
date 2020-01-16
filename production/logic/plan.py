@@ -77,3 +77,6 @@ class Plan(Template):
         t1.start = t.start
         t2.start = addTime(t.start,t1.duration)
         return t
+
+    def update(self,update_text):
+        pass

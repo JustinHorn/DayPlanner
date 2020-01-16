@@ -2,7 +2,6 @@ from entry import Entry
 import calcTime
 class Template(Entry):
 
-
     def __init__(self,theme:str):
         super().__init__("00:00",theme)
         self.step_list = []
@@ -38,3 +37,14 @@ class Template(Entry):
         for e in self.step_list:
             clone.add(e.clone())
         return clone
+
+    def __eq__(self, other):
+        if isinstance(other,self.__class__):
+            s_l = other.step_list
+            if not len(s_l) == len(self.step_list):
+                return False
+            for eO,eS in zip(s_l,self.step_list):
+                if not eO == eS:
+                    return False
+            return True
+        return False   

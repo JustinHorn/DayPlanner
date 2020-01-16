@@ -45,13 +45,24 @@ class Test_Template(unittest.TestCase):
         for i,e in enumerate(sl1):
             self.assertEqual(e.theme,sl0[i].theme)
             self.assertEqual(e.duration,sl0[i].duration)
-            self.assertNotEqual(e,sl0[i])
+            self.assertNotEqual(id(e),id(sl0[i]))
     
         for i,e in enumerate(sl2):
             self.assertEqual(e.theme,sl0[i+l1].theme)
             self.assertEqual(e.duration,sl0[i+l1].duration)
-            self.assertNotEqual(e,sl0[i+l1])
+            self.assertNotEqual(id(e),id(sl0[i+l1]))
 
+    def test_EntryEq(self):
+        e = Entry("00:00","programmieren")
+        e2 = Entry("00:00","programmieren")
+        self.assertEqual(e,e2)
+
+    def test_EntryEq(self):
+        t1 = self.template
+        t2 = self.template.clone()
+
+        self.assertEqual(t1,t2)
+        self.assertNotEqual(id(t1),id(2))
 
 
 

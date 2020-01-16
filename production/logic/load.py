@@ -9,13 +9,17 @@ def loadData(path:str):
     return data
 
 def parseData(data:str):
-    data = data.split("\n")
-    theme = data[0]
-    t = Template(theme)
-    for e in data[1:]:
-        [duration,theme] = e.split("|")
-        t.add(Entry(duration,theme))
-    return t
+    try:
+        data = data.split("\n")
+        theme = data[0]
+        t = Template(theme)
+        for e in data[1:]:
+            [duration,theme] = e.split("|")
+            t.add(Entry(duration,theme))
+        return t
+    except:
+        print('parseData error')
+        return Template("parseData error")
 
 def loadTemplate(path):
     data = loadData(path)
@@ -32,10 +36,18 @@ def loadTemplateDir(directory:str):
     return templates
 
 def save(path,text):
-    with open(path,"w") as out:
-        out.write(text)
+    try:
+        with open(path,"w") as out:
+            out.write(text)
+    except IOError:
+        print('An error occured in save')
+
 
 def loadPlan(path):
-    with open(path,"r") as read:
-        plan= read.read(text)
-    return plan
+    try:
+        with open(path,"r") as read:
+            plan= read.read()
+        return plan
+    except IOError:
+        print('An error occured in loadPlan')
+        return "error in load plan with:"+path
