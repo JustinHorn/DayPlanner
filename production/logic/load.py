@@ -31,3 +31,11 @@ def loadTemplateDir(directory:str):
         templates.append(temp)
     return templates
 
+def save(path,text):
+    with open(path,"w") as out:
+        out.write(text)
+
+def loadPlan(path):
+    with open(path,"r") as read:
+        plan= read.read(text)
+    return plan
