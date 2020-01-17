@@ -1,7 +1,7 @@
 Test
-00:03|Aufstehen, Bett machen, ins Bad, ausziehen, in die Dusche gehen
-00:05|Duschen
-00:03|abtrocknen, Föhnen
-00:04|Toilette
-00:05|runter gehen, Wasser kochen, Maily kraueln, hochgehen
-00:20|essen
+00:03 Aufstehen, Bett machen, ins Bad, ausziehen, in die Dusche gehen
+00:05 Duschen
+00:03 abtrocknen, Foehnen
+00:04 Toilette
+00:05 runter gehen, Wasser kochen, Maily kraueln, hochgehen
+00:20 essen

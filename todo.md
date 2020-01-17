@@ -1,8 +1,11 @@
 What I want to make ready until 18.01.2020: 
-#updating
-#line insertion on update
+
 #template splitting on update
 #activate programm via console
+
+#refactor test_plan
+#refacor plan update & co. 
+#make it easier for the programm to read the lines
 
 
 # fix popmenu bugg: clicking next to split butto also splits
@@ -32,3 +35,5 @@ Is it enough to write root.dismiss in popmenu.kv
 #create new files
 #create new templates
 #load old files
+#updating
+#line insertion on update

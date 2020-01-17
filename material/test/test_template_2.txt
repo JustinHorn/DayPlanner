@@ -1,8 +1,8 @@
 Test2
-09:45| ziehe dich um, Dusche
-09:50| Sauniere
-10:05| Dusche dich ab und ziehe dich um.
-10:10| checke aus und gehe zum Fahrrad
-10:15| fahre nach Hause
-10:30| Spiele mit Maily
-10:45| essen
+09:45 ziehe dich um, Dusche
+09:50 Sauniere
+10:05 Dusche dich ab und ziehe dich um.
+10:10 checke aus und gehe zum Fahrrad
+10:15 fahre nach Hause
+10:30 Spiele mit Maily
+10:45 essen

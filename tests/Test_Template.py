@@ -14,16 +14,7 @@ class Test_Template(unittest.TestCase):
         super().__init__(*args, **kwargs)
         self.template = load.loadTemplate(Test_Template.test_source)
       
-    def test_parseData(self):
-        step_list = self.template.step_list
-        self.assertEqual(step_list[0].duration ,"00:03")
-        self.assertEqual(step_list[1].duration , "00:05")
-        self.assertEqual(step_list[2].duration , "00:03")
-        self.assertEqual(step_list[3].duration , "00:04")
-        self.assertEqual(step_list[4].duration , "00:05")
-        self.assertEqual(step_list[5].duration , "00:20")
-        self.assertEqual(step_list[0].theme , "Aufstehen, Bett machen, ins Bad, ausziehen, in die Dusche gehen")
-
+   
     def test_addTemplateToPlan(self):
         plan = Plan("today")
         plan.add(self.template)
@@ -72,7 +63,7 @@ class Test_Template(unittest.TestCase):
         self.assertEqual(step_list[3].duration , "00:04")
         self.assertEqual(step_list[4].duration , "00:05")
         self.assertEqual(step_list[5].duration , "00:20")
-        self.assertEqual(step_list[0].theme , "Aufstehen, Bett machen, ins Bad, ausziehen, in die Dusche gehen")
+        self.assertEqual(step_list[0].theme , " Aufstehen, Bett machen, ins Bad, ausziehen, in die Dusche gehen")
 
 
 

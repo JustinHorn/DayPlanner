@@ -1,6 +1,6 @@
 from entry import Entry
 from template import Template
-from calcTime import *
+import calcTime 
 
 class Plan(Template):
 
@@ -50,7 +50,7 @@ class Plan(Template):
 
     def setElementStart(self,entry):
         entry.start = self.end
-        self.end = addTime(self.end,entry.duration)
+        self.end = calcTime.addTime(self.end,entry.duration)
 
     def setPlanStart(self,start):
         self.start = start
@@ -63,10 +63,10 @@ class Plan(Template):
         for tOE in self.step_list:
             if isinstance(tOE,Template):
                 for e in tOE.step_list:
-                    string = string + e.start +" "+e.theme+" \n"
+                    string = string + e.start +""+e.theme+" \n"
             else:
                 e = tOE
-                string = string + e.start +" "+e.theme+" \n"
+                string = string + e.start +""+e.theme+" \n"
         return string
                 
     def splitTemplate(self,template_index,split_point):
@@ -75,49 +75,55 @@ class Plan(Template):
         self.step_list.insert(template_index,t2)
         self.step_list.insert(template_index,t1)
         t1.start = t.start
-        t2.start = addTime(t.start,t1.duration)
+        t2.start = calcTime.addTime(t.start,t1.duration)
         return t
 
     
     def update(self,update_text):
-        entries = self.parseTextToEntries(update_text)
+        entries = Plan.parseTextToEntries(update_text)
         
-        self.step_list = self.matchWithTemplates(entries)
-        self.step_list.sort(sort=Plan.sort)
-
-        self.step_list = Plan.entriesToTemplate(self.step_list)
+        self.step_list = Plan.changeByEntries(self.step_list,entries)
+        self.step_list.sort(key=Plan.sort)
+        self.step_list = Plan.formatList(self.step_list)
+        self.end = self.step_list[0].start
+        self.updateStarts()
     
+    @staticmethod
     def parseTextToEntries(text):
         entries = text.split("\n")
         entries = [Entry("00:00",e[5:],start=e[:5]) for e in entries] # hardcoded formatting
         
         for i,e in enumerate(entries):
             if not i +1 == len(entries):
-                e.duration = calcTime.substract(entries[i+1].start,e.start)
+                e.duration = calcTime.substractTime(entries[i+1].start,e.start)
         return entries
 
-    def matchWithTemplates(self,entry_List):
-        new_step_list = []
-        for e in self.step_list:
-            index = self.doesEntryListContain(e,entry_list)
+    @staticmethod
+    def changeByEntries(plan_list,entry_list):
+        new_plan_list = []
+        for e in plan_list:
+            index = Plan.doesEntryListContain(e,entry_list)
             if not index ==None:
                 e.start = entry_list[index].start
-                new_step_list.append(e)
-                self.deleteListPart(index,entry_list,e)
-        new_step_list = new_step_list + entry_list
-        return new_step_list
+                new_plan_list.append(e)
+                entry_list = Plan.deleteListPart(index,entry_list,e)
+        new_plan_list = new_plan_list + entry_list
+        return new_plan_list
 
     @staticmethod
     def sort(e):
         return e.start
 
-    def doesEntryListContain(self,eOT:Entry,entry_list):
+    @staticmethod
+    def doesEntryListContain(eOT:Entry,entry_list):
         if isinstance(eOT,Template):
             step_list = eOT.step_list
-            stop = len(entry_list) - len(step_list) +1
+            s_len = len(step_list)
+            stop = len(entry_list) - s_len +1
             for index,e in enumerate( entry_list[:stop] ):
                 for s_i, t_e in enumerate( step_list):
-                    if not e ==t_e:
+                    element =  entry_list[s_i+index]
+                    if not( element ==t_e or (element.duration =="00:00" and element.theme == t_e.theme)):
                         break
                     elif s_i+1 == s_len:
                         return index
@@ -128,15 +134,17 @@ class Plan(Template):
                     return index
             return None
 
-    def deleteListPart(self,index,p_list,element):
+    @staticmethod
+    def deleteListPart(index,p_list,element):
         if isinstance(element,Template):
             l = len(element.step_list)
             p_list = p_list[:index] + p_list[index+l:]
         else:
             p_list.pop(index)
+        return p_list
 
     @staticmethod
-    def entriesToTemplate(plan_list):
+    def formatList(plan_list):
         entries_collected = []
         new_list = []
         for e in plan_list:
@@ -144,16 +152,23 @@ class Plan(Template):
                 entries_collected.append(e)
             else:
                 if len(entries_collected) >=2:
-                    t = Template("...")
-                    t.start = entries_collected[0].start
-                    for entry in entries_collected:
-                        t.add(entry)
-                    new_list.append(t)
+                    new_list.append(Plan.entriesToTemplate(entries_collected))
                 else:
                     new_list = new_list + entries_collected
 
                 new_list.append(e)
                 entries_collected = []
 
+        if len(entries_collected) >=2:
+            new_list.append(Plan.entriesToTemplate(entries_collected))
+        else:
+            new_list = new_list + entries_collected
         return new_list
-            
+    
+    @staticmethod
+    def entriesToTemplate(entries):
+        t = Template("...")
+        t.start = entries[0].start
+        for entry in entries:
+            t.add(entry)
+        return t

@@ -90,6 +90,11 @@ class PlanStructureWidget(FloatLayout):
         self.plan.remove(index)
         self.plan_t.text = self.plan.getText()
 
+    def plan_update(self):
+        self.plan.update(self.plan_t.text)
+        self.updateEntryListLabels(0)
+
+
 class PlanStructureApp(App):
     def build(self):
         p = PlanStructureWidget()

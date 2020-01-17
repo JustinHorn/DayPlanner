@@ -8,13 +8,13 @@ def loadData(path:str):
         data = l.read()
     return data
 
-def parseData(data:str):
+def stringToTemplate(data:str):
     try:
         data = data.split("\n")
         theme = data[0]
         t = Template(theme)
         for e in data[1:]:
-            [duration,theme] = e.split("|")
+            [duration,theme] = [e[:5],e[5:]]
             t.add(Entry(duration,theme))
         return t
     except:
@@ -23,7 +23,7 @@ def parseData(data:str):
 
 def loadTemplate(path):
     data = loadData(path)
-    template = parseData(data)
+    template = stringToTemplate(data)
     return template
 
 def loadTemplateDir(directory:str):

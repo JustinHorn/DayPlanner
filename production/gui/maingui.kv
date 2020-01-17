@@ -86,3 +86,10 @@
                 id:plan_structure
                 pos_hint:{"x":0.2,"top":1}
                 size_hint: 0.8,1
+        
+        Button:
+            text:"update"
+            pos_hint:{"x":0.2,"top":0.05,"right":0.8}
+            size_hint: 0.6,0.05
+            on_press: plan_structure.plan_update()
+
