@@ -22,7 +22,5 @@ class Entry():
     
     def __eq__(self, other):
         if isinstance(other,Entry):
-            return (self.theme == other.theme) and (self.start == other.start) and (self.duration == other.duration)
+            return (self.theme == other.theme) and (self.duration == other.duration)
         return False
-
-

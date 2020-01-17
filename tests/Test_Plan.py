@@ -6,27 +6,13 @@ import load
 from entry import Entry 
 from plan import Plan 
 
-class Test_PlansAndTemplates(unittest.TestCase):
+class Test_Plan(unittest.TestCase):
 
     test_source = "material\\test\\test_template_1.txt"
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.template = load.loadTemplate(Test_PlansAndTemplates.test_source)
-
-    def test_parseData(self):
-        step_list = self.template.step_list
-        self.assertEqual(step_list[0].duration ,"00:03")
-        self.assertEqual(step_list[1].duration , "00:05")
-        self.assertEqual(step_list[2].duration , "00:03")
-        self.assertEqual(step_list[3].duration , "00:04")
-        self.assertEqual(step_list[4].duration , "00:05")
-        self.assertEqual(step_list[5].duration , "00:20")
-        self.assertEqual(step_list[0].theme , "Aufstehen, Bett machen, ins Bad, ausziehen, in die Dusche gehen")
-
-    def test_addTemplateToPlan(self):
-        plan = Plan("today")
-        plan.add(self.template)
+        self.template = load.loadTemplate(Test_Plan.test_source)
 
     def test_addToPlan(self):
         entry1 = Entry("03:00","Talking")
@@ -44,6 +30,7 @@ class Test_PlansAndTemplates(unittest.TestCase):
         plan.add(entry1)
         plan.add(self.template)
         plan.add(entry2)
+        
         step_list = plan.step_list
         self.assertEqual(step_list[0].start,Plan.STANDARD_START)
         self.assertEqual(step_list[1].start,calcTime.addTime(Plan.STANDARD_START,step_list[0].duration))
@@ -55,10 +42,8 @@ class Test_PlansAndTemplates(unittest.TestCase):
         print(plan.getText())
     
     def test_removeElement(self):
-        plan = Plan("Today")
-        plan.add(self.template)
-        plan.add(self.template)
-        plan.add(self.template)
+        plan = self.get_x_template_plan(3)
+
         self.assertNotEqual(Plan.STANDARD_START,plan.step_list[1].start)
         self.assertEqual(3,len(plan.step_list))
         end = plan.end
@@ -94,8 +79,16 @@ class Test_PlansAndTemplates(unittest.TestCase):
 
         self.assertEqual(plan1,plan2)
         self.assertNotEqual(id(plan1),id(plan2))
+    
+    def get_x_template_plan(self,x:int):
+        plan = Plan("today"):
+        for i in range(x):
+            plan.add(self.template)
+        return plan
+                    
+
+
         
- 
 
         
 

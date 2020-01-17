@@ -7,3 +7,7 @@
     #plans inherit from templates
     #you can add rows normally ad the end or by time 
     # by time means that the job of the row is inserted at the given time 
+
+    # same theme same activity
+    # no | in plan only in templates
+    # no duration in plan only in entries or templates

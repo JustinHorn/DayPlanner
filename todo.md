@@ -1,7 +1,7 @@
 What I want to make ready until 18.01.2020: 
-#line insertion
-#template splitting
 #updating
+#line insertion on update
+#template splitting on update
 #activate programm via console
 
 
