@@ -1,0 +1,1 @@
+print("1E"[1].isdigit())

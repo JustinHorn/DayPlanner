@@ -14,7 +14,7 @@ def stringToTemplate(data:str):
         theme = data[0]
         t = Template(theme)
         for e in data[1:]:
-            [duration,theme] = [e[:5],e[5:]]
+            [duration,theme] = [e[:5],e[6:]]
             t.add(Entry(duration,theme))
         return t
     except:

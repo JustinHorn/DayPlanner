@@ -3,10 +3,11 @@ What I want to make ready until 18.01.2020:
 #template splitting on update
 #activate programm via console
 
-#refactor test_plan
+#fix create plan bugg
 #refacor plan update & co. 
 #make it easier for the programm to read the lines
-
+#make centralize rules fdor reading files
+#restructure test_plan test_update vs test_template
 
 # fix popmenu bugg: clicking next to split butto also splits
 
@@ -18,7 +19,6 @@ Features that could be added:
 #save and write to directory by console demand path
 #addhotkeys for everything
 #automatic updating
-
 # mache schrift der Buttons in Structure dynamischer
 
 Test:
@@ -36,4 +36,5 @@ Is it enough to write root.dismiss in popmenu.kv
 #create new templates
 #load old files
 #updating
-#line insertion on update
+#line insertion on updat
+#refactor test_plan

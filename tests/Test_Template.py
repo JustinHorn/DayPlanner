@@ -5,6 +5,7 @@ import calcTime
 import load 
 from entry import Entry
 from plan import Plan
+import TestHelper
 
 class Test_Template(unittest.TestCase):
 
@@ -16,8 +17,7 @@ class Test_Template(unittest.TestCase):
       
    
     def test_addTemplateToPlan(self):
-        plan = Plan("today")
-        plan.add(self.template)
+        TestHelper.createPlan(self,"T")
 
     def test_splitTempalte(self):
         sl0 = self.template.step_list
@@ -63,7 +63,7 @@ class Test_Template(unittest.TestCase):
         self.assertEqual(step_list[3].duration , "00:04")
         self.assertEqual(step_list[4].duration , "00:05")
         self.assertEqual(step_list[5].duration , "00:20")
-        self.assertEqual(step_list[0].theme , " Aufstehen, Bett machen, ins Bad, ausziehen, in die Dusche gehen")
+        self.assertEqual(step_list[0].theme , "Aufstehen, Bett machen, ins Bad, ausziehen, in die Dusche gehen")
 
 
 

@@ -63,10 +63,10 @@ class Plan(Template):
         for tOE in self.step_list:
             if isinstance(tOE,Template):
                 for e in tOE.step_list:
-                    string = string + e.start +""+e.theme+" \n"
+                    string = string + e.start +" "+e.theme+" \n"
             else:
                 e = tOE
-                string = string + e.start +""+e.theme+" \n"
+                string = string + e.start +" "+e.theme+" \n"
         return string
                 
     def splitTemplate(self,template_index,split_point):
@@ -91,7 +91,7 @@ class Plan(Template):
     @staticmethod
     def parseTextToEntries(text):
         entries = text.split("\n")
-        entries = [Entry("00:00",e[5:],start=e[:5]) for e in entries] # hardcoded formatting
+        entries = [Entry("00:00",e[6:],start=e[:5]) for e in entries] # hardcoded formatting
         
         for i,e in enumerate(entries):
             if not i +1 == len(entries):

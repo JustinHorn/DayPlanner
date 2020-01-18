@@ -9,7 +9,7 @@ class Entry():
         return Entry(self.duration,self.theme,self.start)
     
     def toString(self):
-        return str(self.getText()+""+ self.duration)
+        return str(self.getText()+" "+ self.duration)
 
     def info(self):
         return str("Theme: "+self.theme+". Duration: "+self.duration+"\n")
@@ -18,7 +18,7 @@ class Entry():
         if self.start == None:
             return self.theme
         else:
-            return str(self.start+""+ self.theme)
+            return str(self.start+" "+ self.theme)
     
     def __eq__(self, other):
         if isinstance(other,Entry):
