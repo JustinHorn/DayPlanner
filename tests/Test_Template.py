@@ -1,8 +1,7 @@
 import unittest
 import sys
 sys.path.append('.\\production\\logic')
-import calcTime 
-import load 
+import Load 
 from entry import Entry
 from plan import Plan
 import TestHelper
@@ -13,7 +12,7 @@ class Test_Template(unittest.TestCase):
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.template = load.loadTemplate(Test_Template.test_source)
+        self.template = Load.loadTemplate(Test_Template.test_source)
       
    
     def test_addTemplateToPlan(self):

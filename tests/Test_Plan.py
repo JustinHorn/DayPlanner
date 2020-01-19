@@ -1,12 +1,13 @@
 import unittest
 import sys
 sys.path.append('.\\production\\logic')
-import calcTime 
-import load 
+import CalcTime 
+import Load 
 from entry import Entry 
 from plan import Plan 
 from template import Template
 import TestHelper
+import Change
 
 class Test_Plan(unittest.TestCase):
 
@@ -14,7 +15,7 @@ class Test_Plan(unittest.TestCase):
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.template = load.loadTemplate(Test_Plan.test_source)
+        self.template = Load.loadTemplate(Test_Plan.test_source)
 
 
     def test_addToPlan(self):
@@ -22,8 +23,8 @@ class Test_Plan(unittest.TestCase):
 
         step_list = p.step_list
         self.assertEqual(step_list[0].start,Plan.STANDARD_START)
-        self.assertEqual(step_list[1].start,calcTime.addTime(Plan.STANDARD_START,step_list[0].duration))
-        self.assertEqual(step_list[2].start,calcTime.addTime(step_list[1].start,step_list[1].duration))
+        self.assertEqual(step_list[1].start,CalcTime.addTime(Plan.STANDARD_START,step_list[0].duration))
+        self.assertEqual(step_list[2].start,CalcTime.addTime(step_list[1].start,step_list[1].duration))
     
     def test_removeElement(self):
         p = TestHelper.createPlan(self,"TTT")
@@ -65,90 +66,35 @@ class Test_Plan(unittest.TestCase):
         self.assertNotEqual(id(p1),id(p2))
 
 
-    
-
-
-    def test_entriesToTemplate(self):
-        #test only entries
-        p,e = TestHelper.createPlan(self,"ESE2")
-        l = p.step_list
-        l = Plan.formatList(l)
-        self.assertEqual(len(l),1)
-        self.assertEqual(len(l[0].step_list),3)
-        self.assertEqual(l[0].step_list[0],e)
-
-
-        #test entrie,template,entrie
-        p,e = TestHelper.createPlan(self,"ESTE")
-        l = p.step_list
-        l = Plan.formatList(l)
-        self.assertEqual(len(l),3)
-        self.assertEqual(l[1],self.template)
-        self.assertEqual(l[0],e)
-
-        #test entries,template,entries
-        p,e = TestHelper.createPlan(self,"ESETE2")
-
-        l = p.step_list
-        l = Plan.formatList(l)
-        self.assertEqual(len(l[2].step_list),2)
-        self.assertEqual(l[1],self.template)
-        self.assertEqual(l[0].step_list[0],e)
-
-        #test template,entrie,template
-        p,e = TestHelper.createPlan(self,"TEST")
-
-        l = p.step_list
-        l = Plan.formatList(l)
-        self.assertEqual(len(l),3)
-        self.assertEqual(l[0],self.template)
-        self.assertEqual(l[2],self.template)
-        
-        #test template, entries,template
-        p,e = TestHelper.createPlan(self,"TESE2T")
-
-        l = p.step_list
-        l = Plan.formatList(l)
-        self.assertEqual(len(l),3)
-        self.assertEqual(l[0],self.template)
-        self.assertEqual(l[2],self.template)
-
-    def test_changeByEntries(self):
-        p,e = TestHelper.createPlan(self,"T")
-        t = p.step_list
-        entries = Plan.parseTextToEntries(load.loadData("material\\test\\test_update1.txt"))
-        new_list = Plan.changeByEntries(t,entries)
-        self.assertEqual(t[0],new_list[0])
-
-    def test_doesEntryListContain(self):
-        p,e = TestHelper.createPlan(self,"T")
-        t = p.step_list
-        entries = Plan.parseTextToEntries(load.loadData("material\\test\\test_update1.txt"))
-        index = Plan.doesEntryListContain(t[0],entries)
-        self.assertEqual(index,0)
-
     def test_update(self):
         #always the same template
         #test as p with 1 templates discover template
         p,e = TestHelper.createPlan(self,"T")
-        p.update(load.loadData("material\\test\\test_update1.txt"))
+        t_text_1,end = self.template.templateToText(startTime="07:02")
+        p.update(t_text_1)
         self.assertEqual(len(p.step_list),1)
         self.assertEqual(p.step_list[0].theme,self.template.theme)
 
         #test as p with 1 templates discover template+ entry
         p,e = TestHelper.createPlan(self,"T")
-        p.update(load.loadData("material\\test\\test_update2.txt"))
+        t_text_2 = t_text_1+end+" rofl\n"
+        p.update(t_text_2)
         self.assertEqual(p.step_list[0].theme,self.template.theme)
         self.assertEqual(p.step_list[1].theme,"rofl")
         TestHelper.test_listByInstance(self,p.step_list,"2TE")
 
-        #test as p with 2 templates discover 2 templates and 3 entries
+        text = "07:00 Hallo ich bin Ricke\n"
+        t,end = self.template.templateToText(startTime="07:02")
+        text = text + t
+        text = text + end +" Ich bin heute 15km gelaufen ... ich mache Kickboxen ... Pooldance\n"
+        t,end = self.template.templateToText(startTime=CalcTime.addTime(end,"05:00"))
+        text = text + t 
+        text = text + end +" Nun sind wir zu dritt. Machen wir das Beste draus.\n"
+
         p,e = TestHelper.createPlan(self,"TT")
-        p.update(load.loadData("material\\test\\test_update3.txt"))
+        p.update(text)
         TestHelper.test_listByInstance(self,p.step_list,"5ETETE")
     
-
-
 
 if __name__ == '__main__': 
     unittest.main()

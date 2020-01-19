@@ -1,46 +1,49 @@
 import unittest
 import sys
 sys.path.append('.\\production\\logic')
-import calcTime 
-import load 
+import Load 
 from entry import Entry 
 from plan import Plan 
 from template import Template
 
 
+
 def createPlan(self,string:str):
     plan = Plan("today")
-    ele = None
-    currentCharIsLast = lambda i,s: i+1 == len(s)
-    addStandardEntry = lambda : plan.add(Entry("00:05","standard"))
-    addTemp = lambda:plan.add(self.template)
+    special_element = None
 
     for i,e in enumerate(string):
         if e == 'E':
-            if not currentCharIsLast(i,string):
-                n_char = string[i+1]
-                if n_char.isdigit():
-                    c = int(n_char)
-                    for i in range(c):
-                        addStandardEntry()
-                elif  n_char == 'S':
-                    ele = Entry("00:06","besonders")
-                    plan.add(ele)
-                else:        
-                    addStandardEntry()
-            else:        
-                addStandardEntry()
+            ele = addToPlan(self,plan,i,string,Entry)
+            if not ele == None:
+                special_element = ele
         elif e=="T":
-            if not currentCharIsLast(i,string):
-                if string[i+1].isdigit():
-                    c = int(string[+1])
-                    for i in range(c):
-                        addTemp()
-                else:
-                    addTemp()
-            else:
-                addTemp()
-    return plan,ele
+            addToPlan(self,plan,i,string,Template)
+    return plan,special_element
+
+
+def addToPlan(self,plan,index,string,classType):
+    element = []
+    if not len(string) == index+1:
+        n_char = string[index+1]
+        if n_char.isdigit():
+            c = int(n_char)
+            for i in range(c):
+                element.append()
+        elif  n_char == 'S' and classType == Entry:
+            ele = Entry("00:06","besonders")
+            plan.add(ele)
+            return ele
+        else:        
+            addTypeToPlan(self,plan,classType)
+    else:        
+        addTypeToPlan(self,plan,classType)
+
+def getElement(self,plan,classType):
+    if classType is Template:
+        plan.add(self.template)
+    else:
+        plan.add(Entry("00:05","standard"))
 
 def test_listByInstance(self,step_list,instances:str):
     if instances[0].isdigit():

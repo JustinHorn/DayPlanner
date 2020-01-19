@@ -1,5 +1,5 @@
 from entry import Entry
-import calcTime
+import CalcTime
 class Template(Entry):
 
     def __init__(self,theme:str):
@@ -8,7 +8,7 @@ class Template(Entry):
 
     def add(self,entry:Entry):
         self.step_list.append(entry)
-        self.duration = calcTime.addTime(self.duration,entry.duration)
+        self.duration = CalcTime.addTime(self.duration,entry.duration)
 
     def split(self,splitpoint):
         if splitpoint > len(self.step_list):
@@ -47,4 +47,12 @@ class Template(Entry):
                 if not eO == eS:
                     return False
             return True
-        return False   
+        return False  
+
+    def templateToText(self,startTime="00:00"):
+        step_list = self.step_list
+        text = ""
+        for i,e in enumerate(step_list):
+            text += startTime+" "+e.theme +"\n"
+            startTime = CalcTime.addTime(startTime,e.duration)
+        return text,startTime

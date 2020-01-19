@@ -1,1 +1,4 @@
-print("1E"[1].isdigit())
+class hi():
+    pass
+
+print(hallo is hi)
