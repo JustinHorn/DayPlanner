@@ -21,7 +21,6 @@ def createPlan(self,string:str):
             addToPlan(self,plan,i,string,Template)
     return plan,special_element
 
-
 def addToPlan(self,plan,index,string,classType):
     element = []
     if not len(string) == index+1:
@@ -29,7 +28,7 @@ def addToPlan(self,plan,index,string,classType):
         if n_char.isdigit():
             c = int(n_char)
             for i in range(c):
-                element.append()
+                addTypeToPlan(self,plan,classType)
         elif  n_char == 'S' and classType == Entry:
             ele = Entry("00:06","besonders")
             plan.add(ele)
@@ -39,7 +38,7 @@ def addToPlan(self,plan,index,string,classType):
     else:        
         addTypeToPlan(self,plan,classType)
 
-def getElement(self,plan,classType):
+def addTypeToPlan(self,plan,classType):
     if classType is Template:
         plan.add(self.template)
     else:
