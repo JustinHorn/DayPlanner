@@ -1,4 +1,2 @@
-class hi():
-    pass
-
-print(hallo is hi)
+import kivy.deps as d
+print(dir(d))

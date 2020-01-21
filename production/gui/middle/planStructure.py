@@ -11,10 +11,11 @@ from kivy.uix.popup import Popup
 
 import sys
 sys.path.append(".\\production\\logic")
+
 from plan import Plan
 from template import Template
 from entry import Entry
-from pop.popmenu import PopMenu
+from .pop.popmenu import PopMenu
 
 class PlanStructureWidget(FloatLayout):
     plan_t = ObjectProperty()

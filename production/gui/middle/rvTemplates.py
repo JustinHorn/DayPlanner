@@ -10,8 +10,8 @@ from kivy.properties import ObjectProperty
 
 
 import sys
-sys.path.append(".\\production")
-from logic.template import Template
+sys.path.append(".\\production\\logic")
+from template import Template
 
 
 class RV_Templates(RecycleView):

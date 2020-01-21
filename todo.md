@@ -1,10 +1,16 @@
 # What should be done next
+#exe - only one file plz
+#get programm working everywhere on this pc
+#look at the error and proced
+
 #make centralize rules fdor reading files
 #make it easier for the programm to read the lines
 #template splitting on update
 #activate programm via console
 #refactor Testhelper createPlan
 #make on big Testsuite
+#make update work in gui
+#add tests to test helper
 
 # Features that could be added:
 #plan rediscovers its structure in text

@@ -15,17 +15,17 @@ from kivy.uix.floatlayout import FloatLayout
 
 import sys
 sys.path.append(".\\production\\logic")
-sys.path.append("production\\gui\\middle")#needs to be connected! to a full path!
+# sys.path.append("production\\gui\\middle")#needs to be connected! to a full path!
 
 from plan import Plan
 from template import Template
-from rvTemplates import RV_Templates
-from planStructure import PlanStructureWidget
-import load
+from middle.rvTemplates import RV_Templates
+from middle.planStructure import PlanStructureWidget
+import Load
 
-templates = load.loadTemplateDir("material\\test") #on testing
-
-# templates = loadTemplateDir("material")
+#templates = Load.loadTemplateDir("material\\test") #on testing
+templates = Load.loadTemplateDir("E:\\Python\\DayPlaner\\material")
+#templates = loadTemplateDir("material")
 
 class GUIGame(Widget):
 
@@ -56,15 +56,15 @@ class GUIGame(Widget):
 
     def savePlan(self):
         path = self.t_location.text + self.t_name.text
-        load.save(path,self.plan_structure.plan_t.text)
+        Load.save(path,self.plan_structure.plan_t.text)
 
     def saveTemplate(self):
         name=self.t_name.text
-        load.save("material\\"+name+""+"template",self.plan_structure.plan_t.text)
+        Load.save("material\\"+name+""+"template",self.plan_structure.plan_t.text)
 
     def loadPlan(self):
         path = self.t_location.text +"\\"+ self.t_name.text
-        self.plan_structure.plan_t.text = load.loadPlan(path)
+        self.plan_structure.plan_t.text = Load.loadPlan(path)
 
 
 class MainGUIApp(App):

@@ -5,3 +5,6 @@
 *.pyc
 ####
 *.cpython-37.pyc
+/dist
+/build
+*.bat
