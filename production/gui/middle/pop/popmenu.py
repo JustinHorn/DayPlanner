@@ -17,11 +17,14 @@ class PopMenu(FloatLayout):
 
     entry_list = ObjectProperty() 
     b_delete = ObjectProperty()
+    t_name = ObjectProperty()
+    b_rename = ObjectProperty()
 
-    def __init__(self,template=None,delete_press=None,get_splitFunc=None):
+    def __init__(self):
         super().__init__()
 
     def addEntries(self,template):
+        self.t_name.text = template.theme
         for e in template.step_list:
             self.appendEntry(e)
 
@@ -36,6 +39,11 @@ class PopMenu(FloatLayout):
     
     def addDeleteFunction(self, delete_press):
         self.b_delete.on_press = delete_press
+    
+    def addRename(self,rename_func):
+        def rename():
+            rename_func(self.t_name.text)
+        self.b_rename.on_press = rename
 
 class PopMenuApp(App):
     def build(self):

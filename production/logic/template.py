@@ -5,10 +5,12 @@ class Template(Entry):
     def __init__(self,theme:str):
         super().__init__("00:00",theme)
         self.step_list = []
+        self.count = 0
 
     def add(self,entry:Entry):
         self.step_list.append(entry)
         self.duration = CalcTime.addTime(self.duration,entry.duration)
+        self.count +=1
 
     def split(self,splitpoint):
         if splitpoint > len(self.step_list):

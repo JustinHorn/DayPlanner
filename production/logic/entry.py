@@ -4,6 +4,7 @@ class Entry():
         self.duration = duration
         self.theme = theme
         self.start = start
+        self.count = 1
     
     def clone(self):
         return Entry(self.duration,self.theme,self.start)
@@ -22,7 +23,7 @@ class Entry():
     
     def __eq__(self, other):
         if isinstance(other,Entry):
-            theme = other.theme == self.theme
+            theme = other.theme.strip() == self.theme.strip()
             duration = (other.duration == self.duration) or(other =="00:00" or other.duration=="00:00")
             return theme and duration
         return False

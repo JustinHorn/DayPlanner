@@ -12,6 +12,9 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
+from kivy.core.window import Window, Keyboard
+
+import datetime
 
 import sys
 sys.path.append(".\\production\\logic")
@@ -23,8 +26,8 @@ from middle.rvTemplates import RV_Templates
 from middle.planStructure import PlanStructureWidget
 import Load
 
-#templates = Load.loadTemplateDir("material\\test") #on testing
-templates = Load.loadTemplateDir("E:\\Python\\DayPlaner\\material")
+templates = Load.loadTemplateDir("material\\test") #on testing
+# templates = Load.loadTemplateDir("E:\\Python\\DayPlaner\\material")
 #templates = loadTemplateDir("material")
 
 class GUIGame(Widget):
@@ -43,10 +46,29 @@ class GUIGame(Widget):
         super().__init__()
         data = self.template_List.data
         for index,temp in enumerate(templates):
-            data.append({'text': str(index) + " " +temp.info(),
+            data.append({'text': temp.toString(),
             "on_press": self.getAddTemp(temp)})
-        self.t_name.text=""
+        self.t_name.text= (datetime.datetime.today()+datetime.timedelta(days=1)).strftime("%d.%m.%Y.txt")
         self.t_location.text=""
+
+        self.loadPlan()
+        
+
+        keyboard = Window.request_keyboard(self._keyboard_released,self)
+        keyboard.bind(on_key_down = self.on_key_down)
+
+    def _keyboard_released(self):
+        self.focus = False
+
+    def on_key_down(self,window,keycode,text,modifiers):
+        # print(keycode)
+        # print(modifiers)
+        if "ctrl" in modifiers and keycode[1]=='u':
+            self.plan_structure.plan_update() 
+        elif "ctrl" in modifiers and keycode[1]=='s':
+            self.savePlan()
+        elif "ctrl" in modifiers and keycode[1]=='n':
+            self.savePlan()
 
 
     def getAddTemp(self,temp):
@@ -55,16 +77,17 @@ class GUIGame(Widget):
         return addTemp    
 
     def savePlan(self):
-        path = self.t_location.text + self.t_name.text
-        Load.save(path,self.plan_structure.plan_t.text)
+        path = "plans\\"+self.t_name.text
+        Load.save(path,self.plan_structure.plan.getFileText())
 
     def saveTemplate(self):
         name=self.t_name.text
         Load.save("material\\"+name+""+"template",self.plan_structure.plan_t.text)
 
     def loadPlan(self):
-        path = self.t_location.text +"\\"+ self.t_name.text
-        self.plan_structure.plan_t.text = Load.loadPlan(path)
+        path = "plans\\"+self.t_location.text + self.t_name.text
+        self.plan_structure.plan = Load.parsePlan(Load.loadText(path))
+        self.plan_structure.updateWidgets()
 
 
 class MainGUIApp(App):

@@ -3,7 +3,7 @@ import sys
 sys.path.append('.\\production\\logic')
 import CalcTime 
 
-class Test_Time(unittest.TestCase):
+class Test_CalcTime(unittest.TestCase):
 
     def test_timeEquals(self):
         self.assertEqual("07:00","07:00")

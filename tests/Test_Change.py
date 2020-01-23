@@ -8,13 +8,13 @@ from template import Template
 import TestHelper
 import Change
 
-class Test_Plan(unittest.TestCase):
+class Test_Change(unittest.TestCase):
 
     test_source = "material\\test\\test_template_1.txt"
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.template = Load.loadTemplate(Test_Plan.test_source)
+        self.template = Load.loadTemplate(Test_Change.test_source)
 
     def test_entriesToTemplate(self):
         #test only entries

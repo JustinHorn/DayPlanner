@@ -4,9 +4,12 @@ from entry import Entry
 import CalcTime
 
 
-def parseTextToEntries(text):
+def parseTextToEntries(text:str):
     entries = text.split("\n")
-    entries = [Entry("00:00",e[6:],start=e[:5]) for e in entries if len(e) > 6] # hardcoded formatting
+    return parseLinesToEntries(entries)
+
+def parseLinesToEntries(lines:list):
+    entries = [Entry("00:00",e[6:],start=e[:5]) for e in lines if len(e) > 6] # hardcoded formatting
     
     for i,e in enumerate(entries):
         if not i +1 == len(entries):

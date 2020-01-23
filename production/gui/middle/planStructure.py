@@ -38,6 +38,12 @@ class PlanStructureWidget(FloatLayout):
     def _addToEntryList(self,eOT):
         self._appendEOT(eOT)
 
+    def get_renameTemplate(self,temp_index):
+        def renameTemplate(new_name):
+            self.plan.step_list[temp_index].theme = new_name
+            self.updateEntryListLabels(0)
+        return renameTemplate
+
     def _getShow_popMenu(self,index):
         def showPopMenu():
             temp= self.plan.step_list[index]
@@ -47,6 +53,7 @@ class PlanStructureWidget(FloatLayout):
             pM.addEntries(temp)
             pM.addDeleteFunction(self._getRemoveEntry(index,dismiss_func=pW.dismiss))
             pM.addSplitFunction(self._get_get_splitFunc(index,dismiss_func=pW.dismiss))
+            pM.addRename(self.get_renameTemplate(index))
 
             pW.open()
         return showPopMenu
@@ -93,6 +100,10 @@ class PlanStructureWidget(FloatLayout):
 
     def plan_update(self):
         self.plan.update(self.plan_t.text)
+        self.updateEntryListLabels(0)
+
+    def updateWidgets(self):
+        self.plan_t.text = self.plan.getText()
         self.updateEntryListLabels(0)
 
 

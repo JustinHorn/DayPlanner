@@ -2,9 +2,28 @@
 #:include middle\rvt.kv
 
 
+<TextInput>:
+    background_color:0,0,0,1
+    foreground_color :0.8,0.8,0.8,1
+    canvas.after:
+        Color:
+            rgba: .1, .1, .1, 1
+        Line:
+            width: 1
+            rectangle: self.x, self.y, self.width, self.height
+       
+    
 
+<Button>:
+    background_color:.2,.2,.2,1
+    foreground_color :0.8,0.8,0.8,1
+    text_size: self.size
+    halign: 'center'
+    valign: 'center'
 
 <GUIGame>:
+
+    font_name:"Roboto"
 
     b_savePlan:b_savePlan
     b_saveTemplate:b_saveTemplate
@@ -91,4 +110,6 @@
             pos_hint:{"x":0.2,"top":0.05,"right":0.8}
             size_hint: 0.6,0.05
             on_press: plan_structure.plan_update()
+            halign: 'center'
+            valign: 'center'
 

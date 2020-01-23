@@ -64,12 +64,23 @@ class Plan(Template):
         for tOE in self.step_list:
             if isinstance(tOE,Template):
                 for e in tOE.step_list:
-                    string = string + e.start +" "+e.theme+" \n"
+                    string = string + e.start +" "+e.theme+"\n"
             else:
                 e = tOE
-                string = string + e.start +" "+e.theme+" \n"
+                string = string + e.start +" "+e.theme+"\n"
         return string
-                
+
+    def getStructureInText(self):
+        structure:str =""
+        for e in self.step_list:
+            structure=structure+ e.getText() + " "+str(e.count)+"\n"
+        return structure
+
+    def getFileText(self):
+        name_and_elements = self.theme+"\n"+"Structure:\n"+self.getStructureInText()
+        content = "Content:\n"+self.getText()
+        return name_and_elements + content
+
     def splitTemplate(self,template_index,split_point):
         t = self.step_list.pop(template_index)
         t1,t2 = t.split(split_point)

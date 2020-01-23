@@ -2,11 +2,25 @@
 <PopMenu>:
     entry_list:entry_list
     b_delete:b_delete
+    t_name:t_name
+    b_rename:b_rename
+
+    TextInput:
+        id:t_name
+        size_hint: 0.5,0.1
+        pos_hint:{"x":0,"top":1}
+
+    Button:
+        id:b_rename
+        size_hint: 0.5,0.1
+        pos_hint:{"x":0.5,"top":1}
+        text: "Rename"
+
 
     RecycleView:
         id:entry_list
-        size_hint: 1,0.8
-        pos_hint:{"x":0,"top":1}
+        size_hint: 1,0.7
+        pos_hint:{"x":0,"top":0.9}
         viewclass: 'Button'
         RecycleBoxLayout:
             default_size: None, dp(56)

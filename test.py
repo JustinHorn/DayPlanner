@@ -1,2 +1,2 @@
-import kivy.deps as d
-print(dir(d))
+t = "Hallo wie geht es dir?"
+print(t[-4:20])
