@@ -1,23 +1,51 @@
 #:include E:\Python\DayPlaner\production\gui\middle\pop\popmenu.kv
 
+
+
 <PlanStructureWidget>:
 
     plan_t:plan_t
     entry_list:entry_list
+    t_plan_name:t_plan_name
 
-    orientation:"horizontal"
     size_hint: 1,1
-    pos_hint:{"x":0,"top":0.95}
+    pos_hint:{"x":0,"top":1}
+    
+       
+
+    FloatLayout:
+        pos_hint:{"x":0,"top":1}
+        size_hint: 1,0.04
+
+        TextInput:
+            id:t_plan_name
+            text:"Plan"
+            pos_hint:{"x":0,"top":1}
+            text_size: self.size
+            halign: 'left'
+            valign: 'bottom'
+            multiline:False
+     
+        Button:
+            text:"P/T"
+            pos_hint:{"x":0.7,"top":1}
+            size_hint_x:0.1
+        Label:
+            text:"Structure:"
+            pos_hint:{"x":0.8,"top":1}
+            text_size: self.size
+            halign: 'left'
+            valign: 'bottom'  
 
     TextInput:
         id:plan_t
-        pos_hint:{"x":0,"top":1}
-        size_hint: 0.8,1
+        pos_hint:{"x":0,"top":0.96}
+        size_hint: 0.8,0.96
 
     RecycleView:
         id:entry_list
-        size_hint: 0.2,1
-        pos_hint:{"x":0.8,"top":1}
+        size_hint: 0.2,0.96
+        pos_hint:{"x":0.8,"top":0.96}
         viewclass: 'Button'
         RecycleBoxLayout:
             default_size: None, dp(56)

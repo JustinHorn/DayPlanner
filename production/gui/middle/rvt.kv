@@ -1,9 +1,24 @@
 <RV_Templates>:
-    viewclass: 'Button'
-    RecycleBoxLayout:
-        default_size: None, dp(40)
-        default_size_hint: 1, None
-        size_hint_y: None
-        height: self.minimum_height
-        orientation: 'vertical'
-        background_color: [1.0,0,0,1]
+    rv_list:rv_list
+
+    Label:
+        size_hint: 1,0.04
+        text:"Templates:"
+        pos_hint:{'x':0.01,"top":1}
+        #size:self.texture_size
+        text_size: self.size
+        halign: 'left'
+        valign: 'bottom'
+
+    RecycleView:
+        id:rv_list
+        size_hint: 1,0.96
+        pos_hint:{'x':0,"top":0.96}
+        viewclass: 'Button'
+        RecycleBoxLayout:
+            default_size: None, dp(40)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+            background_color: [1.0,0,0,1]

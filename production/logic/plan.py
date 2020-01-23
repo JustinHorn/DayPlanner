@@ -97,6 +97,10 @@ class Plan(Template):
         self.step_list = Change.changeByEntries(self.step_list,entries)
         self.step_list.sort(key=Change.sortByStart)
         self.step_list = Change.formatList(self.step_list)
-        self.end = self.step_list[0].start
-        self.updateStarts()
+        if not len(self.step_list) == 0:
+            self.end = self.start
+            self.updateStarts()
+        else:
+            self.start = Plan.STANDARD_START
+            self.end = self.start
     

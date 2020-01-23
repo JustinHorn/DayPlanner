@@ -14,15 +14,24 @@ sys.path.append(".\\production\\logic")
 from template import Template
 
 
-class RV_Templates(RecycleView):
+class RV_Templates(FloatLayout):
+    
+    rv_list = ObjectProperty()
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.templates = []
 
-    def addTemplate(self,template:Template):
+    def addTemplate(self,template):
+        self.data = self.rv_list.data
         index = str(len(self.data))
-        self.data.append({"text":index+" "+ template.theme+" "+template.duration})
+        self.data.append({"text": template.getText()})
         self.templates.append(template)
 
 class RVTApp(App):
-    pass
+    
+    def build(self):
+        return RV_Templates()
+
+if __name__ =="__main__":
+    RVTApp().run()

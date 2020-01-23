@@ -44,16 +44,16 @@ class GUIGame(Widget):
 
     def __init__(self):
         super().__init__()
-        data = self.template_List.data
+        data = self.template_List.rv_list.data
         for index,temp in enumerate(templates):
             data.append({'text': temp.toString(),
             "on_press": self.getAddTemp(temp)})
-        self.t_name.text= (datetime.datetime.today()+datetime.timedelta(days=1)).strftime("%d.%m.%Y.txt")
+        self.time = (datetime.datetime.today()+datetime.timedelta(days=1)).strftime("%d.%m.%Y")
+        self.t_name.text= self.time
         self.t_location.text=""
 
         self.loadPlan()
-        
-
+    
         keyboard = Window.request_keyboard(self._keyboard_released,self)
         keyboard.bind(on_key_down = self.on_key_down)
 
@@ -61,14 +61,35 @@ class GUIGame(Widget):
         self.focus = False
 
     def on_key_down(self,window,keycode,text,modifiers):
-        # print(keycode)
-        # print(modifiers)
-        if "ctrl" in modifiers and keycode[1]=='u':
-            self.plan_structure.plan_update() 
-        elif "ctrl" in modifiers and keycode[1]=='s':
-            self.savePlan()
-        elif "ctrl" in modifiers and keycode[1]=='n':
-            self.savePlan()
+        #print(keycode)
+        if "ctrl" in modifiers:
+            char = keycode[1]
+            if  not char == None:
+                switcher = {
+                '#':self.plan_structure.updateWidgets,
+                'spacebar':self.plan_structure.plan_update,
+                's':self.savePlan,
+                'l':self.loadPlan,
+                'n':self.incrementDay,
+                'p':self.decrementDay,
+                't':self.setInputToTime
+                }
+                func = switcher.get(char) 
+                if not func == None:
+                    func()
+
+    def incrementDay(self):
+        (days,months,years) = self.time.split(".")
+        new_time = datetime.date(int(years),int(months),int(days))+ datetime.timedelta(days=1)
+        self.time = new_time.strftime("%d.%m.%Y")
+
+    def decrementDay(self):
+        (days,months,years) = self.time.split(".")
+        new_time = datetime.date(int(years),int(months),int(days))- datetime.timedelta(days=1)
+        self.time = new_time.strftime("%d.%m.%Y")
+
+    def setInputToTime(self):
+        self.t_name.text=self.time
 
 
     def getAddTemp(self,temp):
@@ -82,12 +103,13 @@ class GUIGame(Widget):
 
     def saveTemplate(self):
         name=self.t_name.text
-        Load.save("material\\"+name+""+"template",self.plan_structure.plan_t.text)
+        content= self.plan.theme+"\n"+self.plan_structure.plan_t.text
+        Load.save("material\\"+name+""+"template",content)
 
     def loadPlan(self):
         path = "plans\\"+self.t_location.text + self.t_name.text
-        self.plan_structure.plan = Load.parsePlan(Load.loadText(path))
-        self.plan_structure.updateWidgets()
+        plan = Load.parsePlan(Load.loadText(path))
+        self.plan_structure.setPlan(plan)
 
 
 class MainGUIApp(App):

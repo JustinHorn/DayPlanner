@@ -3,19 +3,21 @@ make a closed day planer, that is hardcoded to operate in given directories
 that way I might actually use it
 
 # What should be done next
+add swap mode button//hotkey (mode swap: plan->template->plan)
+
+
 give templates of structure their own widget with delete, rename and split option
 
-
+add "00:00" to textinput on enter
 make show next update structure hotkey
 add hot_keys to switch between plans 
-add additionale Headlines for plan. Planstructure and co.
 activate programm via console
 make template split on update
 add weekly plan function with only the template names [maybe even color]
 add context dependend save function
-add swap mode button (mode swap: plan->template->plan)
 
 # Features that could be added:
+make .kv more dynamic
 make centralize rules for reading files
 plan rediscovers its structure in text
 save plan structure into plan.txt in order to reload it
@@ -63,3 +65,4 @@ be able to rename templates in structure
 add str+s to save
 load plan for the next day instantly when already made
 save and load structure from file
+add additionale Headlines for plan. Planstructure and co.

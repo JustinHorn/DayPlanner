@@ -21,6 +21,7 @@
     halign: 'center'
     valign: 'center'
 
+
 <GUIGame>:
 
     font_name:"Roboto"
@@ -36,7 +37,6 @@
     t_location:t_location
 
     FloatLayout:
-        orientation:"vertical"
         size: root.width, root.height
 
         BoxLayout:
@@ -46,54 +46,45 @@
             pos_hint:{"x":0.01,"top":0.99}
 
             Button:
-                size_hint: None,1
                 id:b_savePlan
                 text:"save as Plan"
                 margin_x:[10,10]
                 on_press:root.savePlan()
 
             Button:
-                size_hint: None,1
                 id:b_saveTemplate
                 text:"save as Template"
                 margin_x:[10,10]
                 on_press:root.saveTemplate()
 
             Button:
-                size_hint: None,1
                 id:b_loadPlan
                 text:"load Plan"
                 margin_x:[10,10]
                 on_press:root.loadPlan()
 
-            Label
-                size_hint: None,1
+            Label:
                 text:"Location:"
                 margin_x:[10,10]
 
             TextInput:
-                size_hint: 1,1
                 id:t_location
                 text:"E:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\1031"
                 multiline:False
 
-            Label
-                size_hint: None,1
+            Label:
                 text:"Filename:"
                 margin_x:[10,10]
 
             TextInput:
                 id:t_name
                 text:"Leaving application in progress" 
-                size_hint: 1,1
                 multiline:False
 
 
-
         FloatLayout:
-            orientation:"horizontal"
-            size_hint: 1,0.8
-            pos_hint:{"x":0,"top":0.90,"y":0.1}
+            size_hint: 1,0.85
+            pos_hint:{"x":0,"top":0.95,"y":0.06}
 
             RV_Templates:
                 id:template_List
@@ -108,7 +99,7 @@
         Button:
             text:"update"
             pos_hint:{"x":0.2,"top":0.05,"right":0.8}
-            size_hint: 0.6,0.05
+            size_hint: 0.6,0.04
             on_press: plan_structure.plan_update()
             halign: 'center'
             valign: 'center'

@@ -15,15 +15,25 @@ sys.path.append(".\\production\\logic")
 from plan import Plan
 from template import Template
 from entry import Entry
-from .pop.popmenu import PopMenu
+try:
+    from .pop.popmenu import PopMenu
+except:
+    from pop.popmenu import PopMenu
 
 class PlanStructureWidget(FloatLayout):
     plan_t = ObjectProperty()
     entry_list = ObjectProperty()
+    t_plan_name = ObjectProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.plan = Plan("Heute")
+    
+
+    def setPlan(self,plan):
+        self.plan = plan
+        self.t_plan_name.text = plan.theme
+        self.updateWidgets()
 
     def add(self,eOT:Entry):
         eOT = self._addToPlan(eOT)
@@ -100,10 +110,12 @@ class PlanStructureWidget(FloatLayout):
 
     def plan_update(self):
         self.plan.update(self.plan_t.text)
+        self.plan.theme=self.t_plan_name.text
         self.updateEntryListLabels(0)
 
     def updateWidgets(self):
         self.plan_t.text = self.plan.getText()
+        self.t_plan_name.text = self.plan.theme
         self.updateEntryListLabels(0)
 
 
