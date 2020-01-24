@@ -2,14 +2,15 @@
 from template import Template
 from entry import Entry
 import CalcTime
-
+import re
 
 def parseTextToEntries(text:str):
     entries = text.split("\n")
     return parseLinesToEntries(entries)
 
 def parseLinesToEntries(lines:list):
-    entries = [Entry("00:00",e[6:],start=e[:5]) for e in lines if len(e) > 6] # hardcoded formatting
+    lines = [e for e in lines if len(e) > 6 and not re.match("^\d\d:\d\d",e) == None]
+    entries = [Entry("00:00",e[6:],start=e[:5]) for e in lines] # hardcoded formatting
     
     for i,e in enumerate(entries):
         if not i +1 == len(entries):
@@ -21,20 +22,26 @@ def changeByEntries(plan_list,entry_list):
     for e in plan_list:
         index = doesEntryListContain(e,entry_list)
         if not index ==None:
-            e.start = entry_list[index].start
-            new_plan_list.append(e)
-            entry_list = deleteListPart(index,entry_list,e)
+            entry_list,new_element = deleteListPart(index,entry_list,e)
+            new_plan_list.append(new_element)
+
     new_plan_list = new_plan_list + entry_list
     return new_plan_list
 
 
 def deleteListPart(index,p_list,element):
+    start = p_list[index].start
     if isinstance(element,Template):
         l = len(element.step_list)
+        new_element = Template(element.theme)
+        for e in p_list[index:index+l]:
+            new_element.add(e)
+        p_list[index+l-1].duration = element.step_list[-1].duration
         p_list = p_list[:index] + p_list[index+l:]
     else:
-        p_list.pop(index)
-    return p_list
+        new_element = p_list.pop(index)
+    new_element.start = start
+    return p_list,new_element
 
 def doesEntryListContain(eOT:Entry,entry_list):
     if isinstance(eOT,Template):

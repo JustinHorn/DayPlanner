@@ -26,7 +26,7 @@ from middle.rvTemplates import RV_Templates
 from middle.planStructure import PlanStructureWidget
 import Load
 
-templates = Load.loadTemplateDir("material\\test") #on testing
+templates = Load.loadTemplateDir("material\\") #on testing
 # templates = Load.loadTemplateDir("E:\\Python\\DayPlaner\\material")
 #templates = loadTemplateDir("material")
 
@@ -91,7 +91,6 @@ class GUIGame(Widget):
     def setInputToTime(self):
         self.t_name.text=self.time
 
-
     def getAddTemp(self,temp):
         def addTemp():
             temp_2 = self.plan_structure.add(temp)
@@ -103,7 +102,7 @@ class GUIGame(Widget):
 
     def saveTemplate(self):
         name=self.t_name.text
-        content= self.plan.theme+"\n"+self.plan_structure.plan_t.text
+        content= self.plan_structure.plan.theme+"\n"+self.plan_structure.plan_t.text
         Load.save("material\\"+name+""+"template",content)
 
     def loadPlan(self):

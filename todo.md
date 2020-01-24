@@ -3,8 +3,16 @@ make a closed day planer, that is hardcoded to operate in given directories
 that way I might actually use it
 
 # What should be done next
-add swap mode button//hotkey (mode swap: plan->template->plan)
+refactor, add tests!
+entry template
+plan
+change
+add swap mode button//hotkey (mode swap: plan->template->plan) 
+programm is not allowed to crash
 
+do tests 11:00
+
+make templates out of plans?
 
 give templates of structure their own widget with delete, rename and split option
 
@@ -66,3 +74,5 @@ add str+s to save
 load plan for the next day instantly when already made
 save and load structure from file
 add additionale Headlines for plan. Planstructure and co.
+text in TextInput and plan should alwas be sync! check
+there must be some form of auto update check

@@ -1,3 +1,5 @@
+import re
+
 class Entry():
 
     def __init__(self,duration:str,theme:str,start=None):
@@ -23,7 +25,7 @@ class Entry():
     
     def __eq__(self, other):
         if isinstance(other,Entry):
-            theme = other.theme.strip() == self.theme.strip()
+            theme = re.split("#",other.theme.replace(" ",""))[0] == re.split("#",self.theme.replace(" ",""))[0]
             duration = (other.duration == self.duration) or(other =="00:00" or other.duration=="00:00")
             return theme and duration
         return False

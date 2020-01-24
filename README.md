@@ -1,4 +1,4 @@
-DayPlaner
+# DayPlaner
 
 A project of mine that is supposed to help you plan your day.
 It allows daily-routines to be saved in a certain format as *template* files and loaded back into the plan

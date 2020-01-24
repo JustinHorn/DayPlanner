@@ -9,3 +9,5 @@
 /build
 *.bat
 /plans
+/material
+!/material/test

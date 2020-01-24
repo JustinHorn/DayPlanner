@@ -1,2 +1,2 @@
-t = "Hallo wie geht es dir?"
-print(t[-4:20])
+import re
+print(re.split(r"#","hihowareyossds    #".replace(" ","")))

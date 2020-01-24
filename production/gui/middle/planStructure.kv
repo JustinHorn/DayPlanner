@@ -25,6 +25,7 @@
             halign: 'left'
             valign: 'bottom'
             multiline:False
+            on_text: root.plan.theme = self.text
      
         Button:
             text:"P/T"
@@ -41,6 +42,7 @@
         id:plan_t
         pos_hint:{"x":0,"top":0.96}
         size_hint: 0.8,0.96
+        on_text: root.plan_update()
 
     RecycleView:
         id:entry_list

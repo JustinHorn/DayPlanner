@@ -28,6 +28,7 @@ class PlanStructureWidget(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.plan = Plan("Heute")
+        #self.t_plan_name.bind(text = (lambda text: self.plan.theme=text))
     
 
     def setPlan(self,plan):
@@ -37,16 +38,25 @@ class PlanStructureWidget(FloatLayout):
 
     def add(self,eOT:Entry):
         eOT = self._addToPlan(eOT)
-        self._addToEntryList(eOT)
+        index = len(self.plan.step_list)
+        self.updateEntryListLabels(index)
         return eOT
+
+    def updateEntryListLabels(self,index):
+        self.entry_list.data = self.entry_list.data[:index]
+        for e in self.plan.step_list[index:]:
+            self._appendEOT(e)
 
     def _addToPlan(self,eOT):
         eOT = self.plan.add(eOT)
         self.plan_t.text = self.plan.getText()
         return eOT
-
-    def _addToEntryList(self,eOT):
-        self._appendEOT(eOT)
+      
+    def _appendEOT(self,eOT:Entry):
+        index = len(self.entry_list.data)
+        func = self._getShow_popMenu if isinstance(eOT,Template) else self._getRemoveEntry
+        dic = {'text': eOT.toString(),"on_press": func(index)}
+        self.entry_list.data.append(dic)
 
     def get_renameTemplate(self,temp_index):
         def renameTemplate(new_name):
@@ -75,17 +85,6 @@ class PlanStructureWidget(FloatLayout):
                 dismiss_func()
         return removeEntry
 
-    def updateEntryListLabels(self,index):
-        self.entry_list.data = self.entry_list.data[:index]
-        for i,e in enumerate(self.plan.step_list[index:],index):
-            self._appendEOT(e)
-   
-    def _appendEOT(self,eOT:Entry):
-        index = len(self.entry_list.data)
-        func = self._getShow_popMenu if isinstance(eOT,Template) else self._getRemoveEntry
-        dic = {'text': eOT.toString(),"on_press": func(index)}
-        self.entry_list.data.append(dic)
-    
     def _get_get_splitFunc(self,template_index,dismiss_func=None):
         def get_splitFunc(entry_index):
             def splitFunc():
@@ -110,7 +109,6 @@ class PlanStructureWidget(FloatLayout):
 
     def plan_update(self):
         self.plan.update(self.plan_t.text)
-        self.plan.theme=self.t_plan_name.text
         self.updateEntryListLabels(0)
 
     def updateWidgets(self):
