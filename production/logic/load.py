@@ -17,12 +17,9 @@ def loadData(path:str):
 
 def stringToTemplate(data:str):
     try:
-        data = data.split("\n")
-        theme = data[0]
+        theme = data.split("\n")[0]
         t = Template(theme)
-        for e in data[1:]:
-            [duration,theme] = [e[:5],e[6:]]
-            t.add(Entry(duration,theme))
+        t.update(data[1:])
         return t
     except RuntimeError as err:
         print('parseData error',err)

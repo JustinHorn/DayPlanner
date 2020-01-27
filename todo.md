@@ -3,10 +3,8 @@ make a closed day planer, that is hardcoded to operate in given directories
 that way I might actually use it
 
 # What should be done next
-fully implement save as template
-template t_name = template.theme + "template"
-plan t_name = date of plan = plan.theme 
-
+maybe refactor load & change cause very simualar
+load template sgain after change!
 need to give templates Versions - only show the newest version
 it is not a new Version when its renamed then it is a different type
 
@@ -81,3 +79,6 @@ add additionale Headlines for plan. Planstructure and co.
 text in TextInput and plan should alwas be sync! check
 there must be some form of auto update check
 add swap mode option( swap: plan->template->plan) 
+fully implement save as template
+template t_name = template.theme + "template"
+plan t_name = date of plan = plan.theme 

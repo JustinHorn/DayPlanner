@@ -1,4 +1,4 @@
-#:include middle\planer.kv 
+#:include middle\planner.kv 
 #:include middle\rvt.kv
 
 
@@ -22,15 +22,15 @@
     valign: 'center'
 
 
-<DayPlanerGUI>:
+<DayPlannerGUI>:
 
     font_name:"Roboto"
 
     b_save:b_save
     b_load:b_load
     
-    template_List:template_List
-    planer:planer
+    template_list:template_list
+    planner:planner
 
     t_name:t_name
     t_location:t_location
@@ -46,13 +46,13 @@
 
             Button:
                 id:b_save
-                text:"save"
+                text:"save plan"
                 margin_x:[10,10]
                 on_press:root.savePlan()
 
             Button:
                 id:b_load
-                text:"load"
+                text:"load plan"
                 margin_x:[10,10]
                 on_press:root.loadPlan()
 
@@ -80,13 +80,12 @@
             pos_hint:{"x":0,"top":0.95,"y":0.06}
 
             RV_Templates:
-                id:template_List
+                id:template_list
                 pos_hint:{"x":0,"top":1}
                 size_hint: 0.2,1
 
-            Planer:
-                id:planer
-        
+            Planner:
+                id:planner
                 pos_hint:{"x":0.2,"top":1}
                 size_hint: 0.8,1
       

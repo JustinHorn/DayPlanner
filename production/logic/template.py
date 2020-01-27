@@ -56,10 +56,19 @@ class Template(Entry):
             return True
         return False  
 
-    def update(self,text):
-        lines = text.split("\n")
+    def update(self,text,splitted=False):
+        self.duration = "00:00"
+        self.step_list = []
+        self.count = 0
+        if not splitted:
+            lines = text.split("\n")
+        else:
+            lines = text
         lines = [e for e in lines if len(e) > 6 and not re.match("^\d\d:\d\d",e) == None]
-        self.step_list = [Entry(e[:5],e[6:]) for e in lines]
+        entries = [Entry(e[:5],e[6:]) for e in lines]
+        for e in entries:
+            self.add(e)
+    
 
     def templateToText(self,startTime="00:00"):
         step_list = self.step_list
@@ -77,6 +86,6 @@ class Template(Entry):
         return text
     
     def getFileText(self):
-        return = self.theme+"\n" + self.getText()
+        return self.theme+"\n" + self.getText()
 
 

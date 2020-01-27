@@ -20,7 +20,7 @@ try:
 except:
     from pop.popmenu import PopMenu
 
-class Planer(FloatLayout):
+class Planner(FloatLayout):
     textinput = ObjectProperty()
     rv_b_entries = ObjectProperty()
     t_theme = ObjectProperty()
@@ -29,44 +29,31 @@ class Planer(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.plan = Plan("Heute")
-        self.template = Template("Tempalte Theme")
+        self.template = Template("Template Theme")
         self.source = self.plan
         self.m = 0
-        try:
-            self._ini()
-        except:
-            pass
+
 
     
     def changeMode(self):
-        self.removeAction()
         if self.m == 0:
             self.m = 1
             self.source = self.template
             self.b_mode.text = "T/P"
-            
         else:
             self.m=0
             self.source = self.plan
             self.b_mode.text = "P/T"
         
-        def func():self.source.theme = self.t_theme.text
-        self.t_theme.bind(on_text = func)
-        self.textinput.bind(on_text = self.update)    
         self.updateWidgets()
 
-    def _ini(self):
-        def func():self.source.theme = self.t_theme.text
-        self.t_theme.bind(on_text = func)
-        self.textinput.bind(on_text = self.update)     
 
     def update(self):
+        self.source.theme = self.t_theme.text
         self.source.update(self.textinput.text)
         self.updateEntryListLabels(0)
 
-    def removeAction(self):
-        self.textinput.on_text = None
-        self.t_theme.on_text = None
+
 
     def setPlan(self,plan):
         self.plan = plan
@@ -77,11 +64,14 @@ class Planer(FloatLayout):
         if isinstance(self.source,Plan):
             return self._add(eOT)
         else:
-            self.source = eOT
-            self.updateWidgets()
-            self.source = self.template
+            return self.setTemplate(eOT)
 
-
+    def setTemplate(self,temp):
+        self.source = temp
+        self.updateWidgets()
+        self.source = self.template
+        self.update()
+        return temp
 
     def _add(self,eOT:Entry):
         eOT = self._addToPlan(eOT)
@@ -153,21 +143,15 @@ class Planer(FloatLayout):
         self.textinput.text = self.source.getText()
         self.updateEntryListLabels(index)
 
- 
-    
-    def template_update(self):
-        self.template_update.update(self.textinput.text)
-        self.updateEntryListLabels(0)
-
     def updateWidgets(self):
         self.t_theme.text = self.source.theme
         self.textinput.text = self.source.getText()
         self.updateEntryListLabels(0)
 
 
-class PlanerApp(App):
+class PlannerApp(App):
     def build(self):
-        p = Planer()
+        p = Planner()
         p.size = (500,500)
         t = Template("Template_Theme")
         t.add(Entry("00:05","test_entry_theme"))
@@ -177,4 +161,4 @@ class PlanerApp(App):
         return p
 
 if __name__ == "__main__":
-    PlanerApp().run()
+    PlannerApp().run()
