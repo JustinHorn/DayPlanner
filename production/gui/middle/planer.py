@@ -20,43 +20,93 @@ try:
 except:
     from pop.popmenu import PopMenu
 
-class PlanStructureWidget(FloatLayout):
-    plan_t = ObjectProperty()
-    entry_list = ObjectProperty()
-    t_plan_name = ObjectProperty()
+class Planer(FloatLayout):
+    textinput = ObjectProperty()
+    rv_b_entries = ObjectProperty()
+    t_theme = ObjectProperty()
+    b_mode = ObjectProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.plan = Plan("Heute")
-        #self.t_plan_name.bind(text = (lambda text: self.plan.theme=text))
+        self.template = Template("Tempalte Theme")
+        self.source = self.plan
+        self.m = 0
+        try:
+            self._ini()
+        except:
+            pass
+
     
+    def changeMode(self):
+        self.removeAction()
+        if self.m == 0:
+            self.m = 1
+            self.source = self.template
+            self.b_mode.text = "T/P"
+            
+        else:
+            self.m=0
+            self.source = self.plan
+            self.b_mode.text = "P/T"
+        
+        def func():self.source.theme = self.t_theme.text
+        self.t_theme.bind(on_text = func)
+        self.textinput.bind(on_text = self.update)    
+        self.updateWidgets()
+
+    def _ini(self):
+        def func():self.source.theme = self.t_theme.text
+        self.t_theme.bind(on_text = func)
+        self.textinput.bind(on_text = self.update)     
+
+    def update(self):
+        self.source.update(self.textinput.text)
+        self.updateEntryListLabels(0)
+
+    def removeAction(self):
+        self.textinput.on_text = None
+        self.t_theme.on_text = None
 
     def setPlan(self,plan):
         self.plan = plan
-        self.t_plan_name.text = plan.theme
+        self.source =plan
         self.updateWidgets()
 
-    def add(self,eOT:Entry):
+    def atOrSet(self,eOT:Entry):
+        if isinstance(self.source,Plan):
+            return self._add(eOT)
+        else:
+            self.source = eOT
+            self.updateWidgets()
+            self.source = self.template
+
+
+
+    def _add(self,eOT:Entry):
         eOT = self._addToPlan(eOT)
         index = len(self.plan.step_list)
         self.updateEntryListLabels(index)
         return eOT
 
     def updateEntryListLabels(self,index):
-        self.entry_list.data = self.entry_list.data[:index]
-        for e in self.plan.step_list[index:]:
+        self.rv_b_entries.data = self.rv_b_entries.data[:index]
+        for e in self.source.step_list[index:]:
             self._appendEOT(e)
 
     def _addToPlan(self,eOT):
         eOT = self.plan.add(eOT)
-        self.plan_t.text = self.plan.getText()
+        self.textinput.text = self.plan.getText()
         return eOT
       
     def _appendEOT(self,eOT:Entry):
-        index = len(self.entry_list.data)
+        index = len(self.rv_b_entries.data)
         func = self._getShow_popMenu if isinstance(eOT,Template) else self._getRemoveEntry
-        dic = {'text': eOT.toString(),"on_press": func(index)}
-        self.entry_list.data.append(dic)
+        if isinstance(self.source,Plan):
+            dic = {'text': eOT.getStartThemeDuration(),"on_press": func(index)}
+        else:
+            dic = {'text': eOT.getThemeDuration(),"on_press": func(index)}
+        self.rv_b_entries.data.append(dic)
 
     def get_renameTemplate(self,temp_index):
         def renameTemplate(new_name):
@@ -94,39 +144,37 @@ class PlanStructureWidget(FloatLayout):
             return splitFunc
         return get_splitFunc
             
-    def removeElement(self,index):
-        self.entry_list.data.pop(index)
-        self._removeFromPlan(index)
-        self.updateEntryListLabels(index)
-    
     def splitTemplate(self,template_index,split_index):
-        self.plan.splitTemplate(template_index,split_index)
+        self.source.splitTemplate(template_index,split_index) # must be plan
         self.updateEntryListLabels(template_index)
 
-    def _removeFromPlan(self,index):
-        self.plan.remove(index)
-        self.plan_t.text = self.plan.getText()
+    def removeElement(self,index):
+        self.source.remove(index)
+        self.textinput.text = self.source.getText()
+        self.updateEntryListLabels(index)
 
-    def plan_update(self):
-        self.plan.update(self.plan_t.text)
+ 
+    
+    def template_update(self):
+        self.template_update.update(self.textinput.text)
         self.updateEntryListLabels(0)
 
     def updateWidgets(self):
-        self.plan_t.text = self.plan.getText()
-        self.t_plan_name.text = self.plan.theme
+        self.t_theme.text = self.source.theme
+        self.textinput.text = self.source.getText()
         self.updateEntryListLabels(0)
 
 
-class PlanStructureApp(App):
+class PlanerApp(App):
     def build(self):
-        p = PlanStructureWidget()
+        p = Planer()
         p.size = (500,500)
         t = Template("Template_Theme")
         t.add(Entry("00:05","test_entry_theme"))
         t.add(Entry("00:05","test_entry_theme2")) 
 
-        p.add(t)
+        p._add(t)
         return p
 
 if __name__ == "__main__":
-    PlanStructureApp().run()
+    PlanerApp().run()

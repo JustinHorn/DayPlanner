@@ -67,12 +67,11 @@ def parsePlan(text:str):
     content_start_index = len(struc)+3
     content = text[content_start_index:]
 
-    entries = Change.parseLinesToEntries(content)
+    entries = Change.parsePlanLinesToEntries(content)
     entrie_index = 0
 
     for e in struc:
         if e[2] == 1:
-            curr_line = text[index]
             plan.add(entries[entrie_index])
             entrie_index += 1
         elif e[2] >1:

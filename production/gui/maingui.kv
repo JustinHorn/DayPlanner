@@ -1,4 +1,4 @@
-#:include middle\planStructure.kv 
+#:include middle\planer.kv 
 #:include middle\rvt.kv
 
 
@@ -22,16 +22,15 @@
     valign: 'center'
 
 
-<GUIGame>:
+<DayPlanerGUI>:
 
     font_name:"Roboto"
 
-    b_savePlan:b_savePlan
-    b_saveTemplate:b_saveTemplate
-    b_loadPlan:b_loadPlan
+    b_save:b_save
+    b_load:b_load
     
     template_List:template_List
-    plan_structure:plan_structure
+    planer:planer
 
     t_name:t_name
     t_location:t_location
@@ -46,20 +45,14 @@
             pos_hint:{"x":0.01,"top":0.99}
 
             Button:
-                id:b_savePlan
-                text:"save as Plan"
+                id:b_save
+                text:"save"
                 margin_x:[10,10]
                 on_press:root.savePlan()
 
             Button:
-                id:b_saveTemplate
-                text:"save as Template"
-                margin_x:[10,10]
-                on_press:root.saveTemplate()
-
-            Button:
-                id:b_loadPlan
-                text:"load Plan"
+                id:b_load
+                text:"load"
                 margin_x:[10,10]
                 on_press:root.loadPlan()
 
@@ -69,7 +62,7 @@
 
             TextInput:
                 id:t_location
-                text:"E:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\1031"
+                text:""
                 multiline:False
 
             Label:
@@ -91,16 +84,10 @@
                 pos_hint:{"x":0,"top":1}
                 size_hint: 0.2,1
 
-            PlanStructureWidget:
-                id:plan_structure
+            Planer:
+                id:planer
+        
                 pos_hint:{"x":0.2,"top":1}
                 size_hint: 0.8,1
-        
-        Button:
-            text:"update"
-            pos_hint:{"x":0.2,"top":0.05,"right":0.8}
-            size_hint: 0.6,0.04
-            on_press: plan_structure.plan_update()
-            halign: 'center'
-            valign: 'center'
+      
 

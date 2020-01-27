@@ -1,5 +1,7 @@
 from entry import Entry
 import CalcTime
+import re
+
 class Template(Entry):
 
     def __init__(self,theme:str):
@@ -33,6 +35,9 @@ class Template(Entry):
                 t2 = t2.step_list[0]
             
             return t1,t2
+    
+    def remove(self,index):
+        self.step_list.pop(index)
 
     def clone(self):
         clone = Template(self.theme)
@@ -51,6 +56,11 @@ class Template(Entry):
             return True
         return False  
 
+    def update(self,text):
+        lines = text.split("\n")
+        lines = [e for e in lines if len(e) > 6 and not re.match("^\d\d:\d\d",e) == None]
+        self.step_list = [Entry(e[:5],e[6:]) for e in lines]
+
     def templateToText(self,startTime="00:00"):
         step_list = self.step_list
         text = ""
@@ -58,3 +68,15 @@ class Template(Entry):
             text += startTime+" "+e.theme +"\n"
             startTime = CalcTime.addTime(startTime,e.duration)
         return text,startTime
+
+    def getText(self):
+        """ Used in planer to display duration at the start of each line"""
+        text = ""
+        for e in self.step_list:
+            text += e.duration+" "+e.theme +"\n"
+        return text
+    
+    def getFileText(self):
+        return = self.theme+"\n" + self.getText()
+
+

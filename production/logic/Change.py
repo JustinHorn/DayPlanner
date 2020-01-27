@@ -1,14 +1,17 @@
 """A module that gives static helper functions to plan and template"""
+
 from template import Template
 from entry import Entry
 import CalcTime
 import re
 
-def parseTextToEntries(text:str):
-    entries = text.split("\n")
-    return parseLinesToEntries(entries)
 
-def parseLinesToEntries(lines:list):
+def parseTextToEntries(text:str,template=False):
+    entries = text.split("\n")
+    return parsePlanLinesToEntries(entries)
+
+
+def parsePlanLinesToEntries(lines:list):
     lines = [e for e in lines if len(e) > 6 and not re.match("^\d\d:\d\d",e) == None]
     entries = [Entry("00:00",e[6:],start=e[:5]) for e in lines] # hardcoded formatting
     
@@ -16,6 +19,7 @@ def parseLinesToEntries(lines:list):
         if not i +1 == len(entries):
             e.duration = CalcTime.substractTime(entries[i+1].start,e.start)
     return entries
+
 
 def changeByEntries(plan_list,entry_list):
     new_plan_list = []

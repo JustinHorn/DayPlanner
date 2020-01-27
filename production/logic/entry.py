@@ -11,17 +11,14 @@ class Entry():
     def clone(self):
         return Entry(self.duration,self.theme,self.start)
     
-    def toString(self):
-        return str(self.getText()+" "+ self.duration)
+    def getStartTheme(self,start=False,theme=False,duration=False,content=False):
+        return str(self.start+" "+ self.theme)
 
-    def info(self):
-        return str("Theme: "+self.theme+". Duration: "+self.duration+"\n")
-
-    def getText(self):
-        if self.start == None:
-            return self.theme
-        else:
-            return str(self.start+" "+ self.theme)
+    def getThemeDuration(self,start=False,theme=False,duration=False,content=False):
+        return str(self.theme+" "+self.duration)
+    
+    def getStartThemeDuration(self,start=False,theme=False,duration=False,content=False):
+        return str(self.start+" "+self.theme+" "+self.duration)
     
     def __eq__(self, other):
         if isinstance(other,Entry):

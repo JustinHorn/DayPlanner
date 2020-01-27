@@ -3,11 +3,15 @@ make a closed day planer, that is hardcoded to operate in given directories
 that way I might actually use it
 
 # What should be done next
-refactor, add tests!
-entry template
-plan
-change
-add swap mode button//hotkey (mode swap: plan->template->plan) 
+fully implement save as template
+template t_name = template.theme + "template"
+plan t_name = date of plan = plan.theme 
+
+need to give templates Versions - only show the newest version
+it is not a new Version when its renamed then it is a different type
+
+
+ 
 programm is not allowed to crash
 
 do tests 11:00
@@ -76,3 +80,4 @@ save and load structure from file
 add additionale Headlines for plan. Planstructure and co.
 text in TextInput and plan should alwas be sync! check
 there must be some form of auto update check
+add swap mode option( swap: plan->template->plan) 

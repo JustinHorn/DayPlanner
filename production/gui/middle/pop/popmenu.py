@@ -29,7 +29,7 @@ class PopMenu(FloatLayout):
             self.appendEntry(e)
 
     def appendEntry(self, entry):
-        self.entry_list.data.append({"text":entry.toString()})
+        self.entry_list.data.append({"text":entry.getStartThemeDuration()})
    
     def addSplitFunction(self,get_splitFunc):
         l = len(self.entry_list.data)

@@ -37,8 +37,12 @@ class Plan(Template):
         return None
 
     def updateStarts(self,index=0):
-        for e in self.step_list[index:]:
-            self.setStart(e)
+        if index < len(self.step_list):
+            self.end = self.step_list[index].start
+            for e in self.step_list[index:]:
+                self.setStart(e)
+        else:
+            print("Index",index,"out of range: plan - updateStars")
 
     def setStart(self,eOT):
         if isinstance(eOT,Template):
@@ -73,7 +77,7 @@ class Plan(Template):
     def getStructureInText(self):
         structure:str =""
         for e in self.step_list:
-            structure=structure+ e.getText() + " "+str(e.count)+"\n"
+            structure=structure+ e.getStartTheme() + " "+str(e.count)+"\n"
         return structure
 
     def getFileText(self):
@@ -98,9 +102,7 @@ class Plan(Template):
         self.step_list.sort(key=Change.sortByStart)
         self.step_list = Change.formatList(self.step_list)
         if not len(self.step_list) == 0:
-            self.end = self.start
             self.updateStarts()
         else:
             self.start = Plan.STANDARD_START
             self.end = self.start
-    

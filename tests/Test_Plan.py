@@ -85,11 +85,11 @@ class Test_Plan(unittest.TestCase):
 
         text = "07:00 Hallo ich bin Ricke\n"
         t,end = self.template.templateToText(startTime="07:02")
-        text = text + t
-        text = text + end +" Ich bin heute 15km gelaufen ... ich mache Kickboxen ... Pooldance\n"
+        text +=  t
+        text +=  end +" Ich bin heute 15km gelaufen ... ich mache Kickboxen ... Pooldance\n"
         t,end = self.template.templateToText(startTime=CalcTime.addTime(end,"05:00"))
-        text = text + t 
-        text = text + end +" Nun sind wir zu dritt. Machen wir das Beste draus.\n"
+        text +=  t 
+        text +=  end +" Nun sind wir zu dritt. Machen wir das Beste draus.\n"
 
         p,e = TestHelper.createPlan(self,"TT")
         p.update(text)
