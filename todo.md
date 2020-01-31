@@ -7,6 +7,7 @@ maybe refactor load & change cause very simualar
 load template sgain after change!
 need to give templates Versions - only show the newest version
 it is not a new Version when its renamed then it is a different type
+mehrere Entries zusammen unter einer Stunde --> Template
 
 
  
@@ -27,6 +28,12 @@ add weekly plan function with only the template names [maybe even color]
 add context dependend save function
 
 # Features that could be added:
+temporary templates for recursive activities
+add time directly on enter
+be able to create templates directly from plan
+color code text in textinput(übersicht)
+
+
 make .kv more dynamic
 make centralize rules for reading files
 plan rediscovers its structure in text
