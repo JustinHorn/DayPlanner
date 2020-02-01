@@ -17,7 +17,6 @@
 <Button>:
     background_color:.2,.2,.2,1
     foreground_color :0.8,0.8,0.8,1
-    text_size: self.size
     halign: 'center'
     valign: 'center'
 
@@ -42,23 +41,20 @@
             orientation:"horizontal"
             cols:3
             size_hint: 1,0.05
-            pos_hint:{"x":0.01,"top":0.99}
+            pos_hint:{"x":0,"top":0.99}
 
             Button:
                 id:b_save
                 text:"save plan"
-                margin_x:[10,10]
                 on_press:root.savePlan()
 
             Button:
                 id:b_load
                 text:"load plan"
-                margin_x:[10,10]
                 on_press:root.loadPlan()
 
             Label:
                 text:"Location:"
-                margin_x:[10,10]
 
             TextInput:
                 id:t_location
@@ -67,7 +63,6 @@
 
             Label:
                 text:"Filename:"
-                margin_x:[10,10]
 
             TextInput:
                 id:t_name
@@ -76,8 +71,8 @@
 
 
         FloatLayout:
-            size_hint: 1,0.85
-            pos_hint:{"x":0,"top":0.95,"y":0.06}
+            size_hint: 1,0.9
+            pos_hint:{"x":0,"top":0.925}
 
             RV_Templates:
                 id:template_list

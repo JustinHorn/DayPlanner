@@ -28,7 +28,7 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           console=True )
-coll = COLLECT(exe, Tree('production\\gui\\middle\\pop\\'),Tree('production\\gui\\'),
+coll = COLLECT(exe,Tree('production\\logic\\'), Tree('production\\gui\\middle\\pop\\'),Tree('production\\gui\\'),
                a.binaries,
                a.zipfiles,
                a.datas,

@@ -25,8 +25,16 @@ from template import Template
 from middle.rvTemplates import RV_Templates
 from middle.planner import Planner
 import Load
+import os
 
-templates = Load.loadTemplateDir("material\\") #on testing
+try:
+    templates = Load.loadTemplateDir("material\\") #on testing
+except:
+    templates = []
+    try:
+        os.mkdr("material\\")
+    except:
+        print("error cant mkdr")
 # templates = Load.loadTemplateDir("E:\\Python\\DayPlaner\\material")
 #templates = loadTemplateDir("material")
 
