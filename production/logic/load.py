@@ -8,7 +8,7 @@ import Change
 
 def loadData(path:str):
     try:
-        with open(path) as l:
+        with open(join(path)) as l:
             data = l.read()
         return data
     except RuntimeError as err:
@@ -41,7 +41,7 @@ def loadTemplateDir(directory:str):
 
 def save(path,text):
     try:
-        with open(path,"w") as out:
+        with open(join(path),"w") as out:
             out.write(text)
     except IOError as io:
         print('An error occured in save:',io)
@@ -49,12 +49,13 @@ def save(path,text):
 
 def loadText(path):
     try:
+        path = join(path)
         with open(path,"r") as read:
-            plan= read.read()
-        return plan
+            text= read.read()
+        return text
     except IOError as io:
         print('An error occured in loadText',io)
-        return "error in load plan with:"+path
+        return "error in load text with:"+path
 
 def parsePlan(text:str):
     text = text.split("\n")

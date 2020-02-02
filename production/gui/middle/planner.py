@@ -10,7 +10,8 @@ from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 
 import sys
-sys.path.append(".\\production\\logic")
+import os
+sys.path.append(os.path.join("./production/logic"))
 
 from plan import Plan
 from template import Template
@@ -106,7 +107,7 @@ class Planner(FloatLayout):
 
     def _getShow_popMenu(self,index):
         def showPopMenu():
-            temp= self.plan.step_list[index]
+            temp= self.source.step_list[index]
             pM = PopMenu()
             pW = Popup(title=temp.theme,content=pM,size_hint=(0.8,0.8))
             

@@ -17,26 +17,23 @@ from kivy.core.window import Window, Keyboard
 import datetime
 
 import sys
-sys.path.append(".\\production\\logic")
-# sys.path.append("production\\gui\\middle")#needs to be connected! to a full path!
+import os
+sys.path.append(os.path.join("./production/logic"))
 
 from plan import Plan
 from template import Template
 from middle.rvTemplates import RV_Templates
 from middle.planner import Planner
 import Load
-import os
 
 try:
-    templates = Load.loadTemplateDir("material\\") #on testing
+    templates = Load.loadTemplateDir(os.path.join("material/")) #on testing
 except:
     templates = []
     try:
-        os.mkdr("material\\")
+        os.mkdr(os.path.join("material/"))
     except:
         print("error cant mkdr")
-# templates = Load.loadTemplateDir("E:\\Python\\DayPlaner\\material")
-#templates = loadTemplateDir("material")
 
 class DayPlannerGUI(Widget):
 
@@ -116,18 +113,18 @@ class DayPlannerGUI(Widget):
 
     def savePlan(self):
         if self.mode == self.PLANNING:
-            path = "plans\\"+self.planner.plan.theme
+            path = "plans/"+self.planner.plan.theme
             Load.save(path,self.planner.plan.getFileText())
 
     
     def loadPlan(self):
         if self.mode == self.PLANNING:
-            path = "plans\\"+self.t_location.text + self.t_name.text
+            path = "plans/"+self.t_location.text + self.t_name.text
             plan = Load.parsePlan(Load.loadText(path))
             self.planner.setPlan(plan)
 
     def saveTemplate(self):
-        path = "material\\"+self.planner.template.theme+"template"
+        path = "material/"+self.planner.template.theme+"template"
         Load.save(path,self.planner.template.getFileText())
 
     def changeMode(self):

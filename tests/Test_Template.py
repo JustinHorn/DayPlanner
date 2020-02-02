@@ -1,6 +1,7 @@
 import unittest
 import sys
-sys.path.append('.\\production\\logic')
+import os
+sys.path.append(os.path.join('./production/logic'))
 import Load 
 from entry import Entry
 from plan import Plan
@@ -8,7 +9,7 @@ import TestHelper
 
 class Test_Template(unittest.TestCase):
 
-    test_source = "material\\test\\test_template_1.txt"
+    test_source = "material/test/test_template_1.txt"
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)

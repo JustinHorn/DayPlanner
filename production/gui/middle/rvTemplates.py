@@ -10,7 +10,8 @@ from kivy.properties import ObjectProperty
 
 
 import sys
-sys.path.append(".\\production\\logic")
+import os
+sys.path.append(os.path.join("./production/logic"))
 from template import Template
 
 

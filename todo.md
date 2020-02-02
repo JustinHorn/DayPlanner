@@ -33,7 +33,7 @@ add time directly on enter
 be able to create templates directly from plan
 color code text in textinput(übersicht)
 
-
+rücke template sachen ein
 make .kv more dynamic
 make centralize rules for reading files
 plan rediscovers its structure in text

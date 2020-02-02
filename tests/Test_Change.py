@@ -1,6 +1,8 @@
 import unittest
 import sys
-sys.path.append('.\\production\\logic')
+import os
+join = os.path.join
+sys.path.append(join('./production/logic'))
 import CalcTime 
 import Load 
 from plan import Plan 
@@ -10,7 +12,7 @@ import Change
 
 class Test_Change(unittest.TestCase):
 
-    test_source = "material\\test\\test_template_1.txt"
+    test_source = join("material/test/test_template_1.txt")
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -63,14 +65,14 @@ class Test_Change(unittest.TestCase):
     def test_changeByEntries(self):
         p,e = TestHelper.createPlan(self,"T")
         t = p.step_list
-        entries = Change.parseTextToEntries(Load.loadData("material\\test\\test_update1.txt"))
+        entries = Change.parseTextToEntries(Load.loadData(join("material/test/test_update1.txt")))
         new_list = Change.changeByEntries(t,entries)
         self.assertEqual(t[0],new_list[0])
 
     def test_doesEntryListContain(self):
         p,e = TestHelper.createPlan(self,"T")
         t = p.step_list
-        entries = Change.parseTextToEntries(Load.loadData("material\\test\\test_update1.txt"))
+        entries = Change.parseTextToEntries(Load.loadData(join("material/test/test_update1.txt")))
         index = Change.doesEntryListContain(t[0],entries)
         self.assertEqual(index,0)
 
