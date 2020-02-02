@@ -1,11 +1,10 @@
 # -*- mode: python ; coding: utf-8 -*-
-from kivy_deps import sdl2, glew
 
 block_cipher = None
 
 
-a = Analysis(['production/gui/main.py'],
-             pathex=['DayPlaner/production/logic', 'DayPlaner/production/gui'],
+a = Analysis(['libSDL2-devel'],
+             pathex=['/home/justin/Desktop/python/DayPlanner'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -22,18 +21,17 @@ exe = EXE(pyz,
           a.scripts,
           [],
           exclude_binaries=True,
-          name='main',
+          name='libSDL2-devel',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
           console=True )
-coll = COLLECT(exe,Tree('production/logic/'), Tree('production/gui/middle/pop/'),Tree('production/gui/'),
+coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
                a.datas,
-               *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='main')
+               name='libSDL2-devel')

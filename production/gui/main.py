@@ -34,6 +34,10 @@ except:
         os.mkdr(os.path.join("material/"))
     except:
         print("error cant mkdr")
+try:
+    os.mkdr(os.path.join("plans"))
+except:
+    print("error cant mkdr")
 
 class DayPlannerGUI(Widget):
 
@@ -114,6 +118,7 @@ class DayPlannerGUI(Widget):
     def savePlan(self):
         if self.mode == self.PLANNING:
             path = "plans/"+self.planner.plan.theme
+
             Load.save(path,self.planner.plan.getFileText())
 
     
