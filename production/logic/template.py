@@ -1,6 +1,7 @@
 from entry import Entry
 import CalcTime
 import re
+import ParseText
 
 class Template(Entry):
 
@@ -9,15 +10,22 @@ class Template(Entry):
         self.step_list = []
         self.count = 0
 
+    def len(self):
+        return len(self.step_list)
+
     def add(self,entry:Entry):
         self.step_list.append(entry)
         self.duration = CalcTime.addTime(self.duration,entry.duration)
         self.count +=1
 
+    def addAll(self,entries:list):
+        for e in entries:
+            self.add(e)
+
     def split(self,splitpoint):
         if splitpoint > len(self.step_list):
             print("error -0- template.py")
-            pass # error should be thrown
+            pass #TODO: error should be thrown
         else :
             t1 = Template(self.theme+" 1/2")
             t2 = Template(self.theme+" 2/2")
@@ -28,11 +36,9 @@ class Template(Entry):
             for e in self.step_list[splitpoint:]:
                 t2.add(e.clone())
 
-            if len(t1.step_list) == 1:
-                t1 = t1.step_list[0]
+            t1 = t1 if len(t1.step_list) > 1 else t1.step_list[0]
 
-            if len(t2.step_list) == 1:
-                t2 = t2.step_list[0]
+            t2 = t2 if len(t2.step_list) > 1 else t2.step_list[0]
             
             return t1,t2
     
@@ -56,16 +62,12 @@ class Template(Entry):
             return True
         return False  
 
-    def update(self,text,splitted=False):
+    #TODO: enforce Textformat
+    def update(self,text):
         self.duration = "00:00"
         self.step_list = []
         self.count = 0
-        if not splitted:
-            lines = text.split("\n")
-        else:
-            lines = text
-        lines = [e for e in lines if len(e) > 6 and not re.match("^\d\d:\d\d",e) == None]
-        entries = [Entry(e[:5],e[6:]) for e in lines]
+        entries = ParseText.parseTextToTemplateEntries(text)
         for e in entries:
             self.add(e)
     

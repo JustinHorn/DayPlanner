@@ -5,6 +5,7 @@ from plan import Plan
 from os import listdir
 from os.path import isfile, join
 import Change
+import ParseText
 
 def loadData(path:str):
     try:
@@ -54,50 +55,6 @@ def loadText(path):
             text= read.read()
         return text
     except IOError as io:
-        print('An error occured in loadText',io)
-        return "error in load text with:"+path
+        print('An error occured in loadText path:',path,"|",io)
+        return ""
 
-def parsePlan(text:str):
-    text = text.split("\n")
-    plan = Plan(text[0])
-    struc = genStructure(text[2:])
-
-    content_start_index = len(struc)+3
-    content = text[content_start_index:]
-
-    entries = Change.parsePlanLinesToEntries(content)
-    entrie_index = 0
-
-    for e in struc:
-        if e[2] == 1:
-            plan.add(entries[entrie_index])
-            entrie_index += 1
-        elif e[2] >1:
-            t = Template(e[1])
-            t.start = e[0]
-            c = e[2]
-            for i in range(c):
-                t.add(entries[entrie_index+i])
-            entrie_index+=c
-            plan.add(t)
-    return plan
-
-def genStructure(text:list):
-    struc = []
-    for line in text:
-        eNSI = getEndNumberStartIndex(line)
-        if not eNSI == 0:
-            start = line[:5]
-            theme = line[6:eNSI-1]
-            count = int(line[eNSI:])
-            struc.append((start,theme,count))
-        else: 
-            return struc
-    print("everything parsed")
-    return struc
-
-def getEndNumberStartIndex(line:str):
-    for i,char in enumerate(reversed(line)):
-        if not char.isdigit():
-            return -i
-    return 0

@@ -9,6 +9,7 @@ from plan import Plan
 from template import Template
 import TestHelper
 import Change
+import ParseText
 
 class Test_Change(unittest.TestCase):
 
@@ -62,18 +63,18 @@ class Test_Change(unittest.TestCase):
         self.assertEqual(l[0],self.template)
         self.assertEqual(l[2],self.template)
 
-    def test_changeByEntries(self):
+    def test_mergeListToEntries(self):
         p,e = TestHelper.createPlan(self,"T")
         t = p.step_list
-        entries = Change.parseTextToEntries(Load.loadData(join("material/test/test_update1.txt")))
-        new_list = Change.changeByEntries(t,entries)
+        entries = ParseText.parseTextToEntries(Load.loadData(join("material/test/test_update1.txt")))
+        new_list = Change.mergeListToEntries(t,entries)
         self.assertEqual(t[0],new_list[0])
 
     def test_doesEntryListContain(self):
         p,e = TestHelper.createPlan(self,"T")
         t = p.step_list
-        entries = Change.parseTextToEntries(Load.loadData(join("material/test/test_update1.txt")))
-        index = Change.doesEntryListContain(t[0],entries)
+        entries = ParseText.parseTextToEntries(Load.loadData(join("material/test/test_update1.txt")))
+        contains,index = Change.doesEntryListContain(t[0],entries)
         self.assertEqual(index,0)
 
 if __name__=="__main__":

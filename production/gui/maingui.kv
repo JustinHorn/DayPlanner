@@ -31,9 +31,6 @@
     template_list:template_list
     planner:planner
 
-    t_name:t_name
-    t_location:t_location
-
     FloatLayout:
         size: root.width, root.height
 
@@ -52,22 +49,6 @@
                 id:b_load
                 text:"load plan"
                 on_press:root.loadPlan()
-
-            Label:
-                text:"Location:"
-
-            TextInput:
-                id:t_location
-                text:""
-                multiline:False
-
-            Label:
-                text:"Filename:"
-
-            TextInput:
-                id:t_name
-                text:"Leaving application in progress" 
-                multiline:False
 
 
         FloatLayout:

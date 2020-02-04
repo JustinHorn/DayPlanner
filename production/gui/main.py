@@ -25,15 +25,19 @@ from template import Template
 from middle.rvTemplates import RV_Templates
 from middle.planner import Planner
 import Load
+import PlanFactory
 
-try:
-    templates = Load.loadTemplateDir(os.path.join("material/")) #on testing
-except:
-    templates = []
+def loadTemplates(): 
     try:
-        os.mkdr(os.path.join("material/"))
+        templates = Load.loadTemplateDir(os.path.join("material/")) #on testing
     except:
-        print("error cant mkdr")
+        templates = []
+        try:
+            os.mkdr(os.path.join("material/"))
+        except:
+            print("error cant mkdr")
+    return templates
+
 try:
     os.mkdr(os.path.join("plans"))
 except:
@@ -47,26 +51,27 @@ class DayPlannerGUI(Widget):
     template_list = ObjectProperty()
     planner = ObjectProperty()
 
-    t_name = ObjectProperty()
-    t_location = ObjectProperty()
-
     PLANNING = 0
     TEMPLATING = 1
 
     def __init__(self):
         super().__init__()
-        data = self.template_list.rv_list.data
-        for index,temp in enumerate(templates):
-            data.append({'text': temp.getThemeDuration(),
-            "on_press": self.getAddTemp(temp)})
+        self.setUpTemplateList()
         self.time = (datetime.datetime.today()+datetime.timedelta(days=1)).strftime("%d.%m.%Y")
-        self.t_name.text= self.time
         self.mode = DayPlannerGUI.PLANNING
         self.loadPlan()
 
         keyboard = Window.request_keyboard(self._keyboard_released,self)
         keyboard.bind(on_key_down = self.on_key_down)
         self.planner.b_mode.on_press = self.changeMode
+
+    def setUpTemplateList(self):
+        templates = loadTemplates()
+        self.template_list.rv_list.data = {}
+        data = self.template_list.rv_list.data
+        for index,temp in enumerate(templates):
+            data.append({'text': temp.getThemeDuration(),
+            "on_press": self.getAddTemp(temp)})
 
     def _keyboard_released(self):
         self.focus = False
@@ -107,7 +112,6 @@ class DayPlannerGUI(Widget):
 
     def setInputToTime(self):
         self.planner.t_theme.text=self.time
-        self.t_name.text=self.time
 
 
     def getAddTemp(self,temp):
@@ -118,14 +122,13 @@ class DayPlannerGUI(Widget):
     def savePlan(self):
         if self.mode == self.PLANNING:
             path = "plans/"+self.planner.plan.theme
-
             Load.save(path,self.planner.plan.getFileText())
 
     
     def loadPlan(self):
         if self.mode == self.PLANNING:
-            path = "plans/"+self.t_location.text + self.t_name.text
-            plan = Load.parsePlan(Load.loadText(path))
+            path = "plans/"+self.planner.t_theme.text
+            plan = PlanFactory.parsePlanFromFileText(Load.loadText(path))
             self.planner.setPlan(plan)
 
     def saveTemplate(self):
@@ -138,14 +141,13 @@ class DayPlannerGUI(Widget):
             self.mode = DayPlannerGUI.TEMPLATING
             self.planner.changeMode()
             self.b_load.opacity = 0
-            self.t_name.opacity = 0
             self.b_save.text="save template"
             self.b_save.on_press = self.saveTemplate
         else:
+            self.setUpTemplateList()
             self.mode = DayPlannerGUI.PLANNING
             self.planner.changeMode()
             self.b_load.opacity = 1
-            self.t_name.opacity = 1
             self.b_save.text="save plan"
             self.b_save.on_press = self.savePlan
 

@@ -2,6 +2,7 @@ from entry import Entry
 from template import Template
 import CalcTime 
 import Change
+import ParseText
 
 class Plan(Template):
 
@@ -16,7 +17,8 @@ class Plan(Template):
         self.end = self.start
         if len(step_list) > 0:
             for e in step_list:
-                self.add(e)
+                self.add(e)  
+        
 
     def add(self,tempOrEntry):
         eOT = tempOrEntry.clone()
@@ -26,8 +28,7 @@ class Plan(Template):
     
     def remove(self,index):
         element = self.step_list.pop(index)
-        self.end = element.start
-        self.updateStarts(index=index)
+        self.updateStarts(element.start,index)
         return element
     
     def removeAppointment(self,startTime:str):
@@ -36,9 +37,9 @@ class Plan(Template):
                 return self.step_list.pop(index)
         return None
 
-    def updateStarts(self,index=0):
+    def updateStarts(self,startTime,index):
         if index < len(self.step_list):
-            self.end = self.step_list[index].start
+            self.end = startTime
             for e in self.step_list[index:]:
                 self.setStart(e)
         else:
@@ -94,15 +95,14 @@ class Plan(Template):
         t2.start = CalcTime.addTime(t.start,t1.duration)
         return t
 
-    
     def update(self,update_text):
-        entries = Change.parseTextToEntries(update_text)
+        entries = ParseText.parseTextToEntries(update_text)
         
-        self.step_list = Change.changeByEntries(self.step_list,entries)
+        self.step_list = Change.mergeListToEntries(self.step_list,entries)
         self.step_list.sort(key=Change.sortByStart)
         self.step_list = Change.formatList(self.step_list)
         if not len(self.step_list) == 0:
-            self.updateStarts()
+            self.updateStarts(self.step_list[0].start,0)
         else:
             self.start = Plan.STANDARD_START
             self.end = self.start
