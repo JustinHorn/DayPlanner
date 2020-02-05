@@ -67,7 +67,7 @@ class Template(Entry):
         self.duration = "00:00"
         self.step_list = []
         self.count = 0
-        entries = ParseText.parseTextToTemplateEntries(text)
+        entries = ParseText.to_templateEntries(text)
         for e in entries:
             self.add(e)
     

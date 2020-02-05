@@ -1,7 +1,9 @@
 from entry import Entry
 from template import Template
 import CalcTime 
-import Change
+from updater import Updater
+from formatStructure import FormatStructure
+
 import ParseText
 
 class Plan(Template):
@@ -97,10 +99,10 @@ class Plan(Template):
 
     def update(self,update_text):
         entries = ParseText.parseTextToEntries(update_text)
-        
-        self.step_list = Change.mergeListToEntries(self.step_list,entries)
-        self.step_list.sort(key=Change.sortByStart)
-        self.step_list = Change.formatList(self.step_list)
+
+        u_l = Updater(self.step_list,entries).update()
+        self.step_list = FormatStructure(u_l).format()
+    
         if not len(self.step_list) == 0:
             self.updateStarts(self.step_list[0].start,0)
         else:

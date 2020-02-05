@@ -2,7 +2,7 @@ import unittest
 import sys
 import os
 sys.path.append(os.path.join('./production/logic'))
-import Load 
+import load 
 from entry import Entry
 from plan import Plan
 import TestHelper
@@ -13,7 +13,7 @@ class Test_Template(unittest.TestCase):
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.template = Load.loadTemplate(Test_Template.test_source)
+        self.template = load.loadTemplate(Test_Template.test_source)
       
    
     def test_addTemplateToPlan(self):

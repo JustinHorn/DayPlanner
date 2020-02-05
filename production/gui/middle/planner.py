@@ -13,13 +13,19 @@ import sys
 import os
 sys.path.append(os.path.join("./production/logic"))
 
+
 from plan import Plan
 from template import Template
 from entry import Entry
 try:
     from .pop.popmenu import PopMenu
+    from middle.timeManager import TimeManager
+    from middle.functionManager import FunctionManager
 except:
     from pop.popmenu import PopMenu
+    from timeManager import TimeManager
+    from functionManager import FunctionManager
+
 
 class Planner(FloatLayout):
     textinput = ObjectProperty()
@@ -31,18 +37,29 @@ class Planner(FloatLayout):
         super().__init__(**kwargs)
         self.plan = Plan("Heute")
         self.template = Template("Template Theme")
-        self.source = self.plan
-        self.m = 0
-
-
+        self.source = self.plan        
+        self.time_manger = TimeManager(self.t_theme)
+        self.func_manager = FunctionManager(self.plan,self.updateEntryListLabels,
+        self.splitTemplate,self.removeElement)
     
+    def getHotKeys(self):
+        if isinstance(self.source,Plan):
+            switcher = self.time_manger.getHotKeys()
+            switcher['s']=self.savePlan
+            switcher['l']=self.loadPlan
+        else:
+            switcher= {}
+            switcher['s']=self.saveTemplate
+
+        switcher['spacebar']=self.update
+        return switcher
+
     def changeMode(self):
-        if self.m == 0:
-            self.m = 1
+        if isinstance(self.source,Plan):
             self.source = self.template
+            self.func_manager.source = self.template
             self.b_mode.text = "T/P"
         else:
-            self.m=0
             self.source = self.plan
             self.b_mode.text = "P/T"
         
@@ -54,12 +71,12 @@ class Planner(FloatLayout):
         self.source.update(self.textinput.text)
         self.updateEntryListLabels(0)
 
-
-
     def setPlan(self,plan):
         self.plan = plan
         self.source =plan
         self.updateWidgets()
+        self.func_manager.plan = plan
+        self.func_manager.source = plan
 
     def atOrSet(self,eOT:Entry):
         if isinstance(self.source,Plan):
@@ -92,48 +109,13 @@ class Planner(FloatLayout):
       
     def _appendEOT(self,eOT:Entry):
         index = len(self.rv_b_entries.data)
-        func = self._getShow_popMenu if isinstance(eOT,Template) else self._getRemoveEntry
+        f_m = self.func_manager
+        func = f_m._getShow_popMenu if isinstance(eOT,Template) else f_m._getRemoveEntry
         if isinstance(self.source,Plan):
             dic = {'text': eOT.getStartThemeDuration(),"on_press": func(index)}
         else:
             dic = {'text': eOT.getThemeDuration(),"on_press": func(index)}
         self.rv_b_entries.data.append(dic)
-
-    def get_renameTemplate(self,temp_index):
-        def renameTemplate(new_name):
-            self.plan.step_list[temp_index].theme = new_name
-            self.updateEntryListLabels(0)
-        return renameTemplate
-
-    def _getShow_popMenu(self,index):
-        def showPopMenu():
-            temp= self.source.step_list[index]
-            pM = PopMenu()
-            pW = Popup(title=temp.theme,content=pM,size_hint=(0.8,0.8))
-            
-            pM.addEntries(temp)
-            pM.addDeleteFunction(self._getRemoveEntry(index,dismiss_func=pW.dismiss))
-            pM.addSplitFunction(self._get_get_splitFunc(index,dismiss_func=pW.dismiss))
-            pM.addRename(self.get_renameTemplate(index))
-
-            pW.open()
-        return showPopMenu
-
-    def _getRemoveEntry(self,index,dismiss_func=None):
-        def removeEntry():
-            self.removeElement(index)
-            if not dismiss_func==None:
-                dismiss_func()
-        return removeEntry
-
-    def _get_get_splitFunc(self,template_index,dismiss_func=None):
-        def get_splitFunc(entry_index):
-            def splitFunc():
-                self.splitTemplate(template_index,entry_index)
-                if not dismiss_func== None:
-                    dismiss_func()
-            return splitFunc
-        return get_splitFunc
             
     def splitTemplate(self,template_index,split_index):
         self.source.splitTemplate(template_index,split_index) # must be plan
@@ -148,6 +130,17 @@ class Planner(FloatLayout):
         self.t_theme.text = self.source.theme
         self.textinput.text = self.source.getText()
         self.updateEntryListLabels(0)
+
+    def savePlan(self):
+        self.file_manager.savePlan(self.plan)
+    
+    def loadPlan(self):
+        name = self.t_theme.text
+        plan = self.file_manager.loadPlan(name)
+        self.setPlan(plan)
+        
+    def saveTemplate(self):
+        self.file_manager.saveTemplate(self.template)
 
 
 class PlannerApp(App):

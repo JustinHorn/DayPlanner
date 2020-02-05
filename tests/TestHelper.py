@@ -2,7 +2,6 @@ import unittest
 import sys
 import os 
 sys.path.append(os.path.join('./production/logic'))
-import Load 
 from entry import Entry 
 from plan import Plan 
 from template import Template

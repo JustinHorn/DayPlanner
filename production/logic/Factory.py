@@ -1,4 +1,4 @@
-
+"""A utils class that helps to create plans and templates from text"""
 from plan import Plan
 from template import Template
 from entry import Entry 
@@ -12,7 +12,7 @@ def parsePlanFromFileText(text):
     content_start_index = len(struc)+3
     content = text[content_start_index:]
 
-    entries = ParseText.parsePlanLinesToEntries(content)
+    entries = ParseText.to_planEntries(content)
 
     plan = combineEntriesAndStructure(theme,struc,entries)
     return plan
@@ -34,11 +34,10 @@ def combineEntriesAndStructure(theme:str,structure:list,entries:list):
             plan.add(t)
     return plan
 
-
 def generateStructure(lines:list):
     struc = []
     for line in lines:
-        eNSI = ParseText.getEndNumberStartIndex(line)
+        eNSI = getEndNumberStartIndex(line)
         if not eNSI == 0:
             start = line[:5]
             theme = line[6:eNSI-1]
@@ -48,3 +47,19 @@ def generateStructure(lines:list):
             return struc
     print("everything parsed")
     return struc
+
+def getEndNumberStartIndex(line:str):
+    for i,char in enumerate(reversed(line)):
+        if not char.isdigit():
+            return -i
+    return 0
+
+def parseTemplateFromFileText(text:str):
+    try:
+        theme = text.split("\n")[0]
+        t = Template(theme)
+        t.update(text[1:])
+        return t
+    except RuntimeError as err:
+        print('parseTemplateFromFileText error',err)
+        return Template("parseTemplateFromFileText error")

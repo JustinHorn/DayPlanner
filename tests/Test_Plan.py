@@ -3,12 +3,11 @@ import sys
 import os
 sys.path.append(os.path.join('./production/logic'))
 import CalcTime 
-import Load 
+import load 
 from entry import Entry 
 from plan import Plan 
 from template import Template
 import TestHelper
-import Change
 
 class Test_Plan(unittest.TestCase):
 
@@ -16,7 +15,7 @@ class Test_Plan(unittest.TestCase):
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.template = Load.loadTemplate(Test_Plan.test_source)
+        self.template = load.loadTemplate(Test_Plan.test_source)
 
 
     def test_addToPlan(self):

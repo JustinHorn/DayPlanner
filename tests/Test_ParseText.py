@@ -3,12 +3,7 @@ import sys
 import os
 join = os.path.join
 sys.path.append(join('./production/logic'))
-import CalcTime 
-import Load 
 from plan import Plan 
-from template import Template
-import TestHelper
-import Change
 import ParseText
 
 class Test_ParseEntries(unittest.TestCase):

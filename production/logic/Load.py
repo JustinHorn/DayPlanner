@@ -4,17 +4,8 @@ from plan import Plan
 
 from os import listdir
 from os.path import isfile, join
-import Change
 import ParseText
-
-def loadData(path:str):
-    try:
-        with open(join(path)) as l:
-            data = l.read()
-        return data
-    except RuntimeError as err:
-        print("load Error:",err)
-        return ""
+import Factory
 
 def stringToTemplate(data:str):
     try:
@@ -27,8 +18,8 @@ def stringToTemplate(data:str):
         return Template("parseData error")
 
 def loadTemplate(path):
-    data = loadData(path)
-    template = stringToTemplate(data)
+    text = loadText(path)
+    template = Factory.parseTemplateFromFileText(text)
     return template
 
 def loadTemplateDir(directory:str):
@@ -57,4 +48,3 @@ def loadText(path):
     except IOError as io:
         print('An error occured in loadText path:',path,"|",io)
         return ""
-
