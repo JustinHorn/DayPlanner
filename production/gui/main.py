@@ -25,7 +25,7 @@ from middle.planner import Planner
 import load
 from middle.fileManager import FileManager
 from middle.timeManager import TimeManager
-
+from middle.planManager import PlanManager
 try:
     os.mkdr(os.path.join("plans"))
 except:
@@ -39,25 +39,23 @@ class DayPlannerGUI(Widget):
     template_list = ObjectProperty()
     planner = ObjectProperty()
 
-    PLANNING = 0
-    TEMPLATING = 1
-
     def __init__(self):
         super().__init__()
         self.file_manager = FileManager("material/","plans/")
         self.file_manager.loadTemplates()
 
-        self.setUpTemplateList()
-        self.mode = DayPlannerGUI.PLANNING
+        self.updateTemplateList()
+        self.plan_manager = PlanManager(self.planner.updateWidgets)
 
         self.planner.file_manager =self.file_manager
-        self.planner.loadPlan()
+        self.planner.add_planManager(self.plan_manager)
+        self.loadPlan()
 
         keyboard = Window.request_keyboard(self._keyboard_released,self)
         keyboard.bind(on_key_down = self.on_key_down)
         self.planner.b_mode.on_press = self.changeMode
 
-    def setUpTemplateList(self):
+    def updateTemplateList(self):
         self.template_list.rv_list.data = {}
         data = self.template_list.rv_list.data
         for temp in self.file_manager.templates:
@@ -68,35 +66,51 @@ class DayPlannerGUI(Widget):
         self.focus = False
 
     def on_key_down(self,window,keycode,text,modifiers):
-        #print(keycode)
         if "ctrl" in modifiers:
             char = keycode[1]
             if  not char == None:
                 hotkeys = self.planner.getHotKeys()
+                t = self.planner.b_mode.text
+                if t == "P/T":
+                    hotkeys['s']=self.savePlan
+                    hotkeys['l']=self.loadPlan
+                else:
+                    hotkeys['s']=self.saveTemplate
                 func = hotkeys.get(char) 
                 if not func == None:
                     func()
+    
+     
+    def savePlan(self):
+        self.file_manager.savePlan(self.plan_manager.plan)
+    
+    def loadPlan(self):
+        name = self.planner.t_theme.text
+        plan = self.file_manager.loadPlan(name)
+        self.plan_manager.setPlan(plan)
+        
+    def saveTemplate(self):
+        self.file_manager.saveTemplate(self.plan_manager.template)
+
 
     def getAddTemp(self,temp):
         def addTemp():
-            temp_2 = self.planner.atOrSet(temp)
+            temp_2 = self.plan_manager.atOrSet(temp)
         return addTemp    
 
     def changeMode(self):
         t = self.planner.b_mode.text
         if t == "P/T":
-            self.mode = DayPlannerGUI.TEMPLATING
-            self.planner.changeMode()
             self.b_load.opacity = 0
             self.b_save.text="save template"
             self.b_save.on_press = self.planner.saveTemplate
         else:
-            self.setUpTemplateList()
-            self.mode = DayPlannerGUI.PLANNING
-            self.planner.changeMode()
+            self.updateTemplateList()
             self.b_load.opacity = 1
             self.b_save.text="save plan"
             self.b_save.on_press = self.planner.savePlan
+        self.planner.changeMode()
+
 
 class MainGUIApp(App):
 

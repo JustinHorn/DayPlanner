@@ -7,15 +7,14 @@ class TimeManager():
         self.textinput = textinput
 
     def incrementDay(self):
-        new_time = self.currentDayTime() + datetime.timedelta(days=1)
-        self.changeTime(new_time)
+        self.time  = (self.currentDayTime() + datetime.timedelta(days=1)).strftime("%d.%m.%Y")
+        self.textinput.text=self.time
 
     def decrementDay(self):
-        new_time = self.currentDayTime() - datetime.timedelta(days=1)
-        self.changeTime(new_time)
+        self.time = (self.currentDayTime() - datetime.timedelta(days=1)).strftime("%d.%m.%Y")
+        self.textinput.text=self.time
 
-    def changeTime(self,new_time):
-        self.time = new_time.strftime("%d.%m.%Y")
+    def getTime(self):
         self.textinput.text=self.time
 
     def currentDayTime(self):
@@ -26,5 +25,5 @@ class TimeManager():
         switcher = {
         'n':self.incrementDay,
         'p':self.decrementDay,
-        't':self.changeTime}
+        't':self.getTime}
         return switcher

@@ -21,10 +21,12 @@ try:
     from .pop.popmenu import PopMenu
     from middle.timeManager import TimeManager
     from middle.functionManager import FunctionManager
+    from middle.planManager import PlanManager
 except:
     from pop.popmenu import PopMenu
     from timeManager import TimeManager
     from functionManager import FunctionManager
+    from planManager import PlanManager
 
 
 class Planner(FloatLayout):
@@ -35,113 +37,60 @@ class Planner(FloatLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.plan = Plan("Heute")
-        self.template = Template("Template Theme")
-        self.source = self.plan        
-        self.time_manger = TimeManager(self.t_theme)
-        self.func_manager = FunctionManager(self.plan,self.updateEntryListLabels,
-        self.splitTemplate,self.removeElement)
+        self.plan_manager = PlanManager(self.updateWidgets)        
+        self.func_manager = FunctionManager(self.plan_manager,self.updateEntryListLabels)
     
-    def getHotKeys(self):
-        if isinstance(self.source,Plan):
-            switcher = self.time_manger.getHotKeys()
-            switcher['s']=self.savePlan
-            switcher['l']=self.loadPlan
-        else:
-            switcher= {}
-            switcher['s']=self.saveTemplate
+    def add_planManager(self,planManager):
+        self.plan_manager = planManager    
+        self.time_manager = TimeManager(self.t_theme)
+        self.func_manager = FunctionManager(self.plan_manager,self.updateEntryListLabels)
 
+
+    def getHotKeys(self):
+        if isinstance(self.plan_manager.active,Plan):
+            switcher = self.time_manager.getHotKeys()
+       
         switcher['spacebar']=self.update
         return switcher
 
     def changeMode(self):
-        if isinstance(self.source,Plan):
-            self.source = self.template
-            self.func_manager.source = self.template
+        if isinstance(self.plan_manager.active,Plan):
+            self.func_manager.source = self.plan_manager.active
             self.b_mode.text = "T/P"
         else:
-            self.source = self.plan
             self.b_mode.text = "P/T"
         
+        self.plan_manager.swapActive()
         self.updateWidgets()
 
-
-    def update(self):
-        self.source.theme = self.t_theme.text
-        self.source.update(self.textinput.text)
+    
+    def updateWidgets(self):
+        self.t_theme.text = self.plan_manager.active.theme
+        self.textinput.text = self.plan_manager.active.getText()
         self.updateEntryListLabels(0)
 
-    def setPlan(self,plan):
-        self.plan = plan
-        self.source =plan
-        self.updateWidgets()
-        self.func_manager.plan = plan
-        self.func_manager.source = plan
-
-    def atOrSet(self,eOT:Entry):
-        if isinstance(self.source,Plan):
-            return self._add(eOT)
-        else:
-            return self.setTemplate(eOT)
-
-    def setTemplate(self,temp):
-        self.source = temp
-        self.updateWidgets()
-        self.source = self.template
-        self.update()
-        return temp
-
-    def _add(self,eOT:Entry):
-        eOT = self._addToPlan(eOT)
-        index = len(self.plan.step_list)
-        self.updateEntryListLabels(index)
-        return eOT
+    def update(self):
+        self.plan_manager.active.theme = self.t_theme.text
+        self.plan_manager.active.update(self.textinput.text)
+        self.updateEntryListLabels(0)
 
     def updateEntryListLabels(self,index):
         self.rv_b_entries.data = self.rv_b_entries.data[:index]
-        for e in self.source.step_list[index:]:
+        for e in self.plan_manager.active.step_list[index:]:
             self._appendEOT(e)
 
-    def _addToPlan(self,eOT):
-        eOT = self.plan.add(eOT)
-        self.textinput.text = self.plan.getText()
-        return eOT
+   
       
     def _appendEOT(self,eOT:Entry):
         index = len(self.rv_b_entries.data)
         f_m = self.func_manager
         func = f_m._getShow_popMenu if isinstance(eOT,Template) else f_m._getRemoveEntry
-        if isinstance(self.source,Plan):
+        if isinstance(self.plan_manager.active,Plan):
             dic = {'text': eOT.getStartThemeDuration(),"on_press": func(index)}
         else:
             dic = {'text': eOT.getThemeDuration(),"on_press": func(index)}
         self.rv_b_entries.data.append(dic)
             
-    def splitTemplate(self,template_index,split_index):
-        self.source.splitTemplate(template_index,split_index) # must be plan
-        self.updateEntryListLabels(template_index)
-
-    def removeElement(self,index):
-        self.source.remove(index)
-        self.textinput.text = self.source.getText()
-        self.updateEntryListLabels(index)
-
-    def updateWidgets(self):
-        self.t_theme.text = self.source.theme
-        self.textinput.text = self.source.getText()
-        self.updateEntryListLabels(0)
-
-    def savePlan(self):
-        self.file_manager.savePlan(self.plan)
-    
-    def loadPlan(self):
-        name = self.t_theme.text
-        plan = self.file_manager.loadPlan(name)
-        self.setPlan(plan)
-        
-    def saveTemplate(self):
-        self.file_manager.saveTemplate(self.template)
-
 
 class PlannerApp(App):
     def build(self):
@@ -151,7 +100,7 @@ class PlannerApp(App):
         t.add(Entry("00:05","test_entry_theme"))
         t.add(Entry("00:05","test_entry_theme2")) 
 
-        p._add(t)
+        p.plan_manager.atOrSet(t)
         return p
 
 if __name__ == "__main__":

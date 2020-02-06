@@ -44,8 +44,7 @@ class Plan(Template):
             self.end = startTime
             for e in self.step_list[index:]:
                 self.setStart(e)
-        else:
-            print("Index",index,"out of range: plan - updateStars")
+        
 
     def setStart(self,eOT):
         if isinstance(eOT,Template):

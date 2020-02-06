@@ -1,4 +1,4 @@
-
+## I gonna have to run 2 rounds to day
 import sys
 import os
 join = os.path.join
@@ -21,7 +21,6 @@ class FileManager():
                 os.mkdr(self.template_path)
             except:
                 print("error cant mkdr")
-
 
     def saveTemplate(self,template):
         if self.templates == None:
