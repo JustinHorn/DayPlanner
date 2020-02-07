@@ -2,20 +2,22 @@ import datetime
 
 class TimeManager():
 
-    def __init__(self,textinput):
+    def __init__(self,textinput=None):
         self.time = (datetime.datetime.today()+datetime.timedelta(days=1)).strftime("%d.%m.%Y")
         self.textinput = textinput
+        self.getTime()
 
     def incrementDay(self):
         self.time  = (self.currentDayTime() + datetime.timedelta(days=1)).strftime("%d.%m.%Y")
-        self.textinput.text=self.time
+        self.getTime()
 
     def decrementDay(self):
         self.time = (self.currentDayTime() - datetime.timedelta(days=1)).strftime("%d.%m.%Y")
-        self.textinput.text=self.time
+        self.getTime()
 
     def getTime(self):
-        self.textinput.text=self.time
+        if not self.textinput == None:
+            self.textinput.text=self.time
 
     def currentDayTime(self):
         (days,months,years) = self.time.split(".")

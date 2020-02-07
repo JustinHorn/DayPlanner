@@ -65,7 +65,7 @@ class Test_Plan(unittest.TestCase):
         self.assertEqual(p1,p2)
         self.assertNotEqual(id(p1),id(p2))
 
-
+    
     def test_update(self):
         #always the same template
         #test as p with 1 templates discover template
@@ -94,6 +94,61 @@ class Test_Plan(unittest.TestCase):
         p,e = TestHelper.createPlan(self,"TT")
         p.update(text)
         TestHelper.test_listByInstance(self,p.step_list,"5ETETE")
+
+    def test_update2(self):
+        p = Plan("today")
+        p.update("07:00 aufstehen")
+        self.assertEqual(p.step_list[0],Entry("00:00","aufstehen"))
+
+    def test_update3(self):
+        p = Plan("today")
+        p.update("07:00 aufstehen\n08:00 essen")
+        TestHelper.test_listByInstance(self,p.step_list,"1T")
+        t = p.step_list[0]
+        self.assertEqual(t.step_list[0],Entry("01:00","aufstehen"))
+        self.assertEqual(t.step_list[1],Entry("00:00","essen"))
+    
+    def test_update4(self):
+        text = "07:00 aufstehen\n08:00 essen\n09:00 Zaehneputzen"
+        p = Plan("today")
+        p.update(text)
+        TestHelper.test_listByInstance(self,p.step_list,"1T")
+        t = p.step_list[0]
+        self.assertEqual(t.step_list[0],Entry("01:00","aufstehen"))
+        self.assertEqual(t.step_list[1],Entry("01:00","essen"))
+        self.assertEqual(t.step_list[2],Entry("00:00","Zaehneputzen"))
+    
+    def test_update_after_update(self):
+        p = Plan("today")
+        p.update("07:00 aufstehen\n08:00 essen")
+        TestHelper.test_listByInstance(self,p.step_list,"1T")
+        t = p.step_list[0]
+        self.assertEqual(t.step_list[0],Entry("01:00","aufstehen"))
+        self.assertEqual(t.step_list[1],Entry("00:00","essen"))
+        
+        text = "07:00 aufstehen\n08:00 essen\n09:00 Zaehneputzen"
+        p.update(text)
+        TestHelper.test_listByInstance(self,p.step_list,"2TE")
+        t = p.step_list[0]
+        self.assertEqual(t.step_list[0],Entry("01:00","aufstehen"))
+        self.assertEqual(t.step_list[1].duration,"01:00")   
+        self.assertEqual(p.step_list[1],Entry("00:00","Zaehneputzen"))   
+
+    def test_addAfterUpdate(self):
+        p = TestHelper.createPlan(self,"EE")[0]
+        duration = p.step_list[0].duration
+        e = p.step_list[1].clone()
+        p.update(p.getText())
+        e2 = p.step_list[0].step_list[1].clone()
+        self.assertEqual(e2.duration,"00:00")
+        p.update(p.getText()+"\n"+CalcTime.addTime(e.start,duration)+" "+e2.theme)
+        
+        TestHelper.test_listByInstance(self,p.step_list,"2TE")
+        t = p.step_list[0]
+        self.assertEqual(t.step_list[0].duration,duration)
+        self.assertEqual(t.step_list[1].duration,duration)   
+        self.assertEqual(p.step_list[1].duration,"00:00")   
+
     
 
 if __name__ == '__main__': 

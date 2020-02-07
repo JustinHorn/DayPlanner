@@ -49,7 +49,9 @@ class Updater():
         entries = self.entries[index:index+len(old_temp.step_list)]
         new_temp = Template(old_temp.theme)
         new_temp.addAll(entries)
-        new_temp.step_list[-1].duration = old_temp.step_list[-1].duration
+        # if i would have wrote better tests imediatly I would not have had to search +30m for this bugg 
+        if not old_temp.step_list[-1].duration == "00:00": # might override real duration
+            new_temp.step_list[-1].duration = old_temp.step_list[-1].duration
         return new_temp
 
     def template_contain(self,template):

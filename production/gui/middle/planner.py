@@ -13,7 +13,6 @@ import sys
 import os
 sys.path.append(os.path.join("./production/logic"))
 
-
 from plan import Plan
 from template import Template
 from entry import Entry
@@ -38,18 +37,27 @@ class Planner(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.plan_manager = PlanManager(self.updateWidgets)        
-        self.func_manager = FunctionManager(self.plan_manager,self.updateEntryListLabels)
+        self.time_manager = TimeManager(self.t_theme)
+        self.func_manager = FunctionManager(self.plan_manager)
     
     def add_planManager(self,planManager):
+        planManager.addCommunication(self.updateWidgets)
         self.plan_manager = planManager    
-        self.time_manager = TimeManager(self.t_theme)
-        self.func_manager = FunctionManager(self.plan_manager,self.updateEntryListLabels)
+        self.func_manager.plan_manager = planManager
+       
+    def add_funcManager(self,func_manager):
+        self.func_manager = func_manager
 
+    def add_timeManager(self,timeManager):
+        self.time_manager = timeManager
+        self.time_manager.textinput=self.t_theme
+        self.time_manager.getTime()
 
     def getHotKeys(self):
         if isinstance(self.plan_manager.active,Plan):
             switcher = self.time_manager.getHotKeys()
-       
+        else:
+            switcher = {}
         switcher['spacebar']=self.update
         return switcher
 
@@ -62,7 +70,6 @@ class Planner(FloatLayout):
         
         self.plan_manager.swapActive()
         self.updateWidgets()
-
     
     def updateWidgets(self):
         self.t_theme.text = self.plan_manager.active.theme
@@ -78,8 +85,6 @@ class Planner(FloatLayout):
         self.rv_b_entries.data = self.rv_b_entries.data[:index]
         for e in self.plan_manager.active.step_list[index:]:
             self._appendEOT(e)
-
-   
       
     def _appendEOT(self,eOT:Entry):
         index = len(self.rv_b_entries.data)

@@ -6,14 +6,12 @@ except:
     from pop.popmenu import PopMenu
     
 class FunctionManager(): 
-    def __init__(self,plan_manager,updateEntryListLabels):
+    def __init__(self,plan_manager):
         self.plan_manager = plan_manager
-        self.updateEntryListLabels = updateEntryListLabels
 
     def get_renameTemplate(self,temp_index):
         def renameTemplate(new_name):
-            self.plan_manager.plan.step_list[temp_index].theme = new_name
-            self.updateEntryListLabels(0)
+            self.plan_manager.rename(temp_index,new_name)
         return renameTemplate
 
     def _getShow_popMenu(self,index):

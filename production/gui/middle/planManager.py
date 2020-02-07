@@ -12,7 +12,7 @@ class PlanManager():
         self.plan = Plan("Heute")
         self.template = Template("Template Theme")
         self.active = self.plan
-        self.funcs = activationFunctions
+        self.funcs = list(activationFunctions)
 
     def splitTemplate(self,template_index,split_index):
         self.active.splitTemplate(template_index,split_index) # must be plan
@@ -28,6 +28,9 @@ class PlanManager():
         self.active.remove(index)
         self.communicate()
     
+    def rename(self,temp_index,name):
+        self.active.step_list[temp_index].theme = name
+        self.communicate()
 
     def add(self,eOT):
         eOT = self.active.add(eOT)
@@ -41,6 +44,9 @@ class PlanManager():
             self.active = self.plan
         self.communicate()
     
+    def addCommunication(self, func):
+        self.funcs.append(func) 
+
     def communicate(self):
         [f() for  f in self.funcs]
 

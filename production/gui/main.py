@@ -22,10 +22,11 @@ from plan import Plan
 from template import Template
 from middle.rvTemplates import RV_Templates
 from middle.planner import Planner
-import load
 from middle.fileManager import FileManager
 from middle.timeManager import TimeManager
 from middle.planManager import PlanManager
+from middle.functionManager import FunctionManager
+
 try:
     os.mkdr(os.path.join("plans"))
 except:
@@ -35,7 +36,6 @@ class DayPlannerGUI(Widget):
 
     b_save = ObjectProperty()
     b_load = ObjectProperty()
-
     template_list = ObjectProperty()
     planner = ObjectProperty()
 
@@ -43,12 +43,15 @@ class DayPlannerGUI(Widget):
         super().__init__()
         self.file_manager = FileManager("material/","plans/")
         self.file_manager.loadTemplates()
-
+        self.time_manager = TimeManager()
         self.updateTemplateList()
-        self.plan_manager = PlanManager(self.planner.updateWidgets)
+        self.plan_manager = PlanManager()
+        self.func_manager = FunctionManager(self.plan_manager)
 
         self.planner.file_manager =self.file_manager
         self.planner.add_planManager(self.plan_manager)
+        self.planner.add_timeManager(self.time_manager)
+        self.planner.add_funcManager(self.func_manager)
         self.loadPlan()
 
         keyboard = Window.request_keyboard(self._keyboard_released,self)
@@ -79,7 +82,6 @@ class DayPlannerGUI(Widget):
                 func = hotkeys.get(char) 
                 if not func == None:
                     func()
-    
      
     def savePlan(self):
         self.file_manager.savePlan(self.plan_manager.plan)
@@ -92,7 +94,6 @@ class DayPlannerGUI(Widget):
     def saveTemplate(self):
         self.file_manager.saveTemplate(self.plan_manager.template)
 
-
     def getAddTemp(self,temp):
         def addTemp():
             temp_2 = self.plan_manager.atOrSet(temp)
@@ -103,20 +104,18 @@ class DayPlannerGUI(Widget):
         if t == "P/T":
             self.b_load.opacity = 0
             self.b_save.text="save template"
-            self.b_save.on_press = self.planner.saveTemplate
+            self.b_save.on_press = self.saveTemplate
         else:
             self.updateTemplateList()
             self.b_load.opacity = 1
             self.b_save.text="save plan"
-            self.b_save.on_press = self.planner.savePlan
+            self.b_save.on_press = self.savePlan
         self.planner.changeMode()
-
 
 class MainGUIApp(App):
 
     def build(self):
         return DayPlannerGUI()
-
 
 if __name__ == '__main__':
     MainGUIApp().run()
