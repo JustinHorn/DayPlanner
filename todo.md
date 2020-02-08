@@ -10,7 +10,11 @@ allow to create temporary templates for recursive activities (by marking and par
 
 add "00:00"/time to textinput on enter
 
+insert line with 5m... time stamp and let the rest aktualiseren
+
 get the plans on your phone - and make them visible in one click
+(write with in tempaltes!-- current product ist zu unübersichtlich!)
+
 
 #what if I wanna make a dankbarkeits-liste?
 --> you have got to do that somewhere else

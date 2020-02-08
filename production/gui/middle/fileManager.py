@@ -22,6 +22,7 @@ class FileManager():
             except:
                 print("error cant mkdr")
 
+
     def saveTemplate(self,template):
         if self.templates == None:
             self.templates = []
@@ -34,5 +35,8 @@ class FileManager():
     def loadPlan(self,name):
         path = self.plan_path+name 
         text = load.loadText(path)
-        plan = Factory.parsePlanFromFileText(text)
-        return plan
+        if not text == '' :
+            plan = Factory.parsePlanFromFileText(text)
+            return plan
+        else:
+            return None

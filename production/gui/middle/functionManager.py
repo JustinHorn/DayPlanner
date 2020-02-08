@@ -43,3 +43,8 @@ class FunctionManager():
                     dismiss_func()
             return splitFunc
         return get_splitFunc
+
+    def getAddTemp(self,temp):
+        def addTemp():
+            self.plan_manager.atOrSet(temp)
+        return addTemp  

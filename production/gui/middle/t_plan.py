@@ -17,18 +17,12 @@ from plan import Plan
 from template import Template
 from entry import Entry
 try:
-    from .pop.popmenu import PopMenu
-    from middle.timeManager import TimeManager
-    from middle.functionManager import FunctionManager
     from middle.planManager import PlanManager
 except:
-    from pop.popmenu import PopMenu
-    from timeManager import TimeManager
-    from functionManager import FunctionManager
     from planManager import PlanManager
 
 
-class Planner(FloatLayout):
+class T_Plan(TextInput):
     textinput = ObjectProperty()
 
     def __init__(self, **kwargs):
@@ -41,20 +35,18 @@ class Planner(FloatLayout):
 
     def getHotKeys(self):
         switcher = {}
+        switcher['#']=self.updateWidgets
         switcher['spacebar']=self.update
         return switcher
-
-    def changeMode(self):
-        self.updateWidgets()
     
     def updateWidgets(self):
-        self.textinput.text = self.plan_manager.active.getText()
+        self.text = self.plan_manager.active.getText()
 
     def update(self):
-        self.plan_manager.updateText(self.textinput.text)
+        self.plan_manager.updateText(self.text)
 
 
-class PlannerApp(App):
+class T_PlanApp(App):
     def build(self):
         p = Planner()
         p.size = (500,500)
@@ -66,4 +58,4 @@ class PlannerApp(App):
         return p
 
 if __name__ == "__main__":
-    PlannerApp().run()
+    T_PlanApp().run()

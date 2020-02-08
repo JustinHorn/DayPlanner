@@ -1,5 +1,5 @@
-#:include middle/planner.kv 
-#:include middle/rvt.kv
+#:include middle/t_plan.kv 
+#:include middle/rv_temp.kv
 #:include middle/rv_structure.kv
 
 <TextInput>:
@@ -12,14 +12,11 @@
             width: 1
             rectangle: self.x, self.y, self.width, self.height
        
-    
-
 <Button>:
     background_color:.2,.2,.2,1
     foreground_color :0.8,0.8,0.8,1
     halign: 'center'
     valign: 'center'
-
 
 <DayPlannerGUI>:
 
@@ -29,9 +26,9 @@
     b_load:b_load
     b_mode:b_mode
     t_theme:t_theme
-    template_list:template_list
-    planner:planner
-    structure_list:structure_list
+    rv_temp:rv_temp
+    t_plan:t_plan
+    rv_struc:rv_struc
 
     FloatLayout:
         size: root.width, root.height
@@ -58,7 +55,7 @@
             pos_hint:{"x":0,"top":0.925}
 
             RV_Templates:
-                id:template_list
+                id:rv_temp
                 pos_hint:{"x":0,"top":1}
                 size_hint: 0.2,1
 
@@ -79,12 +76,12 @@
                 size_hint:0.1,0.05
                 on_press: root.changeMode()
 
-            Planner:
-                id:planner
-                pos_hint:{"x":0.2,"top":0.99}
+            T_Plan:
+                id:t_plan
+                pos_hint:{"x":0.2,"top":0.95}
                 size_hint: 0.6,0.95
 
             RV_Structure:
-                id:structure_list
+                id:rv_struc
                 pos_hint:{"x":0.8,"top":1}
                 size_hint: 0.2,1

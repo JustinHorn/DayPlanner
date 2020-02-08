@@ -20,8 +20,8 @@ sys.path.append(os.path.join("./production/logic"))
 
 from plan import Plan
 from template import Template
-from middle.rvTemplates import RV_Templates
-from middle.planner import Planner
+from middle.rv_temp import RV_Templates
+from middle.t_plan import T_Plan
 from middle.rv_structure import RV_Structure
 
 from middle.fileManager import FileManager
@@ -38,29 +38,32 @@ class DayPlannerGUI(Widget):
 
     b_save = ObjectProperty()
     b_load = ObjectProperty()
-    template_list = ObjectProperty()
-    planner = ObjectProperty()
-    structure_list = ObjectProperty()
+    rv_temp = ObjectProperty()
+    t_plan = ObjectProperty()
+    rv_struc = ObjectProperty()
     b_mode= ObjectProperty()
     t_theme= ObjectProperty()
 
     plan_manager = None
+    file_manager = None
+    func_manager = None
+    time_manager = None
 
     def __init__(self):
         super().__init__()
         self.file_manager = FileManager("material/","plans/")
         self.file_manager.loadTemplates()
         self.time_manager = TimeManager(textinput=self.t_theme)
-        self.updateTemplateList()
         self.plan_manager = PlanManager()
         self.func_manager = FunctionManager(self.plan_manager)
 
-        self.structure_list.add_planManager(self.plan_manager)
-        self.structure_list.add_funcManager(self.func_manager)
+        self.rv_struc.add_planManager(self.plan_manager)
+        self.rv_struc.add_funcManager(self.func_manager)
 
-        self.planner.file_manager =self.file_manager
-        self.planner.add_planManager(self.plan_manager)
+        self.t_plan.add_planManager(self.plan_manager)
         self.loadPlan()
+        templates = self.file_manager.templates
+        self.rv_temp.setTemps(templates,self.func_manager.getAddTemp)
 
         keyboard = Window.request_keyboard(self._keyboard_released,self)
         keyboard.bind(on_key_down = self.on_key_down)
@@ -68,13 +71,6 @@ class DayPlannerGUI(Widget):
     def updateTheme(self,text):
         if not self.plan_manager == None:
             self.plan_manager.updateTheme(text)
-
-    def updateTemplateList(self):
-        self.template_list.rv_list.data = {}
-        data = self.template_list.rv_list.data
-        for temp in self.file_manager.templates:
-            data.append({'text': temp.getThemeDuration(),
-            "on_press": self.getAddTemp(temp)})
 
     def _keyboard_released(self):
         self.focus = False
@@ -84,7 +80,7 @@ class DayPlannerGUI(Widget):
             char = keycode[1]
             if  not char == None:
                 hotkeys = self.time_manager.getHotKeys()
-                hotkeys = {**hotkeys,**self.planner.getHotKeys()}
+                hotkeys = {**hotkeys,**self.t_plan.getHotKeys()}
                 if self.b_mode.text == "P/T":
                     hotkeys['s']=self.savePlan
                     hotkeys['l']=self.loadPlan
@@ -100,31 +96,29 @@ class DayPlannerGUI(Widget):
     def loadPlan(self):
         name = self.t_theme.text
         plan = self.file_manager.loadPlan(name)
-        self.plan_manager.setPlan(plan)
+        if not plan == None:
+            self.plan_manager.setPlan(plan)
         
     def saveTemplate(self):
-        self.file_manager.saveTemplate(self.plan_manager.template)
-
-    def getAddTemp(self,temp):
-        def addTemp():
-            temp_2 = self.plan_manager.atOrSet(temp)
-        return addTemp    
+        self.file_manager.saveTemplate(self.plan_manager.template)  
 
     def changeMode(self):
-        t = self.b_mode.text
-        if t == "P/T":
+        self.change()
+        self.t_plan.updateWidgets()
+        self.plan_manager.swapActive()
+
+    def change(self):
+        if self.b_mode.text == "P/T":
             self.b_mode.text = "T/P"
             self.b_load.opacity = 0
             self.b_save.text="save template"
             self.b_save.on_press = self.saveTemplate
         else:
             self.b_mode.text = "P/T"
-            self.updateTemplateList()
             self.b_load.opacity = 1
             self.b_save.text="save plan"
             self.b_save.on_press = self.savePlan
-        self.planner.changeMode()
-        self.plan_manager.swapActive()
+            self.setTemps(self.file_manager.templates,self.func_manager.getAddTemp)
 
 
 class MainGUIApp(App):

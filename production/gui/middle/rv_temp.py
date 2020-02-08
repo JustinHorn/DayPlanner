@@ -23,13 +23,15 @@ class RV_Templates(FloatLayout):
         super().__init__(**kwargs)
         self.templates = []
 
-    def addTemplate(self,template):
-        self.data = self.rv_list.data
-        index = str(len(self.data))
-        self.data.append({"text": template.getText()})
-        self.templates.append(template)
+    def setTemps(self,temps,on_press):
+        self.rv_list.data = {}
+        for temp in temps:
+                self.rv_list.data.append({'text': temp.getThemeDuration(),
+                "on_press": on_press(temp)})
 
-class RVTApp(App):
+
+
+class RV_TempApp(App):
     
     def build(self):
         return RV_Templates()
