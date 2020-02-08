@@ -4,8 +4,8 @@ from kivy_deps import sdl2, glew
 block_cipher = None
 
 
-a = Analysis(['production/gui/main.py'],
-             pathex=['DayPlaner/production/logic', 'DayPlaner/production/gui'],
+a = Analysis(['production/main.py'],
+             pathex=['DayPlanner/production/logic', 'DayPlanner/production/manager','DayPlanner/production/pop'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -28,7 +28,7 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           console=True )
-coll = COLLECT(exe,Tree('production/logic/'), Tree('production/gui/middle/pop/'),Tree('production/gui/'),
+coll = COLLECT(exe,Tree('production/'),Tree('production/logic/'), Tree('production/pop/'),Tree('production/manager/'),
                a.binaries,
                a.zipfiles,
                a.datas,

@@ -1,7 +1,4 @@
-#:include middle/t_plan.kv 
-#:include middle/rv_temp.kv
-#:include middle/rv_structure.kv
-
+#:include production\pop\popmenu.kv
 <TextInput>:
     background_color:0,0,0,1
     foreground_color :0.8,0.8,0.8,1
@@ -18,6 +15,14 @@
     halign: 'center'
     valign: 'center'
 
+<RecycleBoxLayout>:
+    default_size: None, dp(40)
+    default_size_hint: 1, None
+    size_hint_y: None
+    height: self.minimum_height
+    orientation: 'vertical'
+    background_color: [1.0,0,0,1]
+
 <DayPlannerGUI>:
 
     font_name:"Roboto"
@@ -28,7 +33,7 @@
     t_theme:t_theme
     rv_temp:rv_temp
     t_plan:t_plan
-    rv_struc:rv_struc
+    rv_entries:rv_entries
 
     FloatLayout:
         size: root.width, root.height
@@ -54,10 +59,20 @@
             size_hint: 1,0.9
             pos_hint:{"x":0,"top":0.925}
 
-            RV_Templates:
+
+            Label:
+                size_hint: 0.2,0.05
+                text:"Templates:"
+                pos_hint:{'x':0.01,"top":1}
+                halign: 'left'
+                valign: 'bottom'
+
+            RecycleView:
                 id:rv_temp
-                pos_hint:{"x":0,"top":1}
-                size_hint: 0.2,1
+                size_hint: 0.2,0.95
+                pos_hint:{'x':0,"top":0.95}
+                viewclass: 'Button'
+                RecycleBoxLayout:
 
             TextInput:
                 id:t_theme
@@ -76,12 +91,23 @@
                 size_hint:0.1,0.05
                 on_press: root.changeMode()
 
-            T_Plan:
+            TextInput:
                 id:t_plan
+                on_text: root.update()
                 pos_hint:{"x":0.2,"top":0.95}
                 size_hint: 0.6,0.95
 
-            RV_Structure:
-                id:rv_struc
-                pos_hint:{"x":0.8,"top":1}
-                size_hint: 0.2,1
+            Label:
+                size_hint: 0.2,0.05
+                text:"Structure:"
+                pos_hint:{'x':0.8,"top":1}
+                halign: 'left'
+                valign: 'bottom'
+
+            RecycleView:
+                id:rv_entries
+                size_hint: 0.2,0.95
+                pos_hint:{'x':0.8,"top":0.95}
+                viewclass: 'Button'
+                RecycleBoxLayout:
+               

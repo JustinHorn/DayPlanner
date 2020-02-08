@@ -1,9 +1,8 @@
 from kivy.uix.popup import Popup
-
-try:
-    from .pop.popmenu import PopMenu
-except:
-    from pop.popmenu import PopMenu
+import sys
+import os
+sys.path.append(os.path.join("./production/pop"))
+from popmenu import PopMenu
     
 class FunctionManager(): 
     def __init__(self,plan_manager):

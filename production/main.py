@@ -20,14 +20,14 @@ sys.path.append(os.path.join("./production/logic"))
 
 from plan import Plan
 from template import Template
-from middle.rv_temp import RV_Templates
-from middle.t_plan import T_Plan
-from middle.rv_structure import RV_Structure
+from entry import Entry
 
-from middle.fileManager import FileManager
-from middle.timeManager import TimeManager
-from middle.planManager import PlanManager
-from middle.functionManager import FunctionManager
+from manager.fileManager import FileManager
+from manager.timeManager import TimeManager
+from manager.planManager import PlanManager
+from manager.functionManager import FunctionManager
+from pop.popmenu import PopMenu
+
 
 try:
     os.mkdr(os.path.join("plans"))
@@ -40,7 +40,7 @@ class DayPlannerGUI(Widget):
     b_load = ObjectProperty()
     rv_temp = ObjectProperty()
     t_plan = ObjectProperty()
-    rv_struc = ObjectProperty()
+    rv_entries = ObjectProperty()
     b_mode= ObjectProperty()
     t_theme= ObjectProperty()
 
@@ -53,17 +53,15 @@ class DayPlannerGUI(Widget):
         super().__init__()
         self.file_manager = FileManager("material/","plans/")
         self.file_manager.loadTemplates()
+
+
         self.time_manager = TimeManager(textinput=self.t_theme)
-        self.plan_manager = PlanManager()
+        self.plan_manager = PlanManager(self.updateWidgets)
+        self.plan_manager.addUpdateStructure(self.updateEntryListLabels)
         self.func_manager = FunctionManager(self.plan_manager)
 
-        self.rv_struc.add_planManager(self.plan_manager)
-        self.rv_struc.add_funcManager(self.func_manager)
-
-        self.t_plan.add_planManager(self.plan_manager)
         self.loadPlan()
-        templates = self.file_manager.templates
-        self.rv_temp.setTemps(templates,self.func_manager.getAddTemp)
+        self.setTemps()
 
         keyboard = Window.request_keyboard(self._keyboard_released,self)
         keyboard.bind(on_key_down = self.on_key_down)
@@ -80,7 +78,8 @@ class DayPlannerGUI(Widget):
             char = keycode[1]
             if  not char == None:
                 hotkeys = self.time_manager.getHotKeys()
-                hotkeys = {**hotkeys,**self.t_plan.getHotKeys()}
+                hotkeys['#']=self.updateWidgets
+                hotkeys['spacebar']=self.update
                 if self.b_mode.text == "P/T":
                     hotkeys['s']=self.savePlan
                     hotkeys['l']=self.loadPlan
@@ -93,6 +92,12 @@ class DayPlannerGUI(Widget):
     def savePlan(self):
         self.file_manager.savePlan(self.plan_manager.plan)
     
+    def setTemps(self):
+        self.rv_temp.data = []
+        for temp in self.file_manager.templates:
+                self.rv_temp.data.append({'text': temp.getThemeDuration(),
+                "on_press": self.func_manager.getAddTemp(temp)})
+
     def loadPlan(self):
         name = self.t_theme.text
         plan = self.file_manager.loadPlan(name)
@@ -103,23 +108,47 @@ class DayPlannerGUI(Widget):
         self.file_manager.saveTemplate(self.plan_manager.template)  
 
     def changeMode(self):
-        self.change()
-        self.t_plan.updateWidgets()
         self.plan_manager.swapActive()
+        self.change()
+        self.updateWidgets()
+    
+    def update(self):
+        self.plan_manager.updateText(self.t_plan.text)
+
+    def updateWidgets(self):
+        self.t_theme.text = self.plan_manager.active.theme
+        self.t_plan.text = self.plan_manager.active.getText()
+        self.updateEntryListLabels()
 
     def change(self):
         if self.b_mode.text == "P/T":
             self.b_mode.text = "T/P"
             self.b_load.opacity = 0
             self.b_save.text="save template"
+            self.t_theme.text = self.plan_manager.template.theme
             self.b_save.on_press = self.saveTemplate
         else:
+            self.setTemps()
             self.b_mode.text = "P/T"
             self.b_load.opacity = 1
             self.b_save.text="save plan"
             self.b_save.on_press = self.savePlan
-            self.setTemps(self.file_manager.templates,self.func_manager.getAddTemp)
+            self.t_theme.text = self.plan_manager.plan.theme
 
+    def updateEntryListLabels(self,index=0):
+        self.rv_entries.data = self.rv_entries.data[:index]
+        for e in self.plan_manager.active.step_list[index:]:
+            self._appendEOT(e)
+      
+    def _appendEOT(self,eOT:Entry):
+        index = len(self.rv_entries.data)
+        f_m = self.func_manager
+        func = f_m._getShow_popMenu if isinstance(eOT,Template) else f_m._getRemoveEntry
+        if isinstance(self.plan_manager.active,Plan):
+            dic = {'text': eOT.getStartThemeDuration(),"on_press": func(index)}
+        else:
+            dic = {'text': eOT.getThemeDuration(),"on_press": func(index)}
+        self.rv_entries.data.append(dic)
 
 class MainGUIApp(App):
 

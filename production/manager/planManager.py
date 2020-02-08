@@ -59,7 +59,6 @@ class PlanManager():
 
     def addUpdateStructure(self,updateStructure):
         self.updateStructure = updateStructure
-        self.addCommunication(updateStructure)
     
     def addCommunication(self, func):
         self.funcs.append(func) 
