@@ -22,6 +22,8 @@ from plan import Plan
 from template import Template
 from middle.rvTemplates import RV_Templates
 from middle.planner import Planner
+from middle.rv_structure import RV_Structure
+
 from middle.fileManager import FileManager
 from middle.timeManager import TimeManager
 from middle.planManager import PlanManager
@@ -38,25 +40,34 @@ class DayPlannerGUI(Widget):
     b_load = ObjectProperty()
     template_list = ObjectProperty()
     planner = ObjectProperty()
+    structure_list = ObjectProperty()
+    b_mode= ObjectProperty()
+    t_theme= ObjectProperty()
+
+    plan_manager = None
 
     def __init__(self):
         super().__init__()
         self.file_manager = FileManager("material/","plans/")
         self.file_manager.loadTemplates()
-        self.time_manager = TimeManager()
+        self.time_manager = TimeManager(textinput=self.t_theme)
         self.updateTemplateList()
         self.plan_manager = PlanManager()
         self.func_manager = FunctionManager(self.plan_manager)
 
+        self.structure_list.add_planManager(self.plan_manager)
+        self.structure_list.add_funcManager(self.func_manager)
+
         self.planner.file_manager =self.file_manager
         self.planner.add_planManager(self.plan_manager)
-        self.planner.add_timeManager(self.time_manager)
-        self.planner.add_funcManager(self.func_manager)
         self.loadPlan()
 
         keyboard = Window.request_keyboard(self._keyboard_released,self)
         keyboard.bind(on_key_down = self.on_key_down)
-        self.planner.b_mode.on_press = self.changeMode
+
+    def updateTheme(self,text):
+        if not self.plan_manager == None:
+            self.plan_manager.updateTheme(text)
 
     def updateTemplateList(self):
         self.template_list.rv_list.data = {}
@@ -72,9 +83,9 @@ class DayPlannerGUI(Widget):
         if "ctrl" in modifiers:
             char = keycode[1]
             if  not char == None:
-                hotkeys = self.planner.getHotKeys()
-                t = self.planner.b_mode.text
-                if t == "P/T":
+                hotkeys = self.time_manager.getHotKeys()
+                hotkeys = {**hotkeys,**self.planner.getHotKeys()}
+                if self.b_mode.text == "P/T":
                     hotkeys['s']=self.savePlan
                     hotkeys['l']=self.loadPlan
                 else:
@@ -87,7 +98,7 @@ class DayPlannerGUI(Widget):
         self.file_manager.savePlan(self.plan_manager.plan)
     
     def loadPlan(self):
-        name = self.planner.t_theme.text
+        name = self.t_theme.text
         plan = self.file_manager.loadPlan(name)
         self.plan_manager.setPlan(plan)
         
@@ -100,17 +111,21 @@ class DayPlannerGUI(Widget):
         return addTemp    
 
     def changeMode(self):
-        t = self.planner.b_mode.text
+        t = self.b_mode.text
         if t == "P/T":
+            self.b_mode.text = "T/P"
             self.b_load.opacity = 0
             self.b_save.text="save template"
             self.b_save.on_press = self.saveTemplate
         else:
+            self.b_mode.text = "P/T"
             self.updateTemplateList()
             self.b_load.opacity = 1
             self.b_save.text="save plan"
             self.b_save.on_press = self.savePlan
         self.planner.changeMode()
+        self.plan_manager.swapActive()
+
 
 class MainGUIApp(App):
 

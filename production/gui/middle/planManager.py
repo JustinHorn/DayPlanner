@@ -13,6 +13,7 @@ class PlanManager():
         self.template = Template("Template Theme")
         self.active = self.plan
         self.funcs = list(activationFunctions)
+        self.updateStructure =None
 
     def splitTemplate(self,template_index,split_index):
         self.active.splitTemplate(template_index,split_index) # must be plan
@@ -37,12 +38,28 @@ class PlanManager():
         self.communicate()
         return eOT
 
+    def update(self,theme,text):
+        self.active.theme = theme
+        self.active.update(text)
+        if not self.updateStructure == None:
+            self.updateStructure()
+    
+    def updateText(self,text):
+        self.update(self.active.theme,text)
+
+    def updateTheme(self,theme):
+        self.active.theme = theme
+
     def swapActive(self):
         if self.active == self.plan:
             self.active = self.template
         else:
             self.active = self.plan
         self.communicate()
+
+    def addUpdateStructure(self,updateStructure):
+        self.updateStructure = updateStructure
+        self.addCommunication(updateStructure)
     
     def addCommunication(self, func):
         self.funcs.append(func) 

@@ -1,0 +1,25 @@
+#:include production/gui/middle/pop/popmenu.kv
+
+
+<RV_Structure>:
+    rv_b_entries:rv_b_entries
+
+    Label:
+        size_hint: 1,0.04
+        text:"Structure:"
+        pos_hint:{'x':0.01,"top":1}
+        halign: 'left'
+        valign: 'bottom'
+
+    RecycleView:
+        id:rv_b_entries
+        size_hint: 1,0.96
+        pos_hint:{'x':0,"top":0.96}
+        viewclass: 'Button'
+        RecycleBoxLayout:
+            default_size: None, dp(40)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+            background_color: [1.0,0,0,1]

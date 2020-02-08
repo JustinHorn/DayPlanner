@@ -3,57 +3,17 @@
 <Planner>:
 
     textinput:textinput
-    rv_b_entries:rv_b_entries
-    t_theme:t_theme
-    b_mode:b_mode
 
     size_hint: 1,1
     pos_hint:{"x":0,"top":1}
-    
-       
 
-    FloatLayout:
-        pos_hint:{"x":0,"top":1}
-        size_hint: 1,0.04
-        height: 100
-
-        TextInput:
-            id:t_theme
-            text:"Plan"
-            pos_hint:{"x":0,"top":1}
-            halign: 'left'
-            valign: 'bottom'
-            multiline:False
-            on_text: root.plan_manager.active.theme = self.text
-        
-        Button:
-            id:b_mode
-            text:"P/T"
-            pos_hint:{"x":0.7,"top":1}
-            size_hint_x:0.1
-        Label:
-            text:"Structure:"
-            pos_hint:{"x":0.8,"top":1}
-            halign: 'left'
-            valign: 'bottom'  
 
     TextInput:
         id:textinput
 
         pos_hint:{"x":0,"top":0.96}
-        size_hint: 0.8,0.96
+        size_hint: 1,0.96
         on_text: root.update()
 
-    RecycleView:
-        id:rv_b_entries
-        size_hint: 0.2,0.96
-        pos_hint:{"x":0.8,"top":0.96}
-        viewclass: 'Button'
-        RecycleBoxLayout:
-            default_size: None, dp(56)
-            default_size_hint: 1, None
-            size_hint_y: None
-            height: self.minimum_height
-            orientation: 'vertical'
-            background_color: [1.0,0,0,1]
+
 

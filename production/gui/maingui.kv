@@ -1,6 +1,6 @@
 #:include middle/planner.kv 
 #:include middle/rvt.kv
-
+#:include middle/rv_structure.kv
 
 <TextInput>:
     background_color:0,0,0,1
@@ -27,9 +27,11 @@
 
     b_save:b_save
     b_load:b_load
-    
+    b_mode:b_mode
+    t_theme:t_theme
     template_list:template_list
     planner:planner
+    structure_list:structure_list
 
     FloatLayout:
         size: root.width, root.height
@@ -60,7 +62,29 @@
                 pos_hint:{"x":0,"top":1}
                 size_hint: 0.2,1
 
+            TextInput:
+                id:t_theme
+                text:"Plan"
+                pos_hint:{"x":0.2,"top":1}
+                size_hint:0.6,0.05
+                halign: 'left'
+                valign: 'bottom'
+                multiline:False
+                on_text: root.updateTheme(self.text)
+            
+            Button:
+                id:b_mode
+                text:"P/T"
+                pos_hint:{"x":0.7,"top":1}
+                size_hint:0.1,0.05
+                on_press: root.changeMode()
+
             Planner:
                 id:planner
-                pos_hint:{"x":0.2,"top":1}
-                size_hint: 0.8,1
+                pos_hint:{"x":0.2,"top":0.99}
+                size_hint: 0.6,0.95
+
+            RV_Structure:
+                id:structure_list
+                pos_hint:{"x":0.8,"top":1}
+                size_hint: 0.2,1
