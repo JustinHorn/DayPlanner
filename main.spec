@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(['production/main.py'],
-             pathex=['DayPlanner/production/logic', 'DayPlanner/production/manager','DayPlanner/production/pop'],
+             pathex=['DayPlanner/production/logic', 'DayPlanner/production/manager'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -28,7 +28,7 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           console=True )
-coll = COLLECT(exe,Tree('production/'),Tree('production/logic/'), Tree('production/pop/'),Tree('production/manager/'),
+coll = COLLECT(exe,Tree('production/'),Tree('production/logic/'),Tree('production/manager/'),
                a.binaries,
                a.zipfiles,
                a.datas,

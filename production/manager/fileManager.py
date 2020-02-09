@@ -11,6 +11,15 @@ class FileManager():
     def __init__(self,template_path,plan_path):
         self.template_path = join(template_path)
         self.plan_path = join(plan_path)
+        try:
+            os.mkdir(self.template_path)
+        except:
+            print("error cant mk template dir")
+        try:
+            os.mkdir(self.plan_path)
+        except:
+            print("error cant mk plan dir")
+
 
     def loadTemplates(self):
         try:
@@ -27,13 +36,13 @@ class FileManager():
         if self.templates == None:
             self.templates = []
         self.templates.append(template)
-        load.save(self.template_path+"/"+template.theme+"template",template.getFileText())
+        load.save(self.template_path+"/"+template.theme+"template.txt",template.getFileText())
 
     def savePlan(self,plan):
-        load.save(self.plan_path+plan.theme,plan.getFileText())
+        load.save(self.plan_path+plan.theme+".txt",plan.getFileText())
 
     def loadPlan(self,name):
-        path = self.plan_path+name 
+        path = self.plan_path+name+".txt" 
         text = load.loadText(path)
         if not text == '' :
             plan = Factory.parsePlanFromFileText(text)

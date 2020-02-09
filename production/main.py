@@ -17,22 +17,19 @@ from kivy.core.window import Window, Keyboard
 import sys
 import os
 sys.path.append(os.path.join("./production/logic"))
+sys.path.append(os.path.join("./production/manager"))
+
 
 from plan import Plan
 from template import Template
 from entry import Entry
 
-from manager.fileManager import FileManager
-from manager.timeManager import TimeManager
-from manager.planManager import PlanManager
-from manager.functionManager import FunctionManager
-from pop.popmenu import PopMenu
+from fileManager import FileManager
+from timeManager import TimeManager
+from planManager import PlanManager
+from functionManager import FunctionManager
+from popmenu import PopMenu
 
-
-try:
-    os.mkdr(os.path.join("plans"))
-except:
-    print("error cant mkdr")
 
 class DayPlannerGUI(Widget):
 
@@ -55,8 +52,8 @@ class DayPlannerGUI(Widget):
         self.file_manager.loadTemplates()
 
 
-        self.time_manager = TimeManager(textinput=self.t_theme)
         self.plan_manager = PlanManager(self.updateWidgets)
+        self.time_manager = TimeManager(textinput=self.t_theme)
         self.plan_manager.addUpdateStructure(self.updateEntryListLabels)
         self.func_manager = FunctionManager(self.plan_manager)
 
