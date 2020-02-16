@@ -19,7 +19,6 @@ import os
 sys.path.append(os.path.join("./production/logic"))
 sys.path.append(os.path.join("./production/manager"))
 
-
 from plan import Plan
 from template import Template
 from entry import Entry
@@ -85,6 +84,7 @@ class DayPlannerGUI(Widget):
                 func = hotkeys.get(char) 
                 if not func == None:
                     func()
+            
      
     def savePlan(self):
         self.file_manager.savePlan(self.plan_manager.plan)

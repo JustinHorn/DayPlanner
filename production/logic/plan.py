@@ -20,6 +20,7 @@ class Plan(Template):
         if len(step_list) > 0:
             for e in step_list:
                 self.add(e)  
+        self.count = None
         
 
     def add(self,tempOrEntry):

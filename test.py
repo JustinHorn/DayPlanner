@@ -1,2 +1,3 @@
 import re
-print(re.split(r"#","hihowareyossds    #".replace(" ","")))
+print( re.match(".*\d\d:\d\d$","10:00 nah wie gehts? 00:05"))
+print( re.match(".*\d\d:\d\d$","10:00 nah wie gehts?"))

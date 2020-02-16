@@ -20,6 +20,19 @@ class Test_ParseEntries(unittest.TestCase):
         self.assertEqual("00:00", entries[1].duration)
         self.assertEqual("jogging", entries[1].theme)
 
+    def test_makePlanEntries_duration(self):
+        entry = ParseText.makePlanEntry("10:00 nah wie gehts? 00:05")
+        self.assertEqual(entry.duration,"00:05")
+        self.assertEqual(entry.start,"10:00")
+        self.assertEqual(entry.theme,"nah wie gehts? ")
+    
+    def test_makePlanEntries(self):
+        entry = ParseText.makePlanEntry("10:00 nah wie gehts? ")
+        self.assertEqual(entry.duration,"00:00")
+        self.assertEqual(entry.start,"10:00")
+        self.assertEqual(entry.theme,"nah wie gehts? ")
+
+
 
 if __name__=="__main__":
     unittest.main()

@@ -4,6 +4,17 @@ make a DayPlanner MVP
 # MVP Features
 refactor split everything up in to one large .kv
 change version names to major.minor.patch
+
+
+make maybe setup.exe
+check downloadable
+try one_file
+
+
+startime theme duration (entry example)
+insert templates at any given time!
+make templates out of any given time!
+
 save plans into yearly/monthly/weekly folders
 allow to create templates from plan - by marking and then parsing
 allow to create temporary templates for recursive activities (by marking and parsing)
@@ -16,9 +27,7 @@ get the plans on your phone - and make them visible in one click
 (write with in tempaltes!-- current product ist zu unübersichtlich!)
 
 
-#what if I wanna make a dankbarkeits-liste?
---> you have got to do that somewhere else
---> same for goal files 
+
 
 # Features that could be added:
 try using pip packages instead of sys path

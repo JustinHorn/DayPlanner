@@ -15,19 +15,31 @@ def parsePlanFromFileText(text):
     entries = ParseText.to_planEntries(content)
 
     plan = combineEntriesAndStructure(theme,struc,entries)
+    # TODO: teste diese Bedingung ab
+    if len(entries) > 0:
+        plan.start = entries[0].start
+        plan.updateStarts(entries[0].start,0)
     return plan
+
+class Structure():
+
+    def __init__(self,start,theme,count):
+        self.start = start
+        self.theme = theme
+        self.count = count
+
 
 def combineEntriesAndStructure(theme:str,structure:list,entries:list):
     entrie_index = 0
     plan = Plan(theme)
-    for e in structure:
-        if e[2] == 1:
+    for struc in structure:
+        if struc.count == 1:
             plan.add(entries[entrie_index])
             entrie_index += 1
-        elif e[2] >1:
-            t = Template(e[1])
-            t.start = e[0]
-            c = e[2]
+        elif struc.count >1:
+            t = Template(struc.theme)
+            t.start = struc.start
+            c = struc.count
             for i in range(c):
                 t.add(entries[entrie_index+i])
             entrie_index+=c
@@ -42,7 +54,7 @@ def generateStructure(lines:list):
             start = line[:5]
             theme = line[6:eNSI-1]
             count = int(line[eNSI:])
-            struc.append((start,theme,count))
+            struc.append(Structure(start,theme,count))
         else: 
             return struc
     print("everything parsed")
