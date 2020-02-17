@@ -27,10 +27,28 @@ def makePlanEntry(line:str):
     if re.match(".*\d\d:\d\d$",line):
         return Entry(line[-5:],line[6:-5],start=line[:5])
     else:
-        return Entry("00:00",line[6:],start=line[:5])
-
-
+        return Entry("00:00",line[6:],start=line[:5])       
 
 def filterFormat(lines:list):
-    return  [e for e in lines if len(e) > 6 and not re.match("^\d\d:\d\d",e) == None]
+    return  [e for e in lines if is_line_entry(e)]
 
+def is_line_entry(line):
+    return len(line) > 6 and re.match("^\d\d:\d\d",line)
+
+def insertTime(plan,source,index):
+    lines = source.split("\n")
+    count = 0
+    for i,l in enumerate(lines):
+        if i == index and count > 0:
+            e = plan.getEntryAtIndex(count-1)
+            lines[index] = CalcTime.addTime(e.start,e.duration)+" "
+        elif is_line_entry(l):
+            count +=1
+    return join_str_list(lines)
+
+def join_str_list(lines:list):
+    string = ""
+    for l in lines[:-1]:
+        string = string + l + "\n"
+    string+= lines[-1]
+    return string

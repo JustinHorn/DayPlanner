@@ -22,6 +22,7 @@ sys.path.append(os.path.join("./production/manager"))
 from plan import Plan
 from template import Template
 from entry import Entry
+import ParseText
 
 from fileManager import FileManager
 from timeManager import TimeManager
@@ -76,6 +77,7 @@ class DayPlannerGUI(Widget):
                 hotkeys = self.time_manager.getHotKeys()
                 hotkeys['#']=self.updateWidgets
                 hotkeys['spacebar']=self.update
+                hotkeys['enter'] = self.insertTime
                 if self.b_mode.text == "P/T":
                     hotkeys['s']=self.savePlan
                     hotkeys['l']=self.loadPlan
@@ -84,7 +86,16 @@ class DayPlannerGUI(Widget):
                 func = hotkeys.get(char) 
                 if not func == None:
                     func()
-            
+        
+        # there is an error in documentation it is cursor = (col,row)
+    def insertTime(self):
+        p = self.plan_manager.plan
+        t = self.t_plan.text
+        i = self.t_plan.cursor_row
+        self.t_plan.text = ParseText.insertTime(p,t,i)
+        self.t_plan.cursor = (6,i)
+
+
      
     def savePlan(self):
         self.file_manager.savePlan(self.plan_manager.plan)

@@ -1,4 +1,3 @@
-## I gonna have to run 2 rounds to day
 import sys
 import os
 join = os.path.join

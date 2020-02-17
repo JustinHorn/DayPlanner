@@ -6,7 +6,10 @@ from entry import Entry
 from plan import Plan 
 from template import Template
 
+#TODO: turn this into class because of today l.12 & co
 
+standard = Entry("00:05","standard")
+besonders = Entry("00:06","besonders")
 
 def createPlan(self,string:str):
     plan = Plan("today")
@@ -30,7 +33,7 @@ def addToPlan(self,plan,index,string,classType):
             for i in range(c):
                 addTypeToPlan(self,plan,classType)
         elif  n_char == 'S' and classType == Entry:
-            ele = Entry("00:06","besonders")
+            ele = besonders.clone()
             plan.add(ele)
             return ele
         else:        
@@ -42,7 +45,7 @@ def addTypeToPlan(self,plan,classType):
     if classType is Template:
         plan.add(self.template)
     else:
-        plan.add(Entry("00:05","standard"))
+        plan.add(standard.clone())
 
 def test_listByInstance(self,step_list,instances:str):
     if instances[0].isdigit():

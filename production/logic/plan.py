@@ -21,13 +21,35 @@ class Plan(Template):
             for e in step_list:
                 self.add(e)  
         self.count = None
-        
 
     def add(self,tempOrEntry):
         eOT = tempOrEntry.clone()
+        if len(self.step_list) == 0 and not (eOT.start == None):
+            self.setPlanStart(eOT.start)
         self.setStart(eOT)
         self.step_list.append(eOT)
         return eOT
+
+    #TODO: list as a seperate object
+    def getEntryAtIndex(self,index):
+        count = 0
+        for e in self.step_list:
+            if count == index:
+                if isinstance(e,Template):
+                    return e.step_list[0]
+                else:
+                    return e
+            elif count < index:
+                c = count + e.count
+                if c <= index:
+                    count = c
+                    #go to closer to element or return next element
+                else:# index < c
+                    return e.step_list[index-count]
+            else:
+                raise Exception("Algorithm flawed, index < count")
+        raise Exception("X out of range! Range: "+len(self.step_list)+" X:"+x)
+
     
     def remove(self,index):
         element = self.step_list.pop(index)

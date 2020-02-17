@@ -17,15 +17,31 @@ class Test_Plan(unittest.TestCase):
         super().__init__(*args, **kwargs)
         self.template = load.loadTemplate(Test_Plan.test_source)
 
+    def test_getEntryX(self):
+        p,e = TestHelper.createPlan(self,"E2TES")
+        e1 = p.getEntryAtIndex(0)
+        self.assertEqual(e1,TestHelper.standard)
+        e2 = p.getEntryAtIndex(2+len(self.template.step_list))
+        self.assertEqual(e2,TestHelper.besonders)
+        e3 = p.getEntryAtIndex(3)
+        self.assertEqual(e3,self.template.step_list[1])
+
+
 
     def test_addToPlan(self):
         p,e = TestHelper.createPlan(self,"ETE")
-
         step_list = p.step_list
         self.assertEqual(step_list[0].start,Plan.STANDARD_START)
         self.assertEqual(step_list[1].start,CalcTime.addTime(Plan.STANDARD_START,step_list[0].duration))
         self.assertEqual(step_list[2].start,CalcTime.addTime(step_list[1].start,step_list[1].duration))
     
+    def test_doesAddingFirstEntryChangeStart(self):
+        p = Plan("h")
+        p.add(Entry("00:00","h",start="10:00"))
+        self.assertEqual(p.start,"10:00")
+        p.add(Entry("01:00","h",start="12:00"))
+        self.assertEqual(p.end,"11:00")
+
     def test_removeElement(self):
         p = TestHelper.createPlan(self,"TTT")
 
