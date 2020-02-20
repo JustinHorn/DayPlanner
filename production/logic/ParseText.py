@@ -3,18 +3,18 @@ import CalcTime
 import re
 
 
-def parseTextToEntries(text:str,template=False):
-    entries = text.split("\n")
-    return to_planEntries(entries)
-
-def to_templateEntries(text):
+def templateText_toEntries(text):
     lines = text.split("\n")
-    lines = filterFormat(lines)
+    lines = filterEntries(lines)
     entries = [Entry(e[:5],e[6:]) for e in lines]
     return entries
 
-def to_planEntries(lines:list):
-    lines = filterFormat(lines) 
+def planText_toEntries(text:str):
+    entries = text.split("\n")
+    return planLines_toEntries(entries)
+
+def planLines_toEntries(lines:list):
+    lines = filterEntries(lines) 
     entries = [makePlanEntry(e) for e in lines] # hardcoded formatting
     
     for i,e in enumerate(entries):
@@ -29,22 +29,35 @@ def makePlanEntry(line:str):
     else:
         return Entry("00:00",line[6:],start=line[:5])       
 
-def filterFormat(lines:list):
+def filterEntries(lines:list):
     return  [e for e in lines if is_line_entry(e)]
 
 def is_line_entry(line):
     return len(line) > 6 and re.match("^\d\d:\d\d",line)
 
-def insertTime(plan,source,index):
-    lines = source.split("\n")
-    count = 0
-    for i,l in enumerate(lines):
-        if i == index and count > 0:
-            e = plan.getEntryAtIndex(count-1)
-            lines[index] = CalcTime.addTime(e.start,e.duration)+" "
-        elif is_line_entry(l):
-            count +=1
+
+def insertEndTime(plan,text,index):
+    # finds last entrie line index in text and plan, then  inserts time, 
+    lines = text.split("\n")
+    lines[index] = getEndTime_of_entryBeforeLine(plan,text,index)
+
     return join_str_list(lines)
+
+def getEndTime_of_entryBeforeLine(plan,text,index):
+    lines = text.split("\n")
+    entry_index = getEntryNumber_beforeLine(lines,index) -1
+    entry = plan.getEntryAtIndex(entry_index)
+    return entry.getEnd()
+
+def getEntryNumber_beforeLine(lines:list,line_index):
+    lines[line_index]
+    count_entries= 0
+    for l_index,l in enumerate(lines):
+        if l_index == line_index:
+            return count_entries
+        elif is_line_entry(l):
+            count_entries +=1
+    raise Exception("code should have never come so far")
 
 def join_str_list(lines:list):
     string = ""

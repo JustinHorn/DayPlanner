@@ -120,7 +120,7 @@ class Plan(Template):
         return t
 
     def update(self,update_text):
-        entries = ParseText.parseTextToEntries(update_text)
+        entries = ParseText.planText_toEntries(update_text)
 
         u_l = Updater(self.step_list,entries).update()
         self.step_list = FormatStructure(u_l).format()

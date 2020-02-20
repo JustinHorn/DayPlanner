@@ -21,13 +21,13 @@ class Test_Manager(unittest.TestCase):
         plan.add(Entry("00:02","hi wie gehts?",start="00:01"))
         plan.add(Entry("00:05","mir gehts gut!",start="00:03"))
 
-        string = ParseText.insertTime( plan,test_source,1)  
+        string = ParseText.insertEndTime( plan,test_source,1)  
         string = string.split("\n")
 
         t = test_source.split("\n")
         self.assertEqual(t[0],string[0])
         self.assertNotEqual(t[1],string[1])
-        self.assertEqual(string[1],"00:03")
+        self.assertEqual(string[1].strip(),"00:03")
         self.assertEqual(t[2],string[2])
 
 

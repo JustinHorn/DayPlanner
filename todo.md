@@ -5,6 +5,7 @@ make a DayPlanner MVP
 refactor split everything up in to one large .kv
 change version names to major.minor.patch
 
+implement updateWidgets on new 01:00
 
 make maybe setup.exe
 check downloadable

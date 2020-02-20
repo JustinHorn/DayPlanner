@@ -12,7 +12,7 @@ def parsePlanFromFileText(text):
     content_start_index = len(struc)+3
     content = text[content_start_index:]
 
-    entries = ParseText.to_planEntries(content)
+    entries = ParseText.planLines_toEntries(content)
 
     plan = combineEntriesAndStructure(theme,struc,entries)
     # TODO: teste diese Bedingung ab

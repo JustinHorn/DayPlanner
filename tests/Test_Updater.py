@@ -24,7 +24,7 @@ class Test_Updater(unittest.TestCase):
     def test_mergeListToEntries(self):
         p,e = TestHelper.createPlan(self,"T")
         t = p.step_list
-        entries = ParseText.parseTextToEntries(load.loadText(join("material/test/test_update1.txt")))
+        entries = ParseText.planText_toEntries(load.loadText(join("material/test/test_update1.txt")))
         
         u = Updater(t,entries)
         new_list = u.mergeListToEntries()
@@ -33,7 +33,7 @@ class Test_Updater(unittest.TestCase):
     def test_doesEntryListContain(self):
         p,e = TestHelper.createPlan(self,"T")
         t = p.step_list
-        entries = ParseText.parseTextToEntries(load.loadText(join("material/test/test_update1.txt")))
+        entries = ParseText.planText_toEntries(load.loadText(join("material/test/test_update1.txt")))
         
         u = Updater(t,entries)
         contains,index = u.doesEntryListContain(t[0])

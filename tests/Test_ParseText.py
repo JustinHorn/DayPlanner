@@ -13,7 +13,7 @@ class Test_ParseEntries(unittest.TestCase):
 
     def test_one(self):
         text = "01:00 swimming\n02:00 jogging"
-        entries = ParseText.parseTextToEntries(text)
+        entries = ParseText.planText_toEntries(text)
         self.assertEqual("01:00", entries[0].start)
         self.assertEqual("01:00", entries[0].duration)
         self.assertEqual("swimming", entries[0].theme)
@@ -44,13 +44,13 @@ class Test_ParseEntries(unittest.TestCase):
         plan.add(Entry("00:02","hi wie gehts?",start="00:01"))
         plan.add(Entry("00:05","mir gehts gut!",start="00:03"))
 
-        string = ParseText.insertTime( plan,test_source,1)  
+        string = ParseText.insertEndTime( plan,test_source,1)  
         string = string.split("\n")
         t = test_source.split("\n")
         self.assertEqual(len(string),len(t))
         self.assertEqual(t[0],string[0])
         self.assertNotEqual(t[1],string[1])
-        self.assertEqual(string[1],"00:03")
+        self.assertEqual(string[1].strip(),"00:03")
         self.assertEqual(t[2],string[2])
 
     def test_insertTimeWithTemplates(self):
@@ -64,13 +64,13 @@ class Test_ParseEntries(unittest.TestCase):
         plan.updateStarts("00:01",0)
 
 
-        string = ParseText.insertTime( plan,test_source,2)  
+        string = ParseText.insertEndTime( plan,test_source,2)  
         string = string.split("\n")
         t = test_source.split("\n")
         self.assertEqual(len(string),len(t))
         self.assertEqual(t[0],string[0])
         self.assertEqual(string[1],t[1])
-        self.assertEqual(string[2],"00:08")
+        self.assertEqual(string[2].strip(),"00:08")
         self.assertNotEqual(t[2],string[2])
 
 

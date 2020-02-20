@@ -30,7 +30,6 @@ from planManager import PlanManager
 from functionManager import FunctionManager
 from popmenu import PopMenu
 
-
 class DayPlannerGUI(Widget):
 
     b_save = ObjectProperty()
@@ -78,6 +77,7 @@ class DayPlannerGUI(Widget):
                 hotkeys['#']=self.updateWidgets
                 hotkeys['spacebar']=self.update
                 hotkeys['enter'] = self.insertTime
+                hotkeys['alt-gr'] = self.markedText_toTemplate
                 if self.b_mode.text == "P/T":
                     hotkeys['s']=self.savePlan
                     hotkeys['l']=self.loadPlan
@@ -87,16 +87,19 @@ class DayPlannerGUI(Widget):
                 if not func == None:
                     func()
         
-        # there is an error in documentation it is cursor = (col,row)
+    def markedText_toTemplate(self):
+        t = Template("new template")
+        entries = ParseText.planText_toEntries(self.t_plan.selection_text)
+        t.addAll(entries)
+        self.plan_manager.setTemplate(t)
+        self.change()
+    
     def insertTime(self):
         p = self.plan_manager.plan
         t = self.t_plan.text
         i = self.t_plan.cursor_row
-        self.t_plan.text = ParseText.insertTime(p,t,i)
-        self.t_plan.cursor = (6,i)
-
-
-     
+        self.t_plan.insert_text(ParseText.getEndTime_of_entryBeforeLine(p,t,i)+" ")
+  
     def savePlan(self):
         self.file_manager.savePlan(self.plan_manager.plan)
     

@@ -11,3 +11,5 @@
 /plans
 /material
 !/material/test
+*.xml
+*.iml
