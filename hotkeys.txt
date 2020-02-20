@@ -1,0 +1,11 @@
+Hotkeys:
+str &
+enter	enter	inserts end time of the last entry to cursor position in the big textinput
+n	next	increments time in small textiput
+p	previous	decrement time in small textinput
+s 	save	saves current Template(routine) or Plan
+l	load	loads plan (name of plan = text in small textinput)
+alt-gr	idk	switches to template mode and adds marked tet to a new template that still needs to be saved
+
+#	update	writes plan content to textinputs		plan -> text
+spacebar 	update	updates plan content by textiputs 	text -> plan
