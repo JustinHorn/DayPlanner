@@ -1,4 +1,7 @@
-import CalcTime
+try:
+    import CalcTime
+except:
+    from . import CalcTime
 
 class Entry():
 

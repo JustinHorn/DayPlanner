@@ -1,10 +1,9 @@
 import sys
 import os
-sys.path.append(os.path.join("./production/logic"))
 
-from plan import Plan
-from template import Template
-from entry import Entry
+from logic.plan import Plan
+from logic.template import Template
+from logic.entry import Entry
 
 class PlanManager():
 

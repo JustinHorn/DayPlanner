@@ -1,8 +1,14 @@
 """A utils class that helps to create plans and templates from text"""
-from plan import Plan
-from template import Template
-from entry import Entry 
-import ParseText
+try:
+    from plan import Plan
+    from template import Template
+    from entry import Entry 
+    import ParseText
+except:
+    from .plan import Plan
+    from .template import Template
+    from .entry import Entry 
+    from . import ParseText
 
 def parsePlanFromFileText(text):
     text = text.split("\n")

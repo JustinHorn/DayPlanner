@@ -1,7 +1,14 @@
-from entry import Entry
-import CalcTime
-import re
-import ParseText
+try:
+    from entry import Entry
+    import CalcTime
+    import re
+    import ParseText
+except:
+    from .entry import Entry
+    from . import CalcTime
+    import re
+    from . import ParseText
+
 
 class Template(Entry):
 

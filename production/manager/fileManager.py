@@ -1,10 +1,9 @@
 import sys
 import os
 join = os.path.join
-sys.path.append(join("./production/logic"))
 
-import load
-import Factory
+from logic import load
+from logic import Factory
 
 class FileManager():
     def __init__(self,template_path,plan_path):

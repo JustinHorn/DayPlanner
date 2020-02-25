@@ -1,11 +1,20 @@
-from entry import Entry
-from template import Template
-from plan import Plan
+try:
+    from entry import Entry
+    from template import Template
+    from plan import Plan
+    import ParseText
+    import Factory
+except:
+    from .entry import Entry
+    from .template import Template
+    from .plan import Plan
+    from . import ParseText
+    from . import Factory
+
 
 from os import listdir
 from os.path import isfile, join
-import ParseText
-import Factory
+
 
 def stringToTemplate(data:str):
     try:

@@ -1,10 +1,19 @@
-from entry import Entry
-from template import Template
-import CalcTime 
-from updater import Updater
-from formatStructure import FormatStructure
+try:
+    from entry import Entry
+    from template import Template
+    import CalcTime 
+    from updater import Updater
+    from formatStructure import FormatStructure
+    import ParseText
+except:
+    from .entry import Entry
+    from .template import Template
+    from . import CalcTime 
+    from .updater import Updater
+    from .formatStructure import FormatStructure
+    from . import ParseText
+ 
 
-import ParseText
 
 class Plan(Template):
 

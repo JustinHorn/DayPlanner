@@ -16,18 +16,18 @@ from kivy.core.window import Window, Keyboard
 
 import sys
 import os
-sys.path.append(os.path.join("./production/logic"))
-sys.path.append(os.path.join("./production/manager"))
+#sys.path.append(os.path.join("./production/logic"))
+#sys.path.append(os.path.join("./production/manager"))
 
-from plan import Plan
-from template import Template
-from entry import Entry
-import ParseText
+from logic.plan import Plan
+from logic.template import Template
+from logic.entry import Entry
+from logic import ParseText
 
-from fileManager import FileManager
-from timeManager import TimeManager
-from planManager import PlanManager
-from functionManager import FunctionManager
+from manager.fileManager import FileManager
+from manager.timeManager import TimeManager
+from manager.planManager import PlanManager
+from manager.functionManager import FunctionManager
 from popmenu import PopMenu
 
 class DayPlannerGUI(Widget):
@@ -49,7 +49,6 @@ class DayPlannerGUI(Widget):
         super().__init__()
         self.file_manager = FileManager("material/","plans/")
         self.file_manager.loadTemplates()
-
 
         self.plan_manager = PlanManager(self.updateWidgets)
         self.time_manager = TimeManager(textinput=self.t_theme)
@@ -98,7 +97,10 @@ class DayPlannerGUI(Widget):
         p = self.plan_manager.plan
         t = self.t_plan.text
         i = self.t_plan.cursor_row
-        self.t_plan.insert_text(ParseText.getEndTime_of_entryBeforeLine(p,t,i)+" ")
+
+        entry_index = ParseText.getEntryNumber_beforeLine(t,i) -1
+        entry = self.plan_manager.plan.getEntryAtIndex(entry_index)
+        self.t_plan.insert_text(entry.getEnd()+" ")
   
     def savePlan(self):
         self.file_manager.savePlan(self.plan_manager.plan)

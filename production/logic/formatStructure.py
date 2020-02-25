@@ -1,5 +1,9 @@
-from template import Template
-from entry import Entry
+try:
+    from template import Template
+    from entry import Entry
+except:
+    from .template import Template
+    from .entry import Entry
 
 class FormatStructure():
 

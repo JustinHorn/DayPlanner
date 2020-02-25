@@ -1,7 +1,4 @@
 from kivy.uix.popup import Popup
-import sys
-import os
-sys.path.append(os.path.join("./production/pop"))
 from popmenu import PopMenu
     
 class FunctionManager(): 

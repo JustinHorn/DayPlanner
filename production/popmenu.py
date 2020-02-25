@@ -10,9 +10,8 @@ from kivy.properties import ObjectProperty
 
 import sys
 import os
-sys.path.append(os.path.join("./production/logic"))
-from template import Template
-from entry import Entry
+from logic.template import Template
+from logic.entry import Entry
 
 class PopMenu(FloatLayout):
 

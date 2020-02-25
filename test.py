@@ -1,5 +1,2 @@
-import re
-t = """hi
-
-lol"""
-print(t.split("\n"))
+path_to_be=""
+export PYTHONPATH=$path_to_be:$PATH

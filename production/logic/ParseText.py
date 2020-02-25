@@ -1,7 +1,11 @@
-from entry import Entry
-import CalcTime
-import re
-
+try:
+    from entry import Entry
+    import CalcTime
+    import re
+except:
+    from .entry import Entry
+    from . import CalcTime
+    import re
 
 def templateText_toEntries(text):
     lines = text.split("\n")
@@ -39,17 +43,20 @@ def is_line_entry(line):
 def insertEndTime(plan,text,index):
     # finds last entrie line index in text and plan, then  inserts time, 
     lines = text.split("\n")
-    lines[index] = getEndTime_of_entryBeforeLine(plan,text,index)
-
-    return join_str_list(lines)
-
-def getEndTime_of_entryBeforeLine(plan,text,index):
-    lines = text.split("\n")
     entry_index = getEntryNumber_beforeLine(lines,index) -1
     entry = plan.getEntryAtIndex(entry_index)
-    return entry.getEnd()
+    lines[index] = entry.getEnd()
+    return join_str_list(lines)
 
-def getEntryNumber_beforeLine(lines:list,line_index):
+
+
+ 
+
+def getEntryNumber_beforeLine(text,line_index):
+    if not isinstance(text,list):
+        lines = text.split("\n")
+    else:
+        lines = text
     lines[line_index]
     count_entries= 0
     for l_index,l in enumerate(lines):
