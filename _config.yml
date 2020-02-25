@@ -1,1 +1,6 @@
 theme: jekyll-theme-midnight
+github:
+  is_project_page: false
+
+# Google Analytics
+google_analytics: UA-158983708-2
