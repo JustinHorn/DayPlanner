@@ -5,10 +5,10 @@ class FunctionManager():
     def __init__(self,plan_manager):
         self.plan_manager = plan_manager
 
-    def get_renameTemplate(self,temp_index):
-        def renameTemplate(new_name):
+    def get_renameRoutine(self,temp_index):
+        def renameRoutine(new_name):
             self.plan_manager.rename(temp_index,new_name)
-        return renameTemplate
+        return renameRoutine
 
     def _getShow_popMenu(self,index):
         def showPopMenu():
@@ -19,7 +19,7 @@ class FunctionManager():
             pM.addEntries(temp)
             pM.addDeleteFunction(self._getRemoveEntry(index,dismiss_func=pW.dismiss))
             pM.addSplitFunction(self._get_get_splitFunc(index,dismiss_func=pW.dismiss))
-            pM.addRename(self.get_renameTemplate(index))
+            pM.addRename(self.get_renameRoutine(index))
 
             pW.open()
         return showPopMenu
@@ -34,7 +34,7 @@ class FunctionManager():
     def _get_get_splitFunc(self,template_index,dismiss_func=None):
         def get_splitFunc(entry_index):
             def splitFunc():
-                self.plan_manager.splitTemplate(template_index,entry_index)
+                self.plan_manager.splitRoutine(template_index,entry_index)
                 if not dismiss_func== None:
                     dismiss_func()
             return splitFunc

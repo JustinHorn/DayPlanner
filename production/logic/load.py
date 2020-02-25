@@ -1,12 +1,12 @@
 try:
     from entry import Entry
-    from template import Template
+    from routine import Routine
     from plan import Plan
     import ParseText
     import Factory
 except:
     from .entry import Entry
-    from .template import Template
+    from .routine import Routine
     from .plan import Plan
     from . import ParseText
     from . import Factory
@@ -16,29 +16,29 @@ from os import listdir
 from os.path import isfile, join
 
 
-def stringToTemplate(data:str):
+def stringToRoutine(data:str):
     try:
         theme = data.split("\n")[0]
-        t = Template(theme)
+        t = Routine(theme)
         t.update(data[1:])
         return t
     except RuntimeError as err:
         print('parseData error',err)
-        return Template("parseData error")
+        return routine("parseData error")
 
-def loadTemplate(path):
+def loadRoutine(path):
     text = loadText(path)
-    template = Factory.parseTemplateFromFileText(text)
-    return template
+    routine = Factory.parseRoutineFromFileText(text)
+    return routine
 
-def loadTemplateDir(directory:str):
+def loadRoutineDir(directory:str):
     only_files = [f for f in listdir(directory) if isfile(join(directory,f))]
-    only_templates =[f for f in only_files if not f.find("template") == -1 ]
-    templates = []
-    for f in only_templates:
-        temp = loadTemplate(join(directory,f))
-        templates.append(temp)
-    return templates
+    only_routines =[f for f in only_files if not f.find("routine") == -1 ]
+    routines = []
+    for f in only_routines:
+        routine = loadRoutine(join(directory,f))
+        routines.append(routine)
+    return routines
 
 def save(path,text):
     try:

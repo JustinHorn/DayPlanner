@@ -6,11 +6,11 @@ from logic import load
 from logic import Factory
 
 class FileManager():
-    def __init__(self,template_path,plan_path):
-        self.template_path = join(template_path)
+    def __init__(self,routine_path,plan_path):
+        self.routine_path = join(routine_path)
         self.plan_path = join(plan_path)
         try:
-            os.mkdir(self.template_path)
+            os.mkdir(self.routine_path)
         except:
             print("error cant mk template dir")
         try:
@@ -19,22 +19,22 @@ class FileManager():
             print("error cant mk plan dir")
 
 
-    def loadTemplates(self):
+    def loadRoutines(self):
         try:
-            self.templates = load.loadTemplateDir(self.template_path)
+            self.routines = load.loadRoutineDir(self.routine_path)
         except:
-            self.templates = []
+            self.routines = []
             try:
-                os.mkdr(self.template_path)
+                os.mkdr(self.routine_path)
             except:
                 print("error cant mkdr")
 
 
-    def saveTemplate(self,template):
-        if self.templates == None:
-            self.templates = []
-        self.templates.append(template)
-        load.save(self.template_path+"/"+template.theme+"template.txt",template.getFileText())
+    def saveRoutine(self,routine):
+        if self.routines == None:
+            self.routines = []
+        self.routines.append(routine)
+        load.save(self.routine_path+"/"+routine.theme+"routine.txt",routine.getFileText())
 
     def savePlan(self,plan):
         load.save(self.plan_path+plan.theme+".txt",plan.getFileText())

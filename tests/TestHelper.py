@@ -4,7 +4,7 @@ import os
 sys.path.append(os.path.join('./production/logic'))
 from entry import Entry 
 from plan import Plan 
-from template import Template
+from routine import Routine
 
 #TODO: turn this into class because of today l.12 & co
 
@@ -20,8 +20,8 @@ def createPlan(self,string:str):
             ele = addToPlan(self,plan,i,string,Entry)
             if not ele == None:
                 special_element = ele
-        elif e=="T":
-            addToPlan(self,plan,i,string,Template)
+        elif e=="R":
+            addToPlan(self,plan,i,string,Routine)
     return plan,special_element
 
 def addToPlan(self,plan,index,string,classType):
@@ -42,8 +42,8 @@ def addToPlan(self,plan,index,string,classType):
         addTypeToPlan(self,plan,classType)
 
 def addTypeToPlan(self,plan,classType):
-    if classType is Template:
-        plan.add(self.template)
+    if classType is Routine:
+        plan.add(self.routine)
     else:
         plan.add(standard.clone())
 
@@ -55,7 +55,7 @@ def test_listByInstance(self,step_list,instances:str):
     for i,e in enumerate(instances):
         if e == 'E':
             self.assertEqual(step_list[i].__class__,Entry)
-        elif e=="T":
-            self.assertEqual(step_list[i].__class__,Template)
+        elif e=="R":
+            self.assertEqual(step_list[i].__class__,Routine)
         else:
             pass

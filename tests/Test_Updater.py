@@ -5,7 +5,7 @@ join = os.path.join
 sys.path.append(join('./production/logic'))
 import load 
 from plan import Plan 
-from template import Template
+from routine import Routine
 from entry import Entry
 import TestHelper
 import ParseText
@@ -19,32 +19,32 @@ class Test_Updater(unittest.TestCase):
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.template = load.loadTemplate(Test_Updater.test_source)
+        self.routine = load.loadRoutine(Test_Updater.test_source)
 
     def test_mergeListToEntries(self):
-        p,e = TestHelper.createPlan(self,"T")
-        t = p.step_list
+        p,e = TestHelper.createPlan(self,"R")
+        r = p.step_list
         entries = ParseText.planText_toEntries(load.loadText(join("material/test/test_update1.txt")))
         
-        u = Updater(t,entries)
+        u = Updater(r,entries)
         new_list = u.mergeListToEntries()
-        self.assertEqual(t[0],new_list[0])
+        self.assertEqual(r[0],new_list[0])
 
     def test_doesEntryListContain(self):
-        p,e = TestHelper.createPlan(self,"T")
-        t = p.step_list
+        p,e = TestHelper.createPlan(self,"R")
+        r = p.step_list
         entries = ParseText.planText_toEntries(load.loadText(join("material/test/test_update1.txt")))
         
-        u = Updater(t,entries)
-        contains,index = u.doesEntryListContain(t[0])
+        u = Updater(r,entries)
+        contains,index = u.doesEntryListContain(r[0])
         
         self.assertEqual(index,0)
 
     def test_update(self):
-        p,e = TestHelper.createPlan(self,"T")
-        t = p.step_list
+        p,e = TestHelper.createPlan(self,"R")
+        r = p.step_list
         entries = [Entry("00:10","nah wie gehts?")]
-        step_list =  Updater(t,entries).update()
+        step_list =  Updater(r,entries).update()
         self.assertEqual(step_list,entries)
 
 

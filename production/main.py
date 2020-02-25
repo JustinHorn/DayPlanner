@@ -20,7 +20,7 @@ import os
 #sys.path.append(os.path.join("./production/manager"))
 
 from logic.plan import Plan
-from logic.template import Template
+from logic.routine import Routine
 from logic.entry import Entry
 from logic import ParseText
 
@@ -47,8 +47,9 @@ class DayPlannerGUI(Widget):
 
     def __init__(self):
         super().__init__()
+       
         self.file_manager = FileManager("material/","plans/")
-        self.file_manager.loadTemplates()
+        self.file_manager.loadRoutines()
 
         self.plan_manager = PlanManager(self.updateWidgets)
         self.time_manager = TimeManager(textinput=self.t_theme)
@@ -56,7 +57,7 @@ class DayPlannerGUI(Widget):
         self.func_manager = FunctionManager(self.plan_manager)
 
         self.loadPlan()
-        self.setTemps()
+        self.setRoutines()
 
         keyboard = Window.request_keyboard(self._keyboard_released,self)
         keyboard.bind(on_key_down = self.on_key_down)
@@ -76,21 +77,21 @@ class DayPlannerGUI(Widget):
                 hotkeys['#']=self.updateWidgets
                 hotkeys['spacebar']=self.update
                 hotkeys['enter'] = self.insertTime
-                hotkeys['alt-gr'] = self.markedText_toTemplate
-                if self.b_mode.text == "P/T":
+                hotkeys['alt-gr'] = self.markedText_toRoutine
+                if self.b_mode.text == "P/R":
                     hotkeys['s']=self.savePlan
                     hotkeys['l']=self.loadPlan
                 else:
-                    hotkeys['s']=self.saveTemplate
+                    hotkeys['s']=self.saveRoutine
                 func = hotkeys.get(char) 
                 if not func == None:
                     func()
         
-    def markedText_toTemplate(self):
-        t = Template("new template")
+    def markedText_toRoutine(self):
+        t = Routine("new routine")
         entries = ParseText.planText_toEntries(self.t_plan.selection_text)
         t.addAll(entries)
-        self.plan_manager.setTemplate(t)
+        self.plan_manager.setRoutine(t)
         self.change()
     
     def insertTime(self):
@@ -105,11 +106,11 @@ class DayPlannerGUI(Widget):
     def savePlan(self):
         self.file_manager.savePlan(self.plan_manager.plan)
     
-    def setTemps(self):
+    def setRoutines(self):
         self.rv_temp.data = []
-        for temp in self.file_manager.templates:
-                self.rv_temp.data.append({'text': temp.getThemeDuration(),
-                "on_press": self.func_manager.getAddTemp(temp)})
+        for routine in self.file_manager.routines:
+                self.rv_temp.data.append({'text': routine.getThemeDuration(),
+                "on_press": self.func_manager.getAddTemp(routine)})
 
     def loadPlan(self):
         name = self.t_theme.text
@@ -117,8 +118,8 @@ class DayPlannerGUI(Widget):
         if not plan == None:
             self.plan_manager.setPlan(plan)
         
-    def saveTemplate(self):
-        self.file_manager.saveTemplate(self.plan_manager.template)  
+    def saveRoutine(self):
+        self.file_manager.saveRoutine(self.plan_manager.routine)  
 
     def changeMode(self):
         self.plan_manager.swapActive()
@@ -134,19 +135,19 @@ class DayPlannerGUI(Widget):
         self.updateEntryListLabels()
 
     def change(self):
-        if self.b_mode.text == "P/T":
-            self.b_mode.text = "T/P"
+        if self.b_mode.text == "P/R":
+            self.b_mode.text = "R/P"
             self.b_load.opacity = 0
-            self.b_save.text="save template"
-            self.t_theme.text = self.plan_manager.template.theme
-            self.b_save.on_press = self.saveTemplate
+            self.b_save.text="save routine"
+            self.t_theme.text = self.plan_manager.getTheme()
+            self.b_save.on_press = self.saveRoutine
         else:
-            self.setTemps()
-            self.b_mode.text = "P/T"
+            self.setRoutines()
+            self.b_mode.text = "P/R"
             self.b_load.opacity = 1
             self.b_save.text="save plan"
             self.b_save.on_press = self.savePlan
-            self.t_theme.text = self.plan_manager.plan.theme
+            self.t_theme.text = self.plan_manager.getTheme()
 
     def updateEntryListLabels(self,index=0):
         self.rv_entries.data = self.rv_entries.data[:index]
@@ -156,7 +157,7 @@ class DayPlannerGUI(Widget):
     def _appendEOT(self,eOT:Entry):
         index = len(self.rv_entries.data)
         f_m = self.func_manager
-        func = f_m._getShow_popMenu if isinstance(eOT,Template) else f_m._getRemoveEntry
+        func = f_m._getShow_popMenu if isinstance(eOT,Routine) else f_m._getRemoveEntry
         if isinstance(self.plan_manager.active,Plan):
             dic = {'text': eOT.getStartThemeDuration(),"on_press": func(index)}
         else:
@@ -166,6 +167,7 @@ class DayPlannerGUI(Widget):
 class MainGUIApp(App):
 
     def build(self):
+        self.title = "DayPlanner"
         return DayPlannerGUI()
 
 if __name__ == '__main__':

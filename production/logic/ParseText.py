@@ -7,7 +7,7 @@ except:
     from . import CalcTime
     import re
 
-def templateText_toEntries(text):
+def routineText_toEntries(text):
     lines = text.split("\n")
     lines = filterEntries(lines)
     entries = [Entry(e[:5],e[6:]) for e in lines]
