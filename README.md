@@ -18,7 +18,7 @@ A project of mine that is supposed to help you plan your day. It is made for fas
 # How to use it?
 
 
-## Hotkeys:
+## Hotkeys
 
 |use str & | meaning | what it does|
 |---|---|---|
@@ -59,12 +59,12 @@ To create a new one change the theme in the small text input and save.
 To change a old one click on it change it and save.
 If there is a bugg when you swap to plan mode. Just save and restart the programm
 
-# Why did I make it ?
+# Why ?
 I used to plan my days using vs-code and .txt files. I had to type in the same things over and over again. I wanted to automize that. Hence this project
 
 # Credits
 Thank you to all you tutorial makers on youtube and friends in my personal life. Without your guides and tipps all of this would have taken much longer.
 
-# You want to work on it yourself
+# If you want to work on it yourself
 
- Sure do it. contact me :D
+The project uses [kivy](https://kivy.org/#home) and is based in a [conda](https://www.anaconda.com/) enviroment. 
