@@ -1,13 +1,13 @@
 try:
     from entry import Entry
-    from template import Template
+    from routine import Routine
     import CalcTime 
     from updater import Updater
     from formatStructure import FormatStructure
     import ParseText
 except:
     from .entry import Entry
-    from .template import Template
+    from .routine import Routine
     from . import CalcTime 
     from .updater import Updater
     from .formatStructure import FormatStructure
@@ -15,7 +15,7 @@ except:
  
 
 
-class Plan(Template):
+class Plan(Routine):
 
     STANDARD_START = "07:00"
 
@@ -31,8 +31,8 @@ class Plan(Template):
                 self.add(e)  
         self.count = None
 
-    def add(self,tempOrEntry):
-        eOT = tempOrEntry.clone()
+    def add(self,routOrEntry):
+        eOT = routOrEntry.clone()
         if len(self.step_list) == 0 and not (eOT.start == None):
             self.setPlanStart(eOT.start)
         self.setStart(eOT)
@@ -44,7 +44,7 @@ class Plan(Template):
         count = 0
         for e in self.step_list:
             if count == index:
-                if isinstance(e,Template):
+                if isinstance(e,Routine):
                     return e.step_list[0]
                 else:
                     return e
@@ -79,7 +79,7 @@ class Plan(Template):
         
 
     def setStart(self,eOT):
-        if isinstance(eOT,Template):
+        if isinstance(eOT,Routine):
             eOT.start = self.end
             t_list = eOT.step_list
             for e in t_list:
@@ -100,7 +100,7 @@ class Plan(Template):
     def getText(self):
         string:str =""
         for tOE in self.step_list:
-            if isinstance(tOE,Template):
+            if isinstance(tOE,Routine):
                 for e in tOE.step_list:
                     string = string + e.start +" "+e.theme+"\n"
             else:
@@ -119,11 +119,11 @@ class Plan(Template):
         content = "Content:\n"+self.getText()
         return name_and_elements + content
 
-    def splitTemplate(self,template_index,split_point):
-        t = self.step_list.pop(template_index)
+    def splitRoutine(self,routine_index,split_point):
+        t = self.step_list.pop(routine_index)
         t1,t2 = t.split(split_point)
-        self.step_list.insert(template_index,t2)
-        self.step_list.insert(template_index,t1)
+        self.step_list.insert(routine_index,t2)
+        self.step_list.insert(routine_index,t1)
         t1.start = t.start
         t2.start = CalcTime.addTime(t.start,t1.duration)
         return t

@@ -10,7 +10,7 @@ except:
     from . import ParseText
 
 
-class Template(Entry):
+class Routine(Entry):
 
     def __init__(self,theme:str):
         super().__init__("00:00",theme)
@@ -31,11 +31,11 @@ class Template(Entry):
 
     def split(self,splitpoint):
         if splitpoint > len(self.step_list):
-            print("error -0- template.py")
+            print("error -0- routine.py")
             pass #TODO: error should be thrown
         else :
-            t1 = Template(self.theme+" 1/2")
-            t2 = Template(self.theme+" 2/2")
+            t1 = Routine(self.theme+" 1/2")
+            t2 = Routine(self.theme+" 2/2")
 
             for e in self.step_list[:splitpoint]:
                 t1.add(e.clone())
@@ -53,7 +53,7 @@ class Template(Entry):
         self.step_list.pop(index)
 
     def clone(self):
-        clone = Template(self.theme)
+        clone = Routine(self.theme)
         for e in self.step_list:
             clone.add(e.clone())
         return clone
@@ -74,12 +74,12 @@ class Template(Entry):
         self.duration = "00:00"
         self.step_list = []
         self.count = 0
-        entries = ParseText.templateText_toEntries(text)
+        entries = ParseText.routineText_toEntries(text)
         for e in entries:
             self.add(e)
     
 
-    def templateToText(self,startTime="00:00"):
+    def routineToText(self,startTime="00:00"):
         step_list = self.step_list
         text = ""
         for i,e in enumerate(step_list):

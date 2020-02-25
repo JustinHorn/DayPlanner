@@ -1,12 +1,12 @@
 """A utils class that helps to create plans and templates from text"""
 try:
     from plan import Plan
-    from template import Template
+    from routine import Routine
     from entry import Entry 
     import ParseText
 except:
     from .plan import Plan
-    from .template import Template
+    from .routine import Routine
     from .entry import Entry 
     from . import ParseText
 
@@ -43,13 +43,13 @@ def combineEntriesAndStructure(theme:str,structure:list,entries:list):
             plan.add(entries[entrie_index])
             entrie_index += 1
         elif struc.count >1:
-            t = Template(struc.theme)
-            t.start = struc.start
+            r = Routine(struc.theme)
+            r.start = struc.start
             c = struc.count
             for i in range(c):
-                t.add(entries[entrie_index+i])
+                r.add(entries[entrie_index+i])
             entrie_index+=c
-            plan.add(t)
+            plan.add(r)
     return plan
 
 def generateStructure(lines:list):
@@ -72,12 +72,12 @@ def getEndNumberStartIndex(line:str):
             return -i
     return 0
 
-def parseTemplateFromFileText(text:str):
+def parseRoutineFromFileText(text:str):
     try:
         theme = text.split("\n")[0]
-        t = Template(theme)
-        t.update(text[1:])
-        return t
+        r = Routine(theme)
+        r.update(text[1:])
+        return r
     except RuntimeError as err:
-        print('parseTemplateFromFileText error',err)
-        return Template("parseTemplateFromFileText error")
+        print('parseRoutineFromFileText error',err)
+        return Routine("parseRoutineFromFileText error")

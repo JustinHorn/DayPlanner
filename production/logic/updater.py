@@ -1,9 +1,9 @@
 """A module that gives static helper functions to plan and main"""
 try:
-    from template import Template
+    from routine import Routine
     from entry import Entry
 except:
-    from .template import Template
+    from .routine import Routine
     from .entry import Entry
 
 class Updater():
@@ -29,8 +29,8 @@ class Updater():
         return merge
 
     def doesEntryListContain(self,eOT:Entry):
-        if isinstance(eOT,Template):
-            return self.template_contain(eOT)
+        if isinstance(eOT,Routine):
+            return self.routine_contain(eOT)
         else:
            return self.entry_contain(eOT)
     
@@ -41,38 +41,38 @@ class Updater():
         return (not index == None),index
 
     def getElement(self,index,element):
-        if isinstance(element,Template):
-            ele = self.createNewTemplate(index,element)
+        if isinstance(element,Routine):
+            ele = self.createNewRoutine(index,element)
         else:
             ele = self.entries[index] 
 
         ele.start= self.entries[index].start 
         return ele
 
-    def createNewTemplate(self,index,old_temp):
-        entries = self.entries[index:index+len(old_temp.step_list)]
-        new_temp = Template(old_temp.theme)
-        new_temp.addAll(entries)
+    def createNewRoutine(self,index,old_routine):
+        entries = self.entries[index:index+len(old_routine.step_list)]
+        new_routine = Routine(old_routine.theme)
+        new_routine.addAll(entries)
         # if i would have wrote better tests imediatly I would not have had to search +30m for this bugg 
-        if not old_temp.step_list[-1].duration == "00:00": # might override real duration
-            new_temp.step_list[-1].duration = old_temp.step_list[-1].duration
-        return new_temp
+        if not old_routine.step_list[-1].duration == "00:00": # might override real duration
+            new_routine.step_list[-1].duration = old_routine.step_list[-1].duration
+        return new_routine
 
-    def template_contain(self,template):
-        s_len =  len(template.step_list) 
+    def routine_contain(self,routine):
+        s_len =  len(routine.step_list) 
         stop = len(self.entries) - s_len +1
         for index,e in enumerate(self.entries[:stop] ):
-            if template.step_list == self.entries[index:index+s_len]:
+            if routine.step_list == self.entries[index:index+s_len]:
                 return True,index
         return False,None
 
     def shortenList(self,index,element):
-        if isinstance(element,Template):
-            self.template_shortenList(index,len(element.step_list))
+        if isinstance(element,Routine):
+            self.routine_shortenList(index,len(element.step_list))
         else:
             self.entries.pop(index)
 
 
-    ###change template list
-    def template_shortenList(self,index,length):
+    ###change Routine list
+    def routine_shortenList(self,index,length):
         self.entries = self.entries[:index] + self.entries[index+length:]

@@ -2,27 +2,27 @@ import sys
 import os
 
 from logic.plan import Plan
-from logic.template import Template
+from logic.routine import Routine
 from logic.entry import Entry
 
 class PlanManager():
 
     def __init__(self,*activationFunctions):
         self.plan = Plan("Heute")
-        self.template = Template("Template Theme")
+        self.routine = Routine("Routine Theme")
         self.active = self.plan
         self.funcs = list(activationFunctions)
         self.updateStructure =None
 
-    def splitTemplate(self,template_index,split_index):
-        self.active.splitTemplate(template_index,split_index) # must be plan
+    def splitRoutine(self,routine_index,split_index):
+        self.active.splitRoutine(routine_index,split_index) # must be plan
         self.communicate()
 
     def atOrSet(self,eOT:Entry):
         if isinstance(self.active,Plan):
             return self.add(eOT)
         else:
-            return self.setTemplate(eOT)
+            return self.setRoutine(eOT)
 
     def removeElement(self,index):
         self.active.remove(index)
@@ -51,7 +51,7 @@ class PlanManager():
 
     def swapActive(self):
         if self.active == self.plan:
-            self.active = self.template
+            self.active = self.routine
         else:
             self.active = self.plan
         self.communicate()
@@ -70,7 +70,10 @@ class PlanManager():
         self.active = plan
         self.communicate()
     
-    def setTemplate(self,template):
-        self.template = template
-        self.active = template
+    def setRoutine(self,routine):
+        self.routine = routine
+        self.active = routine
         self.communicate()
+
+    def getTheme(self):
+        return self.active.theme

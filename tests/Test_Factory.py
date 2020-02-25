@@ -6,7 +6,7 @@ import CalcTime
 import load 
 from entry import Entry 
 from plan import Plan 
-from template import Template
+from routine import Routine
 from Factory import parsePlanFromFileText
 import TestHelper
 

@@ -10,7 +10,7 @@ from kivy.properties import ObjectProperty
 
 import sys
 import os
-from logic.template import Template
+from logic.routine import Routine
 from logic.entry import Entry
 
 class PopMenu(FloatLayout):
@@ -23,9 +23,9 @@ class PopMenu(FloatLayout):
     def __init__(self):
         super().__init__()
 
-    def addEntries(self,template):
-        self.t_name.text = template.theme
-        for e in template.step_list:
+    def addEntries(self,routine):
+        self.t_name.text = routine.theme
+        for e in routine.step_list:
             self.appendEntry(e)
 
     def appendEntry(self, entry):
@@ -47,7 +47,7 @@ class PopMenu(FloatLayout):
 
 class PopMenuApp(App):
     def build(self):
-        t = Template("Template_Theme")
+        t = Routine("Template_Theme")
         t.add(Entry("00:00","test_entry_theme")) 
         return PopMenu(t)
 

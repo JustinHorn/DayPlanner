@@ -5,7 +5,7 @@ join = os.path.join
 sys.path.append(join('./production/logic'))
 from plan import Plan 
 from entry import Entry 
-from template import Template
+from routine import Routine
 import ParseText
 import re
 
@@ -46,32 +46,32 @@ class Test_ParseEntries(unittest.TestCase):
 
         string = ParseText.insertEndTime( plan,test_source,1)  
         string = string.split("\n")
-        t = test_source.split("\n")
-        self.assertEqual(len(string),len(t))
-        self.assertEqual(t[0],string[0])
-        self.assertNotEqual(t[1],string[1])
+        l = test_source.split("\n")
+        self.assertEqual(len(string),len(l))
+        self.assertEqual(l[0],string[0])
+        self.assertNotEqual(l[1],string[1])
         self.assertEqual(string[1].strip(),"00:03")
-        self.assertEqual(t[2],string[2])
+        self.assertEqual(l[2],string[2])
 
     def test_insertTimeWithTemplates(self):
         test_source = """00:01 hi wie gehts?\n00:03 mir gehts gut!
         """
         plan= Plan("heute")
-        t = Template("test")
-        t.add(Entry("00:02","hi wie gehts?",start="00:01"))
-        t.add(Entry("00:05","mir gehts gut!",start="00:03"))
-        plan.add(t)
+        r = Routine("test")
+        r.add(Entry("00:02","hi wie gehts?",start="00:01"))
+        r.add(Entry("00:05","mir gehts gut!",start="00:03"))
+        plan.add(r)
         plan.updateStarts("00:01",0)
 
 
         string = ParseText.insertEndTime( plan,test_source,2)  
         string = string.split("\n")
-        t = test_source.split("\n")
-        self.assertEqual(len(string),len(t))
-        self.assertEqual(t[0],string[0])
-        self.assertEqual(string[1],t[1])
+        l = test_source.split("\n")
+        self.assertEqual(len(string),len(l))
+        self.assertEqual(l[0],string[0])
+        self.assertEqual(string[1],l[1])
         self.assertEqual(string[2].strip(),"00:08")
-        self.assertNotEqual(t[2],string[2])
+        self.assertNotEqual(l[2],string[2])
 
 
 

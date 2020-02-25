@@ -7,26 +7,26 @@ from entry import Entry
 from plan import Plan
 import TestHelper
 
-class Test_Template(unittest.TestCase):
+class Test_Routine(unittest.TestCase):
 
     test_source = "material/test/test_template_1.txt"
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.template = load.loadTemplate(Test_Template.test_source)
+        self.routine = load.loadRoutine(Test_Routine.test_source)
       
    
     def test_addTemplateToPlan(self):
-        TestHelper.createPlan(self,"T")
+        TestHelper.createPlan(self,"R")
 
     def test_splitTempalte(self):
-        sl0 = self.template.step_list
+        sl0 = self.routine.step_list
 
         split_point =int(len(sl0)/2)
-        template1,template2 = self.template.split(split_point)
+        routine1,routine2 = self.routine.split(split_point)
         
-        sl1 = template1.step_list
-        sl2 = template2.step_list
+        sl1 = routine1.step_list
+        sl2 = routine2.step_list
 
         l1 = len(sl1)
         l2 = len(sl2)
@@ -49,14 +49,14 @@ class Test_Template(unittest.TestCase):
         self.assertEqual(e,e2)
 
     def test_EntryEq(self):
-        t1 = self.template
-        t2 = self.template.clone()
+        r1 = self.routine
+        r2 = self.routine.clone()
 
-        self.assertEqual(t1,t2)
-        self.assertNotEqual(id(t1),id(2))
+        self.assertEqual(r1,r2)
+        self.assertNotEqual(id(r1),id(r2))
 
     def test_parseData(self):
-        step_list = self.template.step_list
+        step_list = self.routine.step_list
         self.assertEqual(step_list[0].duration ,"00:03")
         self.assertEqual(step_list[1].duration , "00:05")
         self.assertEqual(step_list[2].duration , "00:03")

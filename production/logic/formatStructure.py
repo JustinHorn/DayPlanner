@@ -1,8 +1,8 @@
 try:
-    from template import Template
+    from routine import Routine
     from entry import Entry
 except:
-    from .template import Template
+    from .routine import Routine
     from .entry import Entry
 
 class FormatStructure():
@@ -19,7 +19,7 @@ class FormatStructure():
 
     def formatList(self):
         for e in self.step_list:
-            if not isinstance(e,Template):
+            if not isinstance(e,Routine):
                 self.entries.append(e)
             else:
                 self.addEntriesToList()
@@ -30,20 +30,20 @@ class FormatStructure():
 
     def addEntriesToList(self):
         if self.enoughEntries():
-            t = self.entriesToTemplate()
-            self.formatted_list.append(t)
+            r = self.entriesToRoutine()
+            self.formatted_list.append(r)
         else:
             self.formatted_list = self.formatted_list + self.entries
 
     def enoughEntries(self):
         return len(self.entries) > 1
 
-    def entriesToTemplate(self):
-        t = Template("...")
-        t.start = self.entries[0].start
+    def entriesToRoutine(self):
+        r = Routine("...")
+        r.start = self.entries[0].start
         for entry in self.entries:
-            t.add(entry)
-        return t
+            r.add(entry)
+        return r
 
     def sortByStart(e):
         return e.start
