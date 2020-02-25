@@ -1,7 +1,7 @@
 ![alt text](logo.jpg)
 
 A project of mine that is supposed to help you plan your day. It is made for fast planning inside a .txt file.
-## [Plan your day in 20s!](https://www.youtube.com/watch?v=idmiFDpcM0w)
+
 
 
 # Why use DayPlanner for planning?
@@ -10,6 +10,9 @@ A project of mine that is supposed to help you plan your day. It is made for fas
 - calculates start and end for you
 - insert activities you first forgot about easily
 - navigate from one day to the next easily
+- remove entries easily
+
+## [How to plan your day in 20s!](https://www.youtube.com/watch?v=idmiFDpcM0w)
 
 # Layout
 ![alt text](tool.jpg)
