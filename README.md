@@ -59,6 +59,9 @@ To create a new one change the theme in the small text input and save.
 To change a old one click on it change it and save.
 If there is a bugg when you swap to plan mode. Just save and restart the programm
 
+# Get DayPlanner.exe via dropbox
+[windows 64bit 7,8,10](https://www.dropbox.com/sh/ig1fnukoz3tq680/AACXfUxSOb_M0YYU1C5FDnBIa?dl=0)
+
 # Why ?
 I used to plan my days using vs-code and .txt files. I had to type in the same things over and over again. I wanted to automize that. Hence this project
 
@@ -68,3 +71,4 @@ Thank you to all you tutorial makers on youtube and friends in my personal life.
 # If you want to work on it yourself
 
 The project uses [kivy](https://kivy.org/#home) and is based in a [conda](https://www.anaconda.com/) enviroment. 
+
