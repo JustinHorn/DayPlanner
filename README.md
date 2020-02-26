@@ -46,8 +46,8 @@ The text that you enter is broken in to lines. Those lines are filtered acording
 ^\d\d:\d\d activity2
 
 Lines that follow this format are entries. \
-\d\d:\d\d is the start point of the activity.\
-The end point of activity1 is the start point of activity2.\
+\d\d:\d\d is the start time of the activity.\
+The end time of activity1 is the start time of activity2.\
 You can add a #comment... and another \d\d:\d\d to the end of an entry. \
 The comment will be ignored when comparing entries. It is used to make comments without the programm forgetting the structure to the right. \
 \d\d:\d\d at the end tells the program the duration of the activity eg. the length of the entry.
